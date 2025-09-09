@@ -1,12 +1,15 @@
 'use client'
 
-import { DataTable } from "../data-table"
-import { messageColumns } from "@/utils/data/message-columns"
-import { requestColumns } from "@/utils/data/request-columns"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { MessageDataTable } from "../messages-table"
+import { BookingDataTable } from "../booking-table"
+import { toast } from "sonner"
+import RecentsLoading from "@/app/(app)/recents/loading"
+
+import { messageColumns } from "@/utils/table-columns/message-columns"
+import { requestColumns } from "@/utils/table-columns/request-columns"
+import { useQuery } from "@tanstack/react-query"
 import { GetRequestData } from "@/utils/server-actions/request-query"
 import GetMessageData from "@/utils/server-actions/message-query"
-import { toast } from "sonner"
 
 export default function Recents() {
   const { data: messageData, error: messageError, isPending: messagePending } = useQuery({
@@ -27,28 +30,28 @@ export default function Recents() {
     toast.error("Error fetching data")
   }
 
-  const isLoading = messagePending || requestPending
-
   return (
-    <>
+    <div className="h-full flex flex-col gap-y-1">
       <div className="overflow-auto h-60 md:h-1/2">
-        <DataTable
-          columns={messageColumns}
-          data={messageData || []}
-          caption="Your recent Messages"
-          tableType="messages"
-          isLoading={isLoading}
-        />
+        {messagePending ? (
+          <RecentsLoading />
+        ) : (
+          <MessageDataTable
+            columns={messageColumns}
+            data={messageData || []}
+          />
+        )}
       </div>
       <div className="overflow-auto h-60 md:h-1/2">
-        <DataTable
-          columns={requestColumns}
-          data={requestData || []}
-          caption="Your recent Requests"
-          tableType="requests"
-          isLoading={isLoading}
-        />
+        {requestPending ? (
+          <RecentsLoading/>
+        ) : (
+          <BookingDataTable
+            columns={requestColumns}
+            data={requestData || []}
+          />
+        )}
       </div>
-    </>
+    </div>
   )
 }

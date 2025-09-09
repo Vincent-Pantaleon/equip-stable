@@ -2,7 +2,16 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { SquareActivity, Layers, Archive, CalendarDays, Mails, CircleUserRound, Menu, Users, LayoutDashboard, List } from "lucide-react"
+import { 
+    SquareActivity, 
+    Layers, Archive, 
+    CalendarDays, Mails, 
+    CircleUserRound, 
+    Menu,
+    Users, 
+    LayoutDashboard, 
+    List 
+} from "lucide-react"
 import { useInfo } from "@/utils/hooks/user-context"
 
 const list = [
@@ -14,9 +23,7 @@ const list = [
 ]
 
 const adminList = [
-    { href: "/profile-list", icon: Users, text: "Profile List" },
-    { href: "/requests-list", icon: List, text: "Requests List" },
-    { href: "/admin-dashboard/borrow-form", icon: LayoutDashboard, text: "Admin Dashboard" },
+    { href: "/admin/dashboard", icon: LayoutDashboard, text: "Go to Admin Dashboard" },
 ]
 
 export default function NavLinks() {
@@ -52,7 +59,7 @@ export default function NavLinks() {
                     )
                 })}
 
-                {(userRole === 'administrator' || userRole === 'moderator') && (
+                {(userRole === 'administrator' || userRole === 'moderator' || userRole === 'superadmin') && (
                     adminList.map((item, index) => {
                         const isActive = currentRoute.startsWith(item.href)
                        

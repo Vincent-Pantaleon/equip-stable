@@ -1,5 +1,3 @@
-import { Capitalize, CapitalizeAll } from "@/utils/handlers/capitalize";
-
 type InputProps = {
   label: string;
   type: string;
@@ -10,25 +8,9 @@ type InputProps = {
   divStyle?: string;
   pattern?: string;
   isDisabled?: boolean;
+  isPassword?: boolean;
 };
 
-interface SectionProps {
-  children: React.ReactNode;
-  header: string;
-}
-
-interface OptionType {
-  name?: string;
-  department?: {
-    name: string;
-  };
-  level?: string;
-  room?: string;
-  number?: string;
-  type?: {
-    name: string;
-  }
-}
 
 interface SelectInputProps {
   name: string;
@@ -37,15 +19,6 @@ interface SelectInputProps {
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   options: OptionType[];
-}
-
-// 🔧 Helper to generate human-readable option text
-function generateOptionLabel(item: OptionType): string {
-  if (item.name) return Capitalize(item.name);
-  if (item.department?.name && item.level) return `${Capitalize(item.department.name)} ${Capitalize(item.level)}`;
-  if (item.room && item.number) return `${CapitalizeAll(item.room)} ${item.number}`;
-  if (item.type?.name) return Capitalize(item.type?.name);
-  return "Unknown";
 }
 
 // 🔡 Input
@@ -113,17 +86,8 @@ export const SelectInput: React.FC<SelectInputProps> = ({
           Select an option
         </option>
         {options.map((item, index) => (
-          <option
-            key={index}
-            value={
-              item.name ??
-              item.type?.name ??
-              item.level ??
-              `${item.room ?? ""}${item.number ?? ""}` ??
-              index.toString()
-            }
-          >
-            {generateOptionLabel(item)}
+          <option key={index} value={item.value}>
+            {item.label ?? "Unknown Item"} 
           </option>
         ))}
       </select>

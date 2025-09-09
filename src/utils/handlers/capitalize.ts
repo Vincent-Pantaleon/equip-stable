@@ -5,3 +5,7 @@ export function Capitalize(str: string): string {
 export function CapitalizeAll(str: string): string {
     return str.toUpperCase();
 }
+
+export function LowercaseAll(str: string): string {
+    return str.toLocaleLowerCase()
+}

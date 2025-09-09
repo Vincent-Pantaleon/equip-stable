@@ -1,7 +1,7 @@
 'use client'
 
 import { DataTable } from "../data-table"
-import { messageColumns } from "@/utils/data/message-columns"
+import { messageColumns } from "@/utils/table-columns/message-columns"
 import GetMessageData from "@/utils/server-actions/message-query"
 import { toast } from "sonner"
 import { useQuery } from "@tanstack/react-query"

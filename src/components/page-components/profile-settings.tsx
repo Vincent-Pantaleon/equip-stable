@@ -16,6 +16,7 @@ import { useInfo } from "@/utils/hooks/user-context"
 import { useQuery } from "@tanstack/react-query"
 import { GetUserProfile } from "@/utils/server-actions/profile-query"
 import { EditUserInformation } from "@/utils/server-actions/profile-edit"
+import Modal from "../modal" // adjust path if needed
 
 export default function ProfileSettings() {
     const router = useRouter()
@@ -23,6 +24,7 @@ export default function ProfileSettings() {
     const [isEditUserInfo, setIsEditUserInfo] = useState<boolean>(true)
     const [user, setUser] = useState<Profile | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
     const userInfo = useInfo()
 
     const {data, error, isPending} = useQuery({
@@ -240,9 +242,36 @@ export default function ProfileSettings() {
 
             <Button 
                 label="Logout"
-                onClick={handleLogout}
+                onClick={() => setShowLogoutModal(true)}
                 className="bg-red-600"
             />
+
+            {showLogoutModal && (
+              <Modal
+                header="Confirm Logout"
+                isOpen={showLogoutModal}
+                onClose={() => setShowLogoutModal(false)}
+              >
+                <div className="flex flex-col gap-4">
+                  <span>Are you sure you want to logout?</span>
+                  <div className="flex gap-2 justify-end">
+                    <Button
+                      label="Cancel"
+                      onClick={() => setShowLogoutModal(false)}
+                      className="bg-gray-300 px-4"
+                    />
+                    <Button
+                      label="Logout"
+                      onClick={async () => {
+                        setShowLogoutModal(false);
+                        await handleLogout();
+                      }}
+                      className="bg-red-600 px-4"
+                    />
+                  </div>
+                </div>
+              </Modal>
+            )}
         </div>
     )
 }

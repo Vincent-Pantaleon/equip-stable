@@ -7,7 +7,7 @@ export const equipmentColumns: ColumnDef<Equipments>[] = [
         accessorKey: "name",
         cell: ({ row }) => {
             return (
-                <p>{Capitalize(row.original.name)}</p>
+                <p>{Capitalize(row.original.type)}</p>
             )
 
         }

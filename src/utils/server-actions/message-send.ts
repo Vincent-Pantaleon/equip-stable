@@ -47,13 +47,13 @@ const SendMessage = async (formData: FormData) => {
     return { status: true, message: "Message sent successfully"}
 }
 
-const ReadMessage = async (message: Messages) => {
+const ReadMessage = async (id: string) => {
     const supabase = await createClient()
 
     const { error } = await supabase
     .from('messages')
     .update({ is_viewed: true })
-    .eq('id', message.id)
+    .eq('id', id)
 
     if (error) {
         return { status: false, message: "Error updating column"}

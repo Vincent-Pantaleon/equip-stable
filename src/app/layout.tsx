@@ -30,10 +30,21 @@ export default function RootLayout({
         <link rel="icon" href={'/equip_logo_2.png'} type="image/png" />
       </head>
       <body
-        className={`${atkinson.variable} antialiased bg-slate-50`}
+        className={`${atkinson.variable} antialiased bg-slate-100`}
       >
-        {children}
-        <Toaster/>
+        <UserProvider>
+          <QueryProvider>
+            <RealtimeProvider subscriptions={[
+                { table: "messages", queryKey: ["messages-data"] },
+                { table: "requests", queryKey: ["requests-data", "all-requests-data"] },
+                { table: "inventory", queryKey: ["inventory-data"] },
+                { table: "profiles", queryKey: ["profiles-list"] },
+            ]}>
+              {children}
+              <Toaster/>
+            </RealtimeProvider>
+          </QueryProvider>
+        </UserProvider>
       </body>
     </html>
   );

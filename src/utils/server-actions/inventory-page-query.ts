@@ -21,5 +21,7 @@ export default async function GetInventoryData() {
         return null
     }
 
+    console.log(equipmentData)
+
     return { equipments: equipmentData, venues: venueData}
 } 

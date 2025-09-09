@@ -3,16 +3,16 @@ import { Metadata } from "next"
 
 export const metadata: Metadata = {
     title: {
-        absolute: "equip | Admin Dashboard | Borrow Form"
+        absolute: "equip"
     }
 }
 
-const DashboardBorrowPage = () => {
+const AdminDashboardBorrowFormPage = () => {
     return (
         <div>
-            Hello from borrow page
+            Hello from borrow form page
         </div>
     )
 }
 
-export default DashboardBorrowPage
+export default AdminDashboardBorrowFormPage

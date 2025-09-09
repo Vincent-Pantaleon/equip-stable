@@ -52,27 +52,49 @@ export type Database = {
       }
       equipment: {
         Row: {
+          code: string | null
           created_at: string
+          date_acquired: string | null
           id: number
+          item_name: string | null
+          office_assigned: string | null
           reference: string
+          serial_number: string | null
           status: Database["public"]["Enums"]["equipment_status"]
           type: number
         }
         Insert: {
+          code?: string | null
           created_at?: string
+          date_acquired?: string | null
           id?: number
+          item_name?: string | null
+          office_assigned?: string | null
           reference: string
+          serial_number?: string | null
           status?: Database["public"]["Enums"]["equipment_status"]
           type: number
         }
         Update: {
+          code?: string | null
           created_at?: string
+          date_acquired?: string | null
           id?: number
+          item_name?: string | null
+          office_assigned?: string | null
           reference?: string
+          serial_number?: string | null
           status?: Database["public"]["Enums"]["equipment_status"]
           type?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "equipment_office_assigned_fkey"
+            columns: ["office_assigned"]
+            isOneToOne: false
+            referencedRelation: "office"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "equipment_type_fkey"
             columns: ["type"]
@@ -87,22 +109,22 @@ export type Database = {
           available_count: number
           created_at: string
           id: number
-          name: string
           total_count: number | null
+          type: string
         }
         Insert: {
           available_count: number
           created_at?: string
           id?: number
-          name: string
           total_count?: number | null
+          type: string
         }
         Update: {
           available_count?: number
           created_at?: string
           id?: number
-          name?: string
           total_count?: number | null
+          type?: string
         }
         Relationships: []
       }
@@ -156,7 +178,7 @@ export type Database = {
       messages: {
         Row: {
           created_at: string
-          id: number
+          id: string
           is_viewed: boolean
           message: string
           recipient_id: string
@@ -165,7 +187,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          id?: number
+          id?: string
           is_viewed?: boolean
           message: string
           recipient_id: string
@@ -174,7 +196,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          id?: number
+          id?: string
           is_viewed?: boolean
           message?: string
           recipient_id?: string
@@ -192,6 +214,35 @@ export type Database = {
           {
             foreignKeyName: "messages_sender_id_fkey"
             columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      office: {
+        Row: {
+          created_at: string
+          id: string
+          in_charge: string | null
+          office: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          in_charge?: string | null
+          office?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          in_charge?: string | null
+          office?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "office_in_charge_fkey"
+            columns: ["in_charge"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
@@ -239,6 +290,7 @@ export type Database = {
           id: string
           is_online: boolean
           last_name: string | null
+          office_assigned: string | null
           role: Database["public"]["Enums"]["app_role"] | null
           school_id: string | null
           updated_at: string | null
@@ -252,6 +304,7 @@ export type Database = {
           id: string
           is_online?: boolean
           last_name?: string | null
+          office_assigned?: string | null
           role?: Database["public"]["Enums"]["app_role"] | null
           school_id?: string | null
           updated_at?: string | null
@@ -265,12 +318,21 @@ export type Database = {
           id?: string
           is_online?: boolean
           last_name?: string | null
+          office_assigned?: string | null
           role?: Database["public"]["Enums"]["app_role"] | null
           school_id?: string | null
           updated_at?: string | null
           website?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_office_assigned_fkey"
+            columns: ["office_assigned"]
+            isOneToOne: false
+            referencedRelation: "office"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       purpose: {
         Row: {
@@ -301,7 +363,6 @@ export type Database = {
           first_name: string
           grade_level: string
           id: string
-          isViewed: boolean
           last_name: string
           location_of_use: string
           place_of_use: string
@@ -323,7 +384,6 @@ export type Database = {
           first_name: string
           grade_level: string
           id?: string
-          isViewed?: boolean
           last_name: string
           location_of_use: string
           place_of_use: string
@@ -345,7 +405,6 @@ export type Database = {
           first_name?: string
           grade_level?: string
           id?: string
-          isViewed?: boolean
           last_name?: string
           location_of_use?: string
           place_of_use?: string
@@ -520,7 +579,7 @@ export type Database = {
         | "edit_tables"
         | "send_request"
         | "receive_message"
-      app_role: "administrator" | "user" | "moderator"
+      app_role: "administrator" | "user" | "moderator" | "superadmin"
       department_enums:
         | "kindergarten"
         | "elementary"
@@ -668,7 +727,7 @@ export const Constants = {
         "send_request",
         "receive_message",
       ],
-      app_role: ["administrator", "user", "moderator"],
+      app_role: ["administrator", "user", "moderator", "superadmin"],
       department_enums: [
         "kindergarten",
         "elementary",

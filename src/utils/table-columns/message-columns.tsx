@@ -4,7 +4,7 @@ export const messageColumns: ColumnDef<Messages>[] = [
   {
     header: "Sender",
     accessorKey: "sender",
-    size: 170,
+    size: 200,
     cell: ({ row }) => {
 
       let user;
@@ -18,17 +18,16 @@ export const messageColumns: ColumnDef<Messages>[] = [
       const isViewed = row.original.is_viewed
 
       return (
-        <div className="flex items-center space-x-2">
-        {/* Pulsing dot */}
-        {!isViewed && (
-          <span className="relative flex h-3 w-3 mr-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-600 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-          </span>
-        )}
-        {/* Sender name */}
-        {user}
-      </div>
+        <div className="flex items-center">
+          {/* Pulsing dot */}
+          {!isViewed && (
+            <span className="absolute left-0 flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-600 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+            </span>
+          )}
+          {user}
+        </div>
       )
     }
   },

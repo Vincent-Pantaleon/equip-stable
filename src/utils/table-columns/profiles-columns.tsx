@@ -31,6 +31,13 @@ const profilesColumns: ColumnDef<Profile>[] = [
                 </span>
             )
         },
+    },
+    {
+        header: "Assigned Office"
+    },
+    {
+        header: "Actions",
+
     }
 ]
 

@@ -1,8 +1,8 @@
 'use client'
 
 import { DataTable } from "../data-table"
-import { equipmentColumns } from "@/utils/data/equipments-columns"
-import { venuesColumns } from "@/utils/data/venues-columns"
+import { equipmentColumns } from "@/utils/table-columns/equipments-columns"
+import { venuesColumns } from "@/utils/table-columns/venues-columns"
 import GetInventoryData from "@/utils/server-actions/inventory-page-query"
 import { useQuery } from "@tanstack/react-query"
 import { toast } from "sonner"

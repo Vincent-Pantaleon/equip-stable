@@ -3,43 +3,56 @@
 import { Section, Input, SelectInput } from "../input"
 import Button from "../button"
 import { GetBorrowFormData } from "@/utils/server-actions/borrow-page-query"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { SendRequest } from "@/utils/server-actions/borrow-send"
 import { useState } from "react"
+import Modal from "../modal" // adjust path if needed
 
 type Department = "elementary" | "highSchool" | "seniorHighSchool";
 
 export default function BorrowForm() {
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    
-    const {data, error} = useQuery({
+    const [showConfirmModal, setShowConfirmModal] = useState(false);
+    const [pendingForm, setPendingForm] = useState<FormData | null>(null);
+
+    const { data, error } = useQuery({
         queryKey: ['borrow-form-data'],
         queryFn: GetBorrowFormData,
     })
+
+    console.log(data)
 
     if (error) {
         toast.error("Error fetching data")
     }
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        setIsLoading(true)
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        setPendingForm(formData);
+        setShowConfirmModal(true);
+    };
 
-        const formData = new FormData(e.currentTarget)
+    const handleConfirm = async () => {
+        if (!pendingForm) return;
+        setIsLoading(true);
+        setShowConfirmModal(false);
 
-        const result = await SendRequest(formData)
+        const result = await SendRequest(pendingForm);
 
         if (!result.status) {
-            setIsLoading(false)
-            toast.error(result.message)
+            setIsLoading(false);
+            toast.error(result.message);
         } else {
-            setIsLoading(false)
-            toast.success(result.message)
+            setIsLoading(false);
+            toast.success(result.message);
         }
-    }
+        setPendingForm(null);
+    };
 
     return (
+        <>
             <form
                 className="flex flex-col gap-y-5"
                 onSubmit={handleSubmit}
@@ -75,5 +88,30 @@ export default function BorrowForm() {
                     <Button type="submit" label="Submit Form" isLoading={isLoading} className="lg:w-[13%]"/>
                 </div>
             </form>
+            {showConfirmModal && (
+              <Modal
+                header="Confirm Submission"
+                isOpen={showConfirmModal}
+                onClose={() => setShowConfirmModal(false)}
+              >
+                <div className="flex flex-col gap-4">
+                  <span>Are you sure you want to submit this borrow request?</span>
+                  <div className="flex gap-2 justify-end">
+                    <Button
+                      label="Cancel"
+                      onClick={() => setShowConfirmModal(false)}
+                      className="bg-gred-400 px-3"
+                    />
+                    <Button
+                      label="Submit"
+                      onClick={handleConfirm}
+                      className="bg-blue-600 px-3"
+                      isLoading={isLoading}
+                    />
+                  </div>
+                </div>
+              </Modal>
+            )}
+        </>
     )
 }

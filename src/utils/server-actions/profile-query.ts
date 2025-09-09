@@ -23,7 +23,7 @@ const GetUserProfile = async () => {
 const GetUsersList = async () => {
     const supabase = await createClient()
 
-    const { data, error} = await supabase
+    const { data, error } = await supabase
     .from('profiles')
     .select('*')
 
@@ -34,4 +34,29 @@ const GetUsersList = async () => {
     return { status: true, message: "Profiles fetched successfully", data: data}
 }
 
-export { GetUserProfile, GetUsersList }
+const GetAdministratorsList = async () => {
+    const supabase = await createClient()
+
+    const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('role', 'administrator')
+
+
+    if (error) {
+        return { status: false, message: "Error fetching administrator list"}
+    }
+
+    const admins: OptionType[] = data.map((admin) => ({
+        kind: "admin",
+        id: admin.id,
+        name: `${admin.first_name} ${admin.last_name}`,
+        label: `${admin.first_name} ${admin.last_name}`, // shown to user
+        value: admin.id, // used in the select
+    }));
+
+
+    return { status: true, data: admins}
+}
+
+export { GetUserProfile, GetUsersList, GetAdministratorsList }
