@@ -11,6 +11,7 @@ export default function InventoryTables() {
     const { data: InventoryData, isPending, isError } = useQuery({
         queryKey: ['inventory-data'],
         queryFn: GetInventoryData,
+        staleTime: 1000 * 60 * 5,
     })
 
     if (isError) {

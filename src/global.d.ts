@@ -115,57 +115,16 @@ declare global {
         office: string;
     }
 
-    // Select Input Interface
     interface SectionProps {
       children: React.ReactNode;
-      header: string;
+      header?: string;
+      className?: string;
     }
     
-    // Base option
-    interface BaseOption {
-      label: string; // what is shown in the dropdown
-      value: string; // the actual value (id, slug, etc.)
+    // TODO: Create a better Type for options
+    type OptionType = {
+        value: string
+        label: string
+        department?: string
     }
-
-    // Office options
-    interface OfficeOptions extends BaseOption {
-        kind: "office"
-    }
-
-    // Role options
-    interface RoleOptions extends BaseOption {
-        kind: "role"
-    }
-    
-    //Gender options
-    interface GenderOptions extends BaseOption {
-      kind: "gender"
-    }
-    
-    // Specific options
-    interface AdminOption extends BaseOption {
-      kind: "admin";
-      id: string;
-      name: string;
-    }
-    
-    interface DepartmentOption extends BaseOption {
-      kind: "department";
-      department: string;
-      level: string;
-    }
-    
-    interface RoomOption extends BaseOption {
-      kind: "room";
-      room: string;
-      number: string;
-    }
-    
-    interface TypeOption extends BaseOption {
-      kind: "type";
-      type: string;
-    }
-    
-    // Union type
-    type OptionType = AdminOption | DepartmentOption | RoomOption | TypeOption | GenderOptions | RoleOptions | OfficeOptions; 
 }

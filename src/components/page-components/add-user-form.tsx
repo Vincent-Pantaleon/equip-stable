@@ -9,16 +9,16 @@ import { Input, Section, SelectInput } from "../input"
 import Button from "../button"
 import { toast } from "sonner"
 
-const Gender: GenderOptions[] = [
-    { label: "Male", value: "male", kind: "gender" },
-    { label: "Female", value: "female", kind: "gender" },
-    { label: "Others", value: "others", kind: "gender" }
+const Gender: OptionType[] = [
+    { label: "Male", value: "male" },
+    { label: "Female", value: "female" },
+    { label: "Others", value: "others" }
 ]
 
-const Roles: RoleOptions[] = [
-    { label: "User", value: "user", kind: "role" },
-    { label: "Moderator", value: "moderator", kind: "role" },
-    { label: "Administrator", value: "administrator", kind: "role" },
+const Roles: OptionType[] = [
+    { label: "User", value: "user" },
+    { label: "Moderator", value: "moderator" },
+    { label: "Administrator", value: "administrator" },
 ]
 
 const AddUserForm = () => {
@@ -52,70 +52,76 @@ const AddUserForm = () => {
             />
             <form onSubmit={handleSubmit}>
                 <Section header="Add New User">
-                    <Input
-                        label="Email"
-                        id="email"
-                        name="email"
-                        type="email"
-                        divStyle="col-span-2"
-                    />
+                    <Section>
+                        <Input
+                            label="Email"
+                            id="email"
+                            name="email"
+                            type="email"
+                        />
 
-                    <Input
-                        label="Password"
-                        id="password"
-                        name="password"
-                        type="text"
-                        divStyle="col-span-2"
-                        isPassword={true}
-                    />
+                        <Input
+                            label="Password"
+                            id="password"
+                            name="password"
+                            type="text"
 
-                    <Input
-                        label="Confirm Password"
-                        id="confirm_password"
-                        name="confirm_password"
-                        type="password"
-                        divStyle="col-span-2"
-                        isPassword={true}
-                    />
+                            isPassword={true}
+                        />
 
-                    <Input
-                        label="First Name"
-                        id="fname"
-                        name="fname"
-                        type="text"
-                    />
+                        <Input
+                            label="Confirm Password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            type="password"
 
-                    <Input
-                        label="Last Name"
-                        id="lname"
-                        name="lname"
-                        type="text"
-                    />
+                            isPassword={true}
+                        />
+                    </Section>
+                    
+                    <Section>
+                        <Input
+                            label="First Name"
+                            id="fname"
+                            name="fname"
+                            type="text"
+                        />
 
-                    <SelectInput
-                        label="Gender"
-                        name="gender"
-                        options={Gender}  
-                    />
+                        <Input
+                            label="Last Name"
+                            id="lname"
+                            name="lname"
+                            type="text"
+                        />
 
-                    <Input
-                        label="School ID"
-                        id="school_id"
-                        name="school_id"
-                        type="text"
-                    />
+                        <SelectInput
+                            label="Gender"
+                            name="gender"
+                            options={Gender}  
+                        />
+                    </Section>
+                    
+                    <Section>
+                        <Input
+                            label="School ID"
+                            id="school_id"
+                            name="school_id"
+                            type="text"
+                        />
 
-                    <SelectInput
-                        label="Role"
-                        name="role"
-                        options={Roles || []}
-                    />
+                        <SelectInput
+                            label="Role"
+                            name="role"
+                            options={Roles || []}
+                        />
 
-                    <SelectInput
-                        label="Assigned Office"
-                        name="office_assigned"
-                        options={data?.data || []}
-                    />
+                        <SelectInput
+                            label="Assigned Office"
+                            name="office_assigned"
+                            options={data?.data || []}
+                        />
+                    </Section>
+                    
 
                     <Button
                         label="Create"

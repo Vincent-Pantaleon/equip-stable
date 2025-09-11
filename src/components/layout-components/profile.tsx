@@ -15,8 +15,6 @@ export default function Profile() {
         return `${Capitalize(userInfo.first_name ?? "")} ${Capitalize(userInfo.last_name ?? "")}`
     }, [userInfo])
 
-    console.log(userInfo?.role)
-
     return (
         <Link 
         className="bg-white p-5 rounded-2xl max-md:justify-center button-animation hover:bg-form-input-color"

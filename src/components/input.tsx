@@ -1,3 +1,5 @@
+import React from "react";
+
 type InputProps = {
   label: string;
   type: string;
@@ -11,7 +13,6 @@ type InputProps = {
   isPassword?: boolean;
 };
 
-
 interface SelectInputProps {
   name: string;
   label: string;
@@ -19,10 +20,16 @@ interface SelectInputProps {
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   options: OptionType[];
+  department?: string;
+}
+
+interface SectionProps {
+  children: React.ReactNode;
+  header?: string;
 }
 
 // 🔡 Input
-export const Input: React.FC<InputProps> = ({
+export const Input = React.memo(function Input({
   label,
   type,
   id,
@@ -32,7 +39,7 @@ export const Input: React.FC<InputProps> = ({
   divStyle,
   pattern,
   isDisabled = false,
-}) => {
+}: InputProps) {
   return (
     <div className={`w-full ${divStyle}`}>
       <label htmlFor={id}>{label}</label>
@@ -49,10 +56,10 @@ export const Input: React.FC<InputProps> = ({
       />
     </div>
   );
-};
+});
 
 // 📦 Section
-export const Section: React.FC<SectionProps> = ({ children, header }) => {
+export const Section = React.memo(function Section({ children, header }: SectionProps) {
   return (
     <div>
       <h1 className="text-lg font-semibold">{header}</h1>
@@ -61,16 +68,17 @@ export const Section: React.FC<SectionProps> = ({ children, header }) => {
       </div>
     </div>
   );
-};
+});
 
 // 🔽 Select Input
-export const SelectInput: React.FC<SelectInputProps> = ({
+export const SelectInput = React.memo(function SelectInput({
   name,
   label,
   divStyle,
   onChange,
-  options
-}) => {
+  options,
+  department,
+}: SelectInputProps) {
   return (
     <div className={divStyle}>
       <label htmlFor={name}>{label}</label>
@@ -85,12 +93,14 @@ export const SelectInput: React.FC<SelectInputProps> = ({
         <option value="" disabled>
           Select an option
         </option>
-        {options.map((item, index) => (
+        {options
+          .filter((item) => item.department === department)
+          .map((item, index) => (
           <option key={index} value={item.value}>
-            {item.label ?? "Unknown Item"} 
+            {item.label ?? "Unknown Item"}
           </option>
         ))}
       </select>
     </div>
   );
-};
+});
