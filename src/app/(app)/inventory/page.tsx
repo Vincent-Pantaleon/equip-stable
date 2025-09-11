@@ -1,4 +1,4 @@
-import InventoryTables from "@/components/page-components/inventory-tables"
+import Inventory from "@/components/page-components/inventory"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -11,6 +11,6 @@ export default async function InventoryPage() {
     // await new Promise((resolve) => setTimeout(resolve, 5000))
     
     return (
-        <InventoryTables />
+        <Inventory />
     )
 }

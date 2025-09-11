@@ -10,6 +10,7 @@ export default function Schedule() {
     const { data, error, isPending } = useQuery({
         queryKey: ['approved-requests-data'],
         queryFn: GetApprovedRequests,
+        staleTime: 1000 * 60 * 5,
     })
 
     if (error) {

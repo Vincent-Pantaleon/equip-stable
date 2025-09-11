@@ -27,7 +27,7 @@ export default function MessageForm() {
             className="flex flex-col gap-y-4 h-full"
             onSubmit={handleSubmit}
         >
-            <Link href={'/messages'} className="button-animation w-full bg-hover-color py-2 rounded-xl transition-colors duration-200 hover:bg-form-input-color hover:cursor-pointer ">Go back</Link>
+            <Link href={'/messages'} className="button-animation w-full bg-hover-color py-2 rounded-xl transition-colors duration-200 hover:bg-form-input-color hover:cursor-pointer text-center ">Go back</Link>
             <Input 
                 label="Send to (email)"
                 id="recipient"

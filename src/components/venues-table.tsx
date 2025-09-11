@@ -23,7 +23,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function EquipmentsDataTable<TData, TValue>({
+export function VenuesDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -65,7 +65,7 @@ export function EquipmentsDataTable<TData, TValue>({
                 <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={() => router.push(`/inventory/equipment/${(row.original as EquipmentTypeType).id}`)}
+                    onClick={() => router.push(`/inventory/venue/${(row.original as Venues).id}`)}
                 >
                     {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

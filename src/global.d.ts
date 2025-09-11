@@ -35,7 +35,7 @@ declare global {
         };
     }
 
-    type Venues = db['public']['Tables']['venue_table']['Row']
+    type Venues = db['public']['Tables']['venue_type']['Row']
 
     type InventoryType = {
         equipments: Equipments[];

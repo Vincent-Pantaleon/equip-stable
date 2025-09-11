@@ -51,6 +51,7 @@ export function MessageDataTable<TData, TValue>({
                             label="Send Message"
                             className="px-2"
                             Icon={Send}
+                            onClick={() => router.push('/messages/send-message')}
                         />
                     </div>
                 )}
