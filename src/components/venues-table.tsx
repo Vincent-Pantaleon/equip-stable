@@ -38,7 +38,7 @@ export function VenuesDataTable<TData, TValue>({
   return (
     <div className="overflow-hidden rounded-md border p-2 h-full">
         <div className="flex mb-2 items-center justify-between">
-            <h1 className="text-lg">Bookings</h1>
+            <h1 className="text-lg">Venues</h1>
         </div>
         <Table>
             <TableHeader>
@@ -65,7 +65,6 @@ export function VenuesDataTable<TData, TValue>({
                 <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={() => router.push(`/inventory/venue/${(row.original as Venues).id}`)}
                 >
                     {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

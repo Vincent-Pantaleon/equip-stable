@@ -4,7 +4,7 @@ export const messageColumns: ColumnDef<Messages>[] = [
   {
     header: "Sender",
     accessorKey: "sender",
-    size: 200,
+    size: 100,
     cell: ({ row }) => {
 
       let user;
@@ -33,12 +33,13 @@ export const messageColumns: ColumnDef<Messages>[] = [
   },
   {
     header: "Subject",
-    accessorKey: "subject"
+    accessorKey: "subject",
+    size: 100,
   },
   {
     header: "Message",
     accessorKey: "message",
-    size: 300,
+    size: 400,
     cell: ({ row }) => (
       <div className="truncate overflow-hidden whitespace-nowrap max-w-[300px]">
         {row.original.message}

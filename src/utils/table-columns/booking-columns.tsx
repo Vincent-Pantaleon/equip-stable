@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Capitalize } from "../handlers/capitalize";
+import { Capitalize, CapitalizeAll } from "../handlers/capitalize";
 
 const getStatusStyles = (status: string) => {
   switch (status.toLowerCase()) {
@@ -24,15 +24,27 @@ export const requestColumns: ColumnDef<Requests>[] =[
     {
         header: "Activity",
         accessorKey: "purpose", 
-        size: 90
+        size: 90,
+        cell: ({ row }) => {
+            const value = row.getValue<string>("purpose");
+            return Capitalize(value);
+        },
     }, 
     {
         header: "Equipment Needed",
         accessorKey: "equipment",
+        cell: ({ row }) => {
+            const value = row.getValue<string>("equipment");
+            return Capitalize(value);
+        },
     },
     {
         header: "Subject",
         accessorKey: "subject",
+        cell: ({ row }) => {
+            const value = row.getValue<string>("subject");
+            return Capitalize(value);
+        },
     },
     {
         header: "Date of Use",
@@ -49,13 +61,21 @@ export const requestColumns: ColumnDef<Requests>[] =[
         },
     },
     {
+        header: "Room",
+        accessorKey: "place_of_use",
+        cell: ({ row }) => {
+            const value = row.getValue<string>("place_of_use");
+            return CapitalizeAll(value);
+        },
+    },
+    {
         header: "Time",
         id: "time_range", // required for accessorFn
         accessorFn: row => {
             const formatTime = (value: string) => {
             const [hourStr, minuteStr] = value.split(":");
             const hours = parseInt(hourStr);
-            const ampm = hours >= 12 ? "pm" : "am";
+            const ampm = hours >= 12 ? "PM" : "AM";
             const hour12 = hours % 12 === 0 ? 12 : hours % 12;
             return `${hour12}:${minuteStr} ${ampm}`;
             };

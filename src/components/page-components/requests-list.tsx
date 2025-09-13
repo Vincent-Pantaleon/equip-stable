@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query"
 import { GetAllRequestData } from "@/utils/server-actions/request-query"
 import { toast } from "sonner"
-import { allRequestColumns } from "@/utils/table-columns/request-columns"
+import { allRequestColumns } from "@/utils/table-columns/booking-columns"
 import { DataTable } from "../data-table"
 
 const RequestsList = () => {

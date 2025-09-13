@@ -144,7 +144,7 @@ export function RequestModalContent({ request, isAdmin = false }: { request: Req
 }
 
 // Equipment Modal Content
-export function EquipmentModalContent({ equipment }: { equipment: Equipments }) {
+export function EquipmentModalContent({ equipment }: { equipment: EquipmentTypeType }) {
   return (
     <div className="max-h-[60vh] overflow-y-auto pr-2">
       <div className="flex flex-col gap-6 text-sm text-gray-800">

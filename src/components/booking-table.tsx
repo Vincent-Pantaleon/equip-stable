@@ -47,7 +47,7 @@ export function BookingDataTable<TData, TValue>({
                         <TableRow key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
                             return (
-                            <TableHead key={header.id}>
+                            <TableHead key={header.id} style={{ width: `${header.getSize()}px` }}>
                                 {header.isPlaceholder
                                 ? null
                                 : flexRender(
@@ -66,7 +66,6 @@ export function BookingDataTable<TData, TValue>({
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
-                                onClick={() => router.push(`/recents/request/${(row.original as Requests).id}`)}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>

@@ -38,7 +38,7 @@ export function EquipmentsDataTable<TData, TValue>({
   return (
     <div className="overflow-hidden rounded-md border p-2 h-full">
         <div className="flex mb-2 items-center justify-between">
-            <h1 className="text-lg">Bookings</h1>
+            <h1 className="text-lg">Equipments</h1>
         </div>
         <Table>
             <TableHeader>
@@ -65,7 +65,6 @@ export function EquipmentsDataTable<TData, TValue>({
                 <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
-                    onClick={() => router.push(`/inventory/equipment/${(row.original as EquipmentTypeType).id}`)}
                 >
                     {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

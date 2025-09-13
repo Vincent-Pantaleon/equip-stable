@@ -63,13 +63,13 @@ export function MessageDataTable<TData, TValue>({
                         <TableRow key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
                             return (
-                            <TableHead key={header.id}>
+                            <TableHead key={header.id} style={{ width: `${header.getSize()}px` }}>
                                 {header.isPlaceholder
                                 ? null
                                 : flexRender(
                                     header.column.columnDef.header,
-                                    header.getContext()
-                                    )}
+                                    header.getContext(),
+                                )}
                             </TableHead>
                             )
                         })}
@@ -82,7 +82,6 @@ export function MessageDataTable<TData, TValue>({
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
-                                onClick={() => router.push(`/recents/message/${(row.original as Messages).id}`)}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>

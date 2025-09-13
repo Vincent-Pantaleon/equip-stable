@@ -6,7 +6,7 @@ import { toast } from "sonner"
 import RecentsLoading from "@/app/(app)/recents/loading"
 
 import { messageColumns } from "@/utils/table-columns/message-columns"
-import { requestColumns } from "@/utils/table-columns/request-columns"
+import { requestColumns } from "@/utils/table-columns/booking-columns"
 import { useQuery } from "@tanstack/react-query"
 import { GetRequestData } from "@/utils/server-actions/request-query"
 import GetMessageData from "@/utils/server-actions/message-query"
