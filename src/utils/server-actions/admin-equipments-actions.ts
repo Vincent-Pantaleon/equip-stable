@@ -1,13 +1,13 @@
 'use server'
 
 import { createClient } from "../supabase/server"
-import { LowercaseAll } from "../handlers/capitalize"
+import { formatSpaceToUnderscore } from "../handlers/capitalize"
 
 const InsertNewEquipmentType = async (formData: FormData) => {
     const supabase = await createClient()
 
     const FormData = {
-        type: LowercaseAll(formData.get('type') as string),
+        type: formatSpaceToUnderscore(formData.get('type') as string),
         total: Number(formData.get('total_count')),
     }
 
@@ -30,7 +30,7 @@ const InsertNewEquipment = async (formData: FormData) => {
 
     const FormData = {
         type: formData.get('type') as string,
-        item_name: formData.get('item_name') as string,
+        item_name: formatSpaceToUnderscore(formData.get('item_name') as string),
         reference: formData.get('reference') as string,
         item_code: formData.get('item_code') as string,
         serial_number: formData.get('serial_number') as string,
@@ -40,19 +40,18 @@ const InsertNewEquipment = async (formData: FormData) => {
     const { data: typeData, error: typeError } = await supabase
     .from('equipment_type')
     .select('id')
-    .eq('type', FormData.type)
-
-    const typeID = typeData?.[0]?.id
+    .eq('type', FormData.type) 
+    .single()
 
     if (typeError) {
-        return { status: false, message: "Type does not exist"}
+        return { status: false, message: "Type does not exist", error: typeError}
     }
 
     const { error: insertError } = await supabase
     .from('equipment')
     .insert([
         { 
-            type: typeID,
+            type: typeData.id,
             reference: FormData.reference,
             code: FormData.item_code,
             serial_number: FormData.serial_number,
@@ -77,6 +76,7 @@ const SelectEquipmentType = async () => {
     const { data, error } = await supabase
     .from('equipment_type')
     .select('*')
+    .order('created_at', { ascending: false })
 
     if (error) {
         return { status: false, message: "Failed fetching equipment type"}
@@ -91,6 +91,7 @@ const SelectEquipment = async () => {
     const { data, error } = await supabase
     .from('equipment')
     .select('*, type: equipment_type(type)')
+    .order('created_at', { ascending: false })
 
     if(error) {
         return { status: false, message: "Failed fetching equipment"}

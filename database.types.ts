@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "12.2.12 (cd3cf9e)"
+    PostgrestVersion: "13.0.5"
   }
   public: {
     Tables: {
@@ -52,38 +52,38 @@ export type Database = {
       }
       equipment: {
         Row: {
-          code: string | null
+          code: string
           created_at: string
-          date_acquired: string | null
+          date_acquired: string
           id: number
-          item_name: string | null
+          item_name: string
           office_assigned: string | null
           reference: string
-          serial_number: string | null
+          serial_number: string
           status: Database["public"]["Enums"]["equipment_status"]
           type: number
         }
         Insert: {
-          code?: string | null
+          code: string
           created_at?: string
-          date_acquired?: string | null
+          date_acquired: string
           id?: number
-          item_name?: string | null
+          item_name: string
           office_assigned?: string | null
           reference: string
-          serial_number?: string | null
+          serial_number: string
           status?: Database["public"]["Enums"]["equipment_status"]
           type: number
         }
         Update: {
-          code?: string | null
+          code?: string
           created_at?: string
-          date_acquired?: string | null
+          date_acquired?: string
           id?: number
-          item_name?: string | null
+          item_name?: string
           office_assigned?: string | null
           reference?: string
-          serial_number?: string | null
+          serial_number?: string
           status?: Database["public"]["Enums"]["equipment_status"]
           type?: number
         }
@@ -106,46 +106,60 @@ export type Database = {
       }
       equipment_type: {
         Row: {
+          assigned_office: string | null
           available_count: number
           created_at: string
           id: number
+          is_public: boolean | null
           total_count: number | null
           type: string
         }
         Insert: {
+          assigned_office?: string | null
           available_count: number
           created_at?: string
           id?: number
+          is_public?: boolean | null
           total_count?: number | null
           type: string
         }
         Update: {
+          assigned_office?: string | null
           available_count?: number
           created_at?: string
           id?: number
+          is_public?: boolean | null
           total_count?: number | null
           type?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "equipment_type_assigned_office_fkey"
+            columns: ["assigned_office"]
+            isOneToOne: false
+            referencedRelation: "office"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       grade_level: {
         Row: {
           created_at: string
           department: number
           id: number
-          level: string
+          level: number
         }
         Insert: {
           created_at?: string
           department: number
           id?: number
-          level: string
+          level: number
         }
         Update: {
           created_at?: string
           department?: number
           id?: number
-          level?: string
+          level?: number
         }
         Relationships: [
           {
@@ -506,21 +520,21 @@ export type Database = {
           created_at: string
           id: number
           reference: string
-          status: string
+          status: Database["public"]["Enums"]["venue_status"]
           type: number
         }
         Insert: {
           created_at?: string
           id?: number
           reference: string
-          status: string
+          status?: Database["public"]["Enums"]["venue_status"]
           type: number
         }
         Update: {
           created_at?: string
           id?: number
           reference?: string
-          status?: string
+          status?: Database["public"]["Enums"]["venue_status"]
           type?: number
         }
         Relationships: [
@@ -538,6 +552,7 @@ export type Database = {
           available_count: number
           created_at: string
           id: number
+          is_public: boolean
           name: string
           total_capacity: number | null
           total_count: number
@@ -546,6 +561,7 @@ export type Database = {
           available_count: number
           created_at?: string
           id?: number
+          is_public?: boolean
           name: string
           total_capacity?: number | null
           total_count: number
@@ -554,6 +570,7 @@ export type Database = {
           available_count?: number
           created_at?: string
           id?: number
+          is_public?: boolean
           name?: string
           total_capacity?: number | null
           total_count?: number
@@ -585,12 +602,12 @@ export type Database = {
         | "elementary"
         | "high_school"
         | "senior_high_school"
-      equipment_status: "stored" | "out" | "returned"
+      equipment_status: "stored" | "out" | "returned" | "maintenance"
       gender: "male" | "female" | "other"
       request_status_enums: "pending" | "approved" | "declined" | "completed"
       request_type: "venue" | "equipment"
       room_enums: "gs" | "hs"
-      venue_status: "open" | "closed" | "in_use"
+      venue_status: "open" | "closed" | "in_use" | "available" | "maintenance"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -734,12 +751,12 @@ export const Constants = {
         "high_school",
         "senior_high_school",
       ],
-      equipment_status: ["stored", "out", "returned"],
+      equipment_status: ["stored", "out", "returned", "maintenance"],
       gender: ["male", "female", "other"],
       request_status_enums: ["pending", "approved", "declined", "completed"],
       request_type: ["venue", "equipment"],
       room_enums: ["gs", "hs"],
-      venue_status: ["open", "closed", "in_use"],
+      venue_status: ["open", "closed", "in_use", "available", "maintenance"],
     },
   },
 } as const

@@ -20,12 +20,12 @@ const GetUserProfile = async () => {
     return { status: true, data: data }
 }
 
-const GetUsersList = async () => {
+const  GetUsersList = async () => {
     const supabase = await createClient()
 
     const { data, error } = await supabase
     .from('profiles')
-    .select('*')
+    .select('*, office: office_assigned(office)')
 
     if (error) {
         return { status: false, message: "Error fetching profiles list"}

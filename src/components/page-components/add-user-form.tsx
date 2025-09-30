@@ -1,19 +1,17 @@
 'use client'
 
-import { useRouter } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { GetOfficeNames } from "@/utils/server-actions/office-page-actions"
 import { AddNewUser } from "@/utils/server-actions/add-user"
 
-import { Input, Section, SelectInput } from "../input"
-import Button from "../button"
+import { Input, SelectInput } from "../input"
+import { CancelConfirmButtons } from "../cancel-confirm"
 import { toast } from "sonner"
 
-const Gender: OptionType[] = [
-    { label: "Male", value: "male" },
-    { label: "Female", value: "female" },
-    { label: "Others", value: "others" }
-]
+import { useState } from "react"
+import Button from "../button"
+import { Send } from "lucide-react"
+import Modal from "../modal"
 
 const Roles: OptionType[] = [
     { label: "User", value: "user" },
@@ -21,22 +19,38 @@ const Roles: OptionType[] = [
     { label: "Administrator", value: "administrator" },
 ]
 
-const AddUserForm = () => {
-    const router = useRouter()
+interface FormProps {
+    onClose: () => void
+}
+
+const AddUserForm = ({ onClose }: FormProps) => {
+
+    const [openModal, setOpenModal] = useState<boolean>(false)
+    const [formData, setFormData] = useState<FormData | null>(null)
 
     const { data, error } = useQuery({
         queryKey: ['offices'],
         queryFn: GetOfficeNames
     })
 
+    if (error) {
+        toast.error(error.message)
+    }
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const data = new FormData(e.currentTarget)
+        const form = new FormData(e.currentTarget)
+        setFormData(form)
+        setOpenModal(true)
+    }
 
-        const result = await AddNewUser(data)
+    const handleConfrim = async () => {
+        if (!formData) return
 
-        if (result.status === false) {
+        const result = await AddNewUser(formData)
+
+        if (!result.status) {
             toast.error(result.message)
         }
 
@@ -45,93 +59,94 @@ const AddUserForm = () => {
 
     return (
         <>
-            <Button
-                label="Back"
-                onClick={() => router.back()}
-                className="w-full"
-            />
-            <form onSubmit={handleSubmit}>
-                <Section header="Add New User">
-                    <Section>
-                        <Input
-                            label="Email"
-                            id="email"
-                            name="email"
-                            type="email"
-                        />
+            <form 
+                onSubmit={handleSubmit}
+                className="space-y-3"
+            >
 
-                        <Input
-                            label="Password"
-                            id="password"
-                            name="password"
-                            type="text"
+                <Input
+                    label="Email"
+                    id="email"
+                    name="email"
+                    type="email"
+                />
 
-                            isPassword={true}
-                        />
+                <Input
+                    label="Password"
+                    id="password"
+                    name="password"
+                    type="text"
 
-                        <Input
-                            label="Confirm Password"
-                            id="confirm_password"
-                            name="confirm_password"
-                            type="password"
+                    isPassword={true}
+                />
 
-                            isPassword={true}
-                        />
-                    </Section>
+                <Input
+                    label="Confirm Password"
+                    id="confirm_password"
+                    name="confirm_password"
+                    type="password"
+
+                    isPassword={true}
+                />
+
+                <Input
+                    label="First Name"
+                    id="fname"
+                    name="fname"
+                    type="text"
+                />
+
+                <Input
+                    label="Last Name"
+                    id="lname"
+                    name="lname"
+                    type="text"
+                />
+
+                <Input
+                    label="School ID"
+                    id="school_id"
+                    name="school_id"
+                    type="text"
+                />
+
+                <SelectInput
+                    label="Role"
+                    name="role"
+                    options={Roles || []}
+                />
+
+                <SelectInput
+                    label="Assigned Office"
+                    name="office_assigned"
+                    options={data?.data || []}
+                />
+
+                <Button
+                    Icon={Send}
+                    label="Submit"
+                    className="w-full"
+                    type="submit"
+                />
+            </form>
+
+
+            {openModal && (
+                <Modal
+                    header="Confirm New Profile"
+                    isOpen={openModal}
+                    onClose={() => setOpenModal(false)}
+                >
+                    <p className="text-gray-500">Confirm adding new profile?</p>
                     
-                    <Section>
-                        <Input
-                            label="First Name"
-                            id="fname"
-                            name="fname"
-                            type="text"
-                        />
 
-                        <Input
-                            label="Last Name"
-                            id="lname"
-                            name="lname"
-                            type="text"
-                        />
-
-                        <SelectInput
-                            label="Gender"
-                            name="gender"
-                            options={Gender}  
-                        />
-                    </Section>
-                    
-                    <Section>
-                        <Input
-                            label="School ID"
-                            id="school_id"
-                            name="school_id"
-                            type="text"
-                        />
-
-                        <SelectInput
-                            label="Role"
-                            name="role"
-                            options={Roles || []}
-                        />
-
-                        <SelectInput
-                            label="Assigned Office"
-                            name="office_assigned"
-                            options={data?.data || []}
-                        />
-                    </Section>
-                    
-
-                    <Button
-                        label="Create"
-                        className="col-span-2"
-                        type="submit"
+                    <CancelConfirmButtons
+                        onCancel={onClose}
+                        onConfirm={handleConfrim}
                     />
-            </Section>
-        </form>
+                </Modal>
+            )}
         </>
-
     )
 }
 

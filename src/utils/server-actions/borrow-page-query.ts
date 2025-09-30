@@ -58,7 +58,7 @@ export async function GetBorrowFormData() {
     const normalize = (rows: any[], formatter: (item: any) => string): OptionType[] =>
       Array.isArray(rows) ? rows.map((item) => ({
         label: formatLabel(formatter(item)),
-        value: LowercaseAll(formatter(item)), // fallback if no id
+        value: LowercaseAll(formatter(item).replace(/\s+/g, "_")), // fallback if no id
         department: item.department?.name ? item.department.name : undefined,
       })) : []
 
@@ -68,9 +68,72 @@ export async function GetBorrowFormData() {
       gradeLevel: normalize(gradeRes.data, (i) => `${i.level}`),
       typeOfRequest: normalize(requestTypeRes.data, (i) => i.name),
       placeOfUse: normalize(placeRes.data, (i) => `${i.room} ${i.number}`),
-      locationOfUse: normalize(locationRes.data, (i) => `${i.name} Campus`),
-      subject: normalize(subjectRes.data, (i) => `${i.name} `),
+      locationOfUse: normalize(locationRes.data, (i) => `${i.name} campus`),
+      subject: normalize(subjectRes.data, (i) => `${i.name}`),
       purpose: normalize(purposeRes.data, (i) => i.name),
       equipment: normalize(equipmentRes.data, (i) => i.type)
+    }
+}
+
+export async function GetAllBorrowFormData() {
+    const supabase = await createClient()
+
+    const [
+      deptRes,
+      designationRes,
+      gradeRes,
+      requestTypeRes,
+      placeRes,
+      locationRes,
+      subjectRes,
+      purposeRes,
+      equipmentRes
+    ] = await Promise.all([
+      supabase.from("department").select("*"),
+      supabase.from("designation").select("*"),
+      supabase.from("grade_level").select("*, department: department(name)"),
+      supabase.from("type_of_request").select("*"),
+      supabase.from("place_of_use").select("*, department: department(name)"),
+      supabase.from("location_of_use").select("*"),
+      supabase.from("subject").select("*, department: department(name)"),
+      supabase.from("purpose").select("*"),
+      supabase.from("equipment_type").select("*")
+    ]);
+
+    if (
+      deptRes.error ||
+      designationRes.error ||
+      gradeRes.error ||
+      requestTypeRes.error ||
+      placeRes.error ||
+      locationRes.error ||
+      subjectRes.error ||
+      purposeRes.error ||
+      equipmentRes.error
+    ) {
+      console.error({
+        dept: deptRes.error,
+        designation: designationRes.error,
+        grade: gradeRes.error,
+        requestType: requestTypeRes.error,
+        place: placeRes.error,
+        location: locationRes.error,
+        subject: subjectRes.error,
+        purpose: purposeRes.error,
+        equipment: equipmentRes.error
+      })
+      return null
+    }
+
+    return {
+      deptRes,
+      designationRes,
+      gradeRes,
+      requestTypeRes,
+      placeRes,
+      locationRes,
+      subjectRes,
+      purposeRes,
+      equipmentRes
     }
 }

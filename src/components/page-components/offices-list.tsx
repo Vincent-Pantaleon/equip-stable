@@ -9,6 +9,7 @@ import { OfficeTableColumns } from "@/utils/table-columns/offices-columns"
 import { Section } from "../input"
 import Button from "../button"
 import { toast } from "sonner"
+import { OfficesDataTable } from "../tables/offices-table"
 
 const OfficeList = () => {
     const router = useRouter()
@@ -23,18 +24,21 @@ const OfficeList = () => {
     }
 
     return (
-        <div className="h-full">
-            <div className="h-[60%]">
-                <DataTable
-                    caption="Offices List"
+        <div className="h-full flex flex-col">
+            <div className="col-span-2 my-4 border-b pb-4">
+                <h1 className="text-2xl font-semibold text-gray-800">Offices list</h1>
+                <p className="mt-1 text-gray-600 text-sm">
+                    Office management
+                </p>
+            </div>
+            
+            <div className="grow">
+                <OfficesDataTable
                     columns={OfficeTableColumns}
                     data={data?.data || []}
-                    isLoading={false}
-                    tableType="offices"
-                    isAdmin={isPending}
                 />
             </div>
-            <Section header="Actions">
+            {/* <Section header="Actions">
                 <Button
                     label="Add New Office"
                     onClick={() => router.push('/admin/offices/add-new-office')}
@@ -47,7 +51,7 @@ const OfficeList = () => {
                     label="Remove Office"
                     onClick={() => router.push('/admin/offices/remove-office')}
                 />
-            </Section>
+            </Section> */}
         </div>
     )
 }

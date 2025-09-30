@@ -21,7 +21,7 @@ const GetOfficeNames = async () => {
 
     const { data, error } = await supabase.
     from('office')
-    .select('office')
+    .select('office, id')
 
     if (error) {
         return { status: false, message: "Failed fetching office list" }
@@ -30,9 +30,9 @@ const GetOfficeNames = async () => {
     const normalized =
         data?.map((item) => ({
         label: item.office,
-        value: item.office,
-        kind: "office" as const,
+        value: item.id,
     })) ?? []
+    console.log(normalized)
 
     return {
         status: true,

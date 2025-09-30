@@ -20,14 +20,13 @@ const AdminContent = ({ children }: { children: React.ReactNode }) => {
   } else {
     return (
       <div className="h-screen">
-          <div className="bg-white h-full w-full overflow-auto flex">
-              <div className="bg-blue-400 h-full w-fit transition-all ease-in-out duration-300">
+          <div className="h-full w-full overflow-auto flex">
+              <div>
                   <DashboardNavbar />
               </div>
-              <div className="p-2 grow overflow-auto">
-                  {children}
+              <div className="p-2 grow overflow-auto bg-white">
+                {children}
               </div>
-              
           </div>
       </div>
     );

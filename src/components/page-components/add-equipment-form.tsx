@@ -1,20 +1,44 @@
 'use client'
 
-import { useRouter } from "next/navigation"
-
-import { Section, Input, SelectInput } from "../input"
+import { Input, SelectInput } from "../input"
 import Button from "../button"
+import Modal from "../modal"
 
 import { InsertNewEquipment } from "@/utils/server-actions/admin-equipments-actions"
 import { toast } from "sonner"
 
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { GetEquipmentTypes } from "@/utils/server-actions/fetch-equipment-types"
+import { useState } from "react"
+
 const AddEquipmentForm = () => {
-    const router = useRouter()
+
+    const [openModal, setOpenModal] = useState<boolean>(false)
+    const [formData, setFormData] = useState<FormData | null>(null)
+
+    const queryClient = useQueryClient()
+
+    const { data, error } = useQuery({
+        queryKey: ['equipment-types'],
+        queryFn: GetEquipmentTypes,
+        staleTime: Infinity,
+    })
+
+    if (error) {
+        toast.error(error.message)
+    }
     
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const formData = new FormData(e.currentTarget)
+        const data = new FormData(e.currentTarget)
+
+        setFormData(data)
+        setOpenModal(true)
+    }
+
+    const handleConfirm = async () => {
+        if (!formData) return
 
         const result = await InsertNewEquipment(formData)
 
@@ -22,30 +46,21 @@ const AddEquipmentForm = () => {
             toast.error(result.message)
         } else {
             toast.success(result?.message)
+            setOpenModal(false)
+            queryClient.invalidateQueries({ queryKey: ["equipment-data"] })
         }
     }
 
     return (
-        <> 
-            <Button
-                label="Back"
-                className="w-full mb-4"
-                onClick={() => router.back()}
-            />
+        <>
             <form
                 onSubmit={handleSubmit}
+                className="flex flex-col gap-y-4"
             >
-                <Section header="Add new Equipment">
-                    {/* <SelectInput
+                    <SelectInput
                         label="Type"
                         name="type"
-                        options={[]}
-                    /> */}
-                    <Input
-                        label="Type"
-                        id="type"
-                        name="type"
-                        type="text"
+                        options={data?.data || []}
                     />
                     <Input
                         label="Item Name"
@@ -80,11 +95,33 @@ const AddEquipmentForm = () => {
 
                     <Button
                         label="Submit"
-                        className="col-span-2"
+                        className=""
                         type="submit"
                     />
-                </Section>
             </form>
+
+            {openModal && (
+                <Modal
+                    header="Confirm Add New Equipment Type"
+                    isOpen={openModal}
+                    onClose={() => setOpenModal(false)}
+                >
+                    Please confirm adding a new equipment
+        
+                    <div className="text-black flex justify-end gap-2 mt-4">
+                    <Button
+                        label="Cancel"
+                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+                        onClick={() => setOpenModal(false)}
+                    />
+                    <Button
+                        label="Confirm"
+                        className="px-4 py-2"
+                        onClick={handleConfirm} // ✅ call function directly
+                    />
+                    </div>
+                </Modal>
+            )}
         </>
     )
 }

@@ -1,15 +1,15 @@
-import { RequestsList } from "@/components/page-components/requests-list"
+import { BookingsList } from "@/components/page-components/bookings-list"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
     title: {
-        absolute: "equip | Admin | Requests List"
+        absolute: "equip | Bookings List"
     }
 }
 
 const RequestsListPage = () => {
     return (
-        <RequestsList />
+        <BookingsList />
     )
 }
 

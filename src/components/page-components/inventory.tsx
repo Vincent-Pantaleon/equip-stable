@@ -5,8 +5,8 @@ import { venuesColumns } from "@/utils/table-columns/venues-columns"
 import GetInventoryData from "@/utils/server-actions/inventory-page-query"
 import { useQuery } from "@tanstack/react-query"
 import { toast } from "sonner"
-import { EquipmentsDataTable } from "../equipments-table"
-import { VenuesDataTable } from "../venues-table"
+import { EquipmentsDataTable } from "../tables/equipments-table"
+import { VenuesDataTable } from "../tables/venues-table"
 import InventoryLoading from "@/app/(app)/inventory/loading"
 
 export default function Inventory() {
@@ -27,10 +27,11 @@ export default function Inventory() {
                     <InventoryLoading/>
                 ) : (
                     <>
-                    <EquipmentsDataTable 
-                        columns={equipmentColumns} 
-                        data={InventoryData?.equipments || []} 
-                    />
+                        <EquipmentsDataTable 
+                            columns={equipmentColumns} 
+                            data={InventoryData?.equipments || []}
+                            isEquipmentType={true}
+                        />
                     </>
                 )}
             </div>
@@ -39,10 +40,10 @@ export default function Inventory() {
                     <InventoryLoading/>
                 ) : (
                     <>
-                    <VenuesDataTable 
-                        columns={venuesColumns} 
-                        data={InventoryData?.venues || []} 
-                    />
+                        <VenuesDataTable 
+                            columns={venuesColumns} 
+                            data={InventoryData?.venues || []} 
+                        />
                     </>
                 )}
             </div>

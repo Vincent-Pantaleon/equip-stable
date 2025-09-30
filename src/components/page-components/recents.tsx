@@ -1,7 +1,7 @@
 'use client'
 
-import { MessageDataTable } from "../messages-table"
-import { BookingDataTable } from "../booking-table"
+import { MessageDataTable } from "../tables/messages-table"
+import { BookingDataTable } from "../tables/booking-table"
 import { toast } from "sonner"
 import RecentsLoading from "@/app/(app)/recents/loading"
 
@@ -49,6 +49,7 @@ export default function Recents() {
           <BookingDataTable
             columns={requestColumns}
             data={requestData || []}
+            pageSize={7}
           />
         )}
       </div>

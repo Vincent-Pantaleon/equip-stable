@@ -3,7 +3,7 @@ import { Metadata } from "next"
 
 export const metadata: Metadata = {
     title: {
-        absolute: "equip | Admin | Profile List"
+        absolute: "equip | Profile List"
     }
 }
 

@@ -1,14 +1,10 @@
 import Sidebar from "@/components/layout-components/sidebar";
-import UserProvider from "@/utils/hooks/user-provider";
-import QueryProvider from "@/utils/hooks/query-provider";
-import { RealtimeProvider } from "@/utils/hooks/realtime-provider";
 import React from "react";
 
 const MemoSideBar = React.memo(Sidebar);
 
-export default function AppLayout({ children, modal }: { 
+export default function AppLayout({ children }: { 
     children: React.ReactNode 
-    modal: React.ReactNode
 }) {
     return (
         <>
@@ -26,7 +22,6 @@ export default function AppLayout({ children, modal }: {
                     </div>
                 </div>
             </div>
-            {modal}
         </>
     );
 }

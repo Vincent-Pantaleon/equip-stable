@@ -5,7 +5,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import formatDate, { getDateLabel, getTimeLabel, formatTime } from "@/utils/handlers/format-date"
-import { RequestModalContent } from "./modal-content"
+import { BookingModalContent } from "./modal-content/booking-modal-content"
 import { Capitalize } from "@/utils/handlers/capitalize"
 
 export default function AccordionCalendar({ data }: { data: Requests[] }) {
@@ -50,7 +50,7 @@ export default function AccordionCalendar({ data }: { data: Requests[] }) {
                       </AccordionTrigger>
 
                       <AccordionContent className="px-4 py-3 bg-gray-50 text-sm text-gray-700">
-                        <RequestModalContent request={request} />
+                        <BookingModalContent request={request} />
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>

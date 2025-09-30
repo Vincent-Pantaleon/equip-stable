@@ -23,7 +23,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function EquipmentsDataTable<TData, TValue>({
+export function OfficesDataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -38,7 +38,7 @@ export function EquipmentsDataTable<TData, TValue>({
   return (
     <div className="overflow-hidden rounded-md border p-2 h-full">
         <div className="flex mb-2 items-center justify-between">
-            <h1 className="text-lg">Equipments</h1>
+            <h1 className="text-lg">Office</h1>
         </div>
         <Table>
             <TableHeader>

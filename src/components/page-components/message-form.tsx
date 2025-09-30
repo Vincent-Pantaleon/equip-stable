@@ -1,11 +1,14 @@
 'use client'
 
-import React, { useState } from "react"
+import React from "react"
 import Button from "../button"
 import { Input } from "../input"
 import { SendMessage } from "@/utils/server-actions/message-send"
 import { toast } from "sonner"
 import Link from "next/link"
+
+import { useRouter } from "next/navigation"
+import { ArrowLeft } from 'lucide-react'
 
 export default function MessageForm() {
 
@@ -21,13 +24,20 @@ export default function MessageForm() {
 
         toast.success(result.message)
     }
+
+    const router = useRouter()
     
     return (
         <form
             className="flex flex-col gap-y-4 h-full"
             onSubmit={handleSubmit}
         >
-            <Link href={'/messages'} className="button-animation w-full bg-hover-color py-2 rounded-xl transition-colors duration-200 hover:bg-form-input-color hover:cursor-pointer text-center ">Go back</Link>
+            <Button
+                Icon={ArrowLeft}
+                label="Go Back"
+                onClick={() => router.back()}
+            />
+            
             <Input 
                 label="Send to (email)"
                 id="recipient"

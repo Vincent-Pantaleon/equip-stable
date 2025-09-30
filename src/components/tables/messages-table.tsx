@@ -1,4 +1,9 @@
-"use client"
+'use client'
+
+import Button from "../button"
+import { Send } from "lucide-react"
+
+import { useRouter } from "next/navigation"
 
 import {
     ColumnDef,
@@ -16,14 +21,12 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-import { useRouter } from "next/navigation"
-
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
 }
 
-export function BookingDataTable<TData, TValue>({
+export function MessageDataTable<TData, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
@@ -38,7 +41,16 @@ export function BookingDataTable<TData, TValue>({
     return (
         <div className="overflow-hidden rounded-md border h-full p-2">
             <div className="flex mb-2 items-center justify-between">
-                <h1 className="text-lg">Bookings</h1>
+                <h1 className="text-lg">Messages</h1>
+                
+                <div>
+                    <Button
+                        label="Send Message"
+                        className="px-2"
+                        Icon={Send}
+                        onClick={() => router.push('/recents/send-message')}
+                    />
+                </div>
             </div>
             
             <Table>
@@ -52,8 +64,8 @@ export function BookingDataTable<TData, TValue>({
                                 ? null
                                 : flexRender(
                                     header.column.columnDef.header,
-                                    header.getContext()
-                                    )}
+                                    header.getContext(),
+                                )}
                             </TableHead>
                             )
                         })}
@@ -77,7 +89,7 @@ export function BookingDataTable<TData, TValue>({
                 ) : (
                     <TableRow>
                         <TableCell colSpan={columns.length} className="h-24 text-center">
-                            No bookings found.
+                            No results.
                         </TableCell>
                     </TableRow>
                 )}

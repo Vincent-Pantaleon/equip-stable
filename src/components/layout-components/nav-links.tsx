@@ -19,7 +19,6 @@ const list = [
   { href: "/borrow", icon: Layers, text: "Borrow" },
   { href: "/inventory", icon: Archive, text: "Inventory" },
   { href: "/schedule", icon: CalendarDays, text: "Schedule" },
-  { href: "/messages", icon: Mails, text: "Messages" },
 ]
 
 const adminList = [
@@ -50,10 +49,10 @@ export default function NavLinks() {
                             key={index}
                             href={link.href}
                             className={`button-animation flex items-center gap-x-4 hover:bg-form-input-color p-3 rounded-2xl ${
-                                isActive ? 'bg-hover-color' : ''
+                                isActive ? 'bg-hover-color drop-shadow-md text-slate-700' : ''
                             }`}
                         >
-                            <link.icon />
+                            <link.icon color={isActive ? "#314158" : "#000000"} />
                             <p className="hidden sm:block">{link.text}</p>
                         </Link>
                     )

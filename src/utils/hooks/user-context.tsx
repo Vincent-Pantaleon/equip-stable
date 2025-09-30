@@ -7,6 +7,7 @@ type UserInfo = {
   first_name: string | null
   last_name: string | null
   email: string | null
+  office: string | null
 }
 
 export const UserContext = createContext<UserInfo | null>(null)

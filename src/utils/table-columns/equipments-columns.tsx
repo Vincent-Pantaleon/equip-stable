@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Capitalize } from "../handlers/capitalize";
 
-export const equipmentColumns: ColumnDef<Equipments>[] = [
+export const equipmentColumns: ColumnDef<EquipmentTypeType>[] = [
     {
         header: "Equipment",
         accessorKey: "name",

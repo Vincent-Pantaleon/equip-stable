@@ -1,5 +1,5 @@
-import { AdminDashboard } from "@/components/page-components/admin-dashboard"
 import { Metadata } from "next"
+import { FormValuesTableList } from "@/components/page-components/borrow-form-table-list"
 
 export const metadata: Metadata = {
     title: {
@@ -9,9 +9,7 @@ export const metadata: Metadata = {
 
 const AdminDashboardBorrowFormPage = () => {
     return (
-        <div>
-            Hello from borrow form page
-        </div>
+        <FormValuesTableList />
     )
 }
 

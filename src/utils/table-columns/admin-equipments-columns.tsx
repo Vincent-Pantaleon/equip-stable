@@ -1,26 +1,70 @@
 import { ColumnDef } from "@tanstack/react-table";
 import formatDate from "../handlers/format-date";
-import { Capitalize } from "../handlers/capitalize";
+import { Capitalize, formatCreatedAt, formatLabel } from "../handlers/capitalize";
 
-export const adminEquipmentTypeColumns: ColumnDef<EquipmentTypeType>[] = [
-    {
-        header: "Created at",
-        accessorKey: "created_at",
-        cell: ({ getValue }) => {
-            const value = getValue<string>() // get raw cell value
-            return formatDate(value)
-        }
-    },
-    {
-        header: "Id",
-        accessorKey: "id"
-    },
+import { Pencil, Trash2 } from "lucide-react";
+import Button from "@/components/button";
+
+interface EquipmentActionProps {
+    onUpdate: (item: Equipments) => void;
+    onDelete: (item: Equipments) => void;
+}
+
+interface TypeActionProps {
+    onUpdate: (item: EquipmentTypeType) => void;
+    onDelete: (item: EquipmentTypeType) => void;
+}
+
+export const getStatusStyles = (status: string) => {
+  switch (status.toLowerCase()) {
+    case "returned":
+        return "bg-yellow-100 text-yellow-800";
+    case "stored":
+        return "bg-green-100 text-green-800";
+    case "out":
+        return "bg-red-100 text-red-800";
+    case "maintenance":
+        return "bg-gray-200 text-gray-700"
+    default:
+        return "bg-gray-200 text-gray-700";
+  }
+};
+
+export const adminEquipmentTypeColumns = ({ onUpdate, onDelete }: TypeActionProps): ColumnDef<EquipmentTypeType>[] => [
+    // {
+    //     header: "Id",
+    //     accessorKey: "id",
+    //     maxSize: 80
+    // },
+    // {
+    //     header: "Created at",
+    //     accessorKey: "created_at",
+    //     accessorFn: (row) => {
+    //         const { formatted_date, formatted_time } = formatCreatedAt(row.created_at);
+    //         return { formatted_date, formatted_time }; // return raw object
+    //     },
+    //     cell: ({ getValue }) => {
+    //         const { formatted_date, formatted_time } = getValue() as {
+    //             formatted_date: string;
+    //             formatted_time: string;
+    //         };
+
+    //         return (
+    //             <div>
+    //                 <p>{formatted_date}</p>
+    //                 <p className="text-sm text-gray-500">{formatted_time}</p>
+    //             </div>
+    //         );
+    //     },
+    // },
     {
         header: "Type",
         accessorKey: "type",
         cell: ({ getValue }) => {
             const value = getValue<string>()
-            return Capitalize(value)
+            return (
+                <p className="font-semibold">{formatLabel(value)}</p>
+            )
         }
     },
     {
@@ -28,43 +72,100 @@ export const adminEquipmentTypeColumns: ColumnDef<EquipmentTypeType>[] = [
         accessorKey: "total_count",
     },
     {
-        header: "Available Count",
-        accessorKey: "available_count"
+        header: "Public",
+        accessorKey: "is_public",
+        cell: ({ getValue }) => {
+            const value = getValue<boolean>()
+            const label = value ? "Yes" : "No"
+
+            return <p className="font-semibold">{label}</p>
+        }
+    },
+    {
+        id: "actions",
+        header: "Actions",
+        cell: ({row}) => {
+            const equipment = row.original;
+
+            return (
+                <div className="flex gap-2">
+                    <Button
+                        Icon={Pencil}
+                        className="px-2 py-1 rounded hover:bg-blue-60"
+                        iconColor="text-slate-500"
+                        onClick={() => onUpdate(equipment)}
+                    />
+                    
+                    <Button
+                        Icon={Trash2}
+                        className="px-2 py-1 text-slate-500 rounded hover:bg-blue-60"
+                        buttonColor="bg-red-500"
+                        iconColor="text-red-300"
+                        onClick={() => onDelete(equipment)}
+                    />
+                </div>
+            )
+        }
     }
 ]
 
-export const adminEquipmentColumns: ColumnDef<Equipments>[] = [
+export const adminEquipmentColumns = ({ onUpdate, onDelete } : EquipmentActionProps): ColumnDef<Equipments>[] => [
+    // {
+    //     header: "Id",
+    //     accessorKey: "id",
+    //     maxSize: 80
+    // },
+    // {
+    //     id: "created_at",
+    //     header: "Created At",
+    //     accessorFn: (row) => {
+    //         const { formatted_date, formatted_time } = formatCreatedAt(row.created_at);
+    //         return { formatted_date, formatted_time }; // return raw object
+    //     },
+    //     cell: ({ getValue }) => {
+    //         const { formatted_date, formatted_time } = getValue() as {
+    //             formatted_date: string;
+    //             formatted_time: string;
+    //         };
+
+    //         return (
+    //             <div>
+    //                 <p>{formatted_date}</p>
+    //                 <p className="text-sm text-gray-500">{formatted_time}</p>
+    //             </div>
+    //         );
+    //     },
+    // },
     {
-        header: "Created at",
-        accessorKey: "created_at",
+        header: "Date Acquired",
+        accessorKey: "date_acquired",
         cell: ({ getValue }) => {
-            const value = getValue<string>() // get raw cell value
+            const value = getValue<string>()
+
             return formatDate(value)
-        },
+        }
     },
     {
-        header: "Id",
-        accessorKey: "id"
+        id: 'type',
+        header: "Type",
+        accessorFn: (row) => Capitalize(row.type.type),
+        cell: ({ getValue }) => (
+            <p className="font-semibold">{formatLabel(getValue() as string)}</p>
+        ),
     },
     {
         header: "Item Name",
-        accessorKey: "item_name"
-    },
-    {
-        header: "Date Acquired",
-        accessorKey: "date_acquired"
-    },
-    {
-        header: "Type",
-        accessorFn: (row) => Capitalize(row.type.type), // 👈 grab nested field
-        id: "type", // give it an ID since accessorFn doesn't auto-generate one
+        accessorKey: "item_name",
+        cell: ({ getValue }) => (
+            <p className="font-semibold">{formatLabel(getValue() as string)}</p>
+        ),
     },
     {
         header: "Reference",
         accessorKey: "reference"
     },
     {
-        header: "Code",
+        header: "Property Code",
         accessorKey: "code"
     },
     {
@@ -74,9 +175,41 @@ export const adminEquipmentColumns: ColumnDef<Equipments>[] = [
     {
         header: "Status",
         accessorKey: "status",
-        cell: ({ getValue }) => {
-            const value = getValue<string>()
-            return Capitalize(value)
+        cell: ({ row }) => {
+            const status = row.getValue("status") as string;
+            const statusClass = getStatusStyles(status);
+
+            return (
+                <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}>
+                    {Capitalize(status)} {/* Capitalize */}
+                </span>
+            );
+        },
+    },
+    {
+        id: "actions",
+        header: "Actions",
+        cell: ({row}) => {
+            const equipment = row.original;
+
+            return (
+                <div className="flex gap-2">
+                    <Button
+                        Icon={Pencil}
+                        className="px-2 py-1 rounded hover:bg-blue-60"
+                        iconColor="text-slate-500"
+                        onClick={() => onUpdate(equipment)}
+                    />
+                    
+                    <Button
+                        Icon={Trash2}
+                        className="px-2 py-1 text-slate-500 rounded hover:bg-blue-60"
+                        buttonColor="bg-red-500"
+                        iconColor="text-red-300"
+                        onClick={() => onDelete(equipment)}
+                    />
+                </div>
+            )
         }
     }
 ]

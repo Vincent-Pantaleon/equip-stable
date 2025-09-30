@@ -35,7 +35,18 @@ declare global {
         };
     }
 
-    type Venues = db['public']['Tables']['venue_type']['Row']
+    type VenuesType = db['public']['Tables']['venue_type']['Row']
+
+    type Venues = {
+        created_at: string;
+        id: number;
+        reference: string;
+        status: db["public"]["Enums"]["venue_status"];
+        type: {
+            name: string;
+            id: number;
+        };
+    }
 
     type InventoryType = {
         equipments: Equipments[];
@@ -100,7 +111,23 @@ declare global {
         [date: string]: Requests[]
     }
 
-    type Profile = db['public']['Tables']['profiles']['Row']
+    type Profile = {
+        avatar_url: string | null
+        email: string
+        first_name: string | null
+        id: string
+        is_online: boolean
+        last_name: string | null
+        office_assigned: string | null
+        role: Database["public"]["Enums"]["app_role"] | null
+        school_id: string | null
+        updated_at: string | null
+        website: string | null
+        office: {
+            office: string;
+        }
+    }
+
 
     type EquipmentTypeType = db['public']['Tables']['equipment_type']['Row']
 
@@ -126,5 +153,43 @@ declare global {
         value: string
         label: string
         department?: string
+    }
+
+    type Designation = db['public']['Tables']['designation']['Row']
+
+    type Department = db['public']['Tables']['department']['Row']
+
+    type Purpose = db['public']['Tables']['purpose']['Row']
+
+    type TypeOfRequest = db['public']['Tables']['type_of_request']['Row']
+
+    type PlaceOfUse = {
+        created_at: string;
+        department: {
+            name: string;
+        };
+        id: number;
+        number: string;
+        room: db["public"]["Enums"]["room_enums"];
+    }
+
+    type LocationOfUse = db['public']['Tables']['location_of_use']['Row']
+
+    type Subject = {
+        created_at: string;
+        department: {
+            name: string;
+        };
+        id: number;
+        name: string;
+    }
+
+    type GradeLevel = {
+        created_at: string;
+        department: {
+            name: string;
+        };
+        id: number;
+        level: string;
     }
 }

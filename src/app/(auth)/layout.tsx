@@ -28,7 +28,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
                     <div className="mt-3">
                         <h1 className="text-4xl my-6">Sign in</h1>
-                        <p className="text-lg">Father Saturnino Urios University <br/> AVR Equipment Booking System</p>
+                        <p className="text-lg">Father Saturnino Urios University</p>
+                        <p className="text-md text-gray-500">Inventory and Equipment Booking System</p>
                     </div>
                 </div>
                 {/* Right/Form Section */}

@@ -12,7 +12,6 @@ export const AddNewUser = async (formData: FormData) => {
         confirm_password: formData.get("confirm_password") as string,
         fname: formData.get("fname") as string,
         lname: formData.get("lname") as string,
-        gender: formData.get("gender") as string,
         school_id: formData.get("school_id") as string,
         role: formData.get("role") as string,
         office_assigned: formData.get("office_assigned") as string,
@@ -27,16 +26,6 @@ export const AddNewUser = async (formData: FormData) => {
         return { status: false, message: "Your passwords do not match, please try again" };
     }
 
-    const { data: officeData, error: officeError } = await supabase
-    .from('office')
-    .select('id')
-    .eq('office', data.office_assigned)
-    .single()
-
-    if (officeError) {
-        return { status: false, message: "Error office does not exist" }
-    }
-
     try {
         // ✅ Use supabaseAdmin with service role key
         const { data: user, error } = await supabaseAdmin.auth.admin.createUser({
@@ -46,10 +35,9 @@ export const AddNewUser = async (formData: FormData) => {
             user_metadata: {
                 first_name: data.fname ?? null,
                 last_name: data.lname ?? null,
-                gender: data.gender ?? null,
                 school_id: data.school_id ?? null,
                 role: data.role ?? "user", // fallback role
-                office_assigned: officeData.id ?? null,
+                office_assigned: data.office_assigned ?? null,
             }
         });
 
@@ -58,7 +46,7 @@ export const AddNewUser = async (formData: FormData) => {
             return { status: false, message: error.message || "Error adding new user" };
         }
 
-        return { status: true, message: "User added successfully", user };
+        return { status: true, message: "User added successfully" };
     } catch (err: any) {
         console.error("Unexpected failure:", err);
         return { status: false, message: "Unexpected server error" };

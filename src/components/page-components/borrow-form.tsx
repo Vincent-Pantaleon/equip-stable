@@ -29,6 +29,8 @@ export default function BorrowForm() {
         toast.error("Error fetching data")
     }
 
+    console.log(data)
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -53,8 +55,6 @@ export default function BorrowForm() {
         setPendingForm(null);
     };
 
-    console.log(data)
-
     return (
         <>
             <form
@@ -76,7 +76,8 @@ export default function BorrowForm() {
                     <SelectInput divStyle="md:col-span-2" label="Purpose" name="purpose" options={data?.purpose || []}/>
                     <SelectInput divStyle="order-3" label="Type of Request" name="type_of_request" options={data?.typeOfRequest || []}/>
                     <SelectInput divStyle="order-5" label="Location of Use" name="location_of_use" options={data?.locationOfUse || []}/>
-                    <SelectInput divStyle="order-4" label="Place of Use" name="place_of_use" options={data?.placeOfUse || []} department={department}/>
+                    <SelectInput divStyle="order-4" label="Room" name="place_of_use" options={data?.placeOfUse || []} department={department}/>
+                    <SelectInput divStyle="order-6" label="Office" name="office" options={[]}/>
                 </Section>
 
                 {/* equipment, subject, date of use, time of start, time of end */}

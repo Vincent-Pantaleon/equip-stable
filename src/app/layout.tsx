@@ -39,6 +39,9 @@ export default function RootLayout({
                 { table: "requests", queryKey: ["requests-data", "all-requests-data"] },
                 { table: "inventory", queryKey: ["inventory-data"] },
                 { table: "profiles", queryKey: ["profiles-list"] },
+                { table: "equipment", queryKey: ["equipment-data"] },
+                { table: "equipment_type", queryKey: ["equipment-type-data"] },
+                { table: "venue", queryKey: ["venues-data"]}
             ]}>
               {children}
               <Toaster/>
