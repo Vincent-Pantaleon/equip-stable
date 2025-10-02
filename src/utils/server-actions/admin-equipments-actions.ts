@@ -18,7 +18,6 @@ const InsertNewEquipmentType = async (formData: FormData) => {
     ])
 
     if (error) {
-        console.log(error)
         return { status: false, message: error.message }
     }
 
@@ -62,7 +61,6 @@ const InsertNewEquipment = async (formData: FormData) => {
 
 
     if (insertError) {
-        console.log(insertError)
         return { status: false, message: "Error adding new equipment"}
     }
 

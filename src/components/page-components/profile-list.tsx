@@ -18,10 +18,9 @@ const ProfileListTable = () => {
     
     const {data, error, isPending} = useQuery({
         queryKey: ['profiles-list'],
-        queryFn: GetUsersList
+        queryFn: GetUsersList,
+        staleTime: 5 * 1000 * 5,
     })
-
-    console.log(data?.data)
 
     if (error) {
         toast.error(error.message)

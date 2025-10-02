@@ -47,7 +47,6 @@ const SendRequest = async (formData: FormData) => {
     }])
 
     if (requestError) {
-        console.log(requestError)
         return { status: false, message: "Error filing your request"}
     }
 

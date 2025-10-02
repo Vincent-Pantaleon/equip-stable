@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Capitalize } from "../handlers/capitalize";
 
 import Button from "@/components/button";
-import { Trash2, Pencil } from "lucide-react";
+import { Trash2, View } from "lucide-react";
 
 interface ProfilesActionsProps {
     onUpdate: (profile: Profile) => void
@@ -51,7 +51,7 @@ export const profilesColumns = ({ onUpdate, onDelete }: ProfilesActionsProps): C
             return (
                 <div className="flex gap-2">
                     <Button
-                        Icon={Pencil}
+                        Icon={View}
                         className="px-2 py-1 rounded hover:bg-blue-60"
                         iconColor="text-slate-500"
                         onClick={() => onUpdate(profile)}

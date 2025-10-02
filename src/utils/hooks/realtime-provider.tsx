@@ -32,7 +32,6 @@ export function RealtimeProvider({ children, subscriptions }: Props) {
             table,
             } as any,
           (payload) => {
-            console.log(`Realtime change on ${table}:`, payload)
             queryClient.invalidateQueries({ queryKey })
           }
         )

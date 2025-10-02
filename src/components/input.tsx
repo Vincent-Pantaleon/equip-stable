@@ -47,7 +47,7 @@ export const Input = React.memo(function Input({
     <div className={`w-full ${divStyle}`}>
       <label htmlFor={id}>{label}</label>
       <input
-        className="border-2 border-black/50 w-full px-3 h-9 rounded-md"
+        className="border-2 border-black/50 w-full px-3 h-9 rounded-md text-md"
         type={type}
         id={id}
         name={name}

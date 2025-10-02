@@ -7,9 +7,6 @@ import { createClient } from "../supabase/server"
 const UpdateEquipmentTypeItem = async (formData: FormData, equipmentType: EquipmentTypeType) => {
     const supabase = await createClient()
 
-    console.log(formData)
-    console.log(equipmentType)
-
     const data = {
         type: (LowercaseAll(formData.get('type') as string)),
         total_count: Number(formData.get('total_count')),

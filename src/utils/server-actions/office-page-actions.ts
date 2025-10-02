@@ -32,7 +32,6 @@ const GetOfficeNames = async () => {
         label: item.office,
         value: item.id,
     })) ?? []
-    console.log(normalized)
 
     return {
         status: true,
@@ -48,8 +47,6 @@ const AddNewOffice = async (formData: FormData) => {
         office: formData.get('office') as string,
         id: formData.get('in_charge') as string,
     }
-
-    console.log(data)
 
     // logic to find if in_charge is valid or not
     const { error: profileError } = await supabase 
@@ -71,7 +68,6 @@ const AddNewOffice = async (formData: FormData) => {
     ])
 
     if (insertError) {
-        console.log(insertError)
         return { status: false, message: "Failed adding new office" }
     }
 

@@ -11,7 +11,6 @@ const DeleteBooking = async (id: string) => {
     .eq('id', id)
 
     if (error) {
-        console.log(error)
         return {status: false, message: "Error deleting selected booking"}
     }
 

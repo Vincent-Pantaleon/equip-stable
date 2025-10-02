@@ -18,7 +18,6 @@ const AddNewVenue = async (formData: FormData) => {
     })
 
     if (error) {
-        console.log(error)
         return { status: false, message: "Error creating new venue" }
     }
 

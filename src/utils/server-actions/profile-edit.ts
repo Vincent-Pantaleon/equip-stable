@@ -25,7 +25,6 @@ const EditUserInformation = async ({ updates }: EditUserInformationProps) => {
         .eq("id", userId)
 
     if (error) {
-        console.log(error.cause)
         return { status: false, message: "Error updating field" }
     }
 

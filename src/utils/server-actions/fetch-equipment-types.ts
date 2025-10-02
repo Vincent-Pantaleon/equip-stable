@@ -14,13 +14,9 @@ const GetEquipmentTypes = async () => {
         return { status: false, message: "Failed fetching equipment types" }
     }
 
-    console.log(data)
-
     const normalizedData = data.map((item) => (
         { label: formatLabel(item.type), value: formatSpaceToUnderscore(item.type) }
     ))
-
-    console.log(normalizedData)
 
     return { status: true, message: "Equipment types fetched successfully", data: normalizedData}
 }

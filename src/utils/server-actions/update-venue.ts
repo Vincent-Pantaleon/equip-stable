@@ -38,7 +38,6 @@ const UpdateVenue = async (formData: FormData, id: number) => {
     .eq('id', id)
 
     if (error) {
-        console.log(error)
         return { status: false, message: "Error updating venue" }
     }
 
@@ -66,7 +65,6 @@ const UpdateVenueType = async (formData: FormData, id: number) => {
     .eq('id', id)
 
     if (error) {
-        console.log(error)
         return { status: false, message: "Error updating venue" }
     }
 

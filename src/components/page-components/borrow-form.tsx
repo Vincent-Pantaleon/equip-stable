@@ -18,7 +18,6 @@ export default function BorrowForm() {
     const { data, error } = useQuery({
         queryKey: ['borrow-form-data'],
         queryFn: async () => {
-            console.log("🔄 GetBorrowFormData query fired");
             return await GetBorrowFormData();
         },
         staleTime: Infinity,
@@ -28,8 +27,6 @@ export default function BorrowForm() {
     if (error) {
         toast.error("Error fetching data")
     }
-
-    console.log(data)
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
