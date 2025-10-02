@@ -8,6 +8,8 @@ import { ProfilesDataTable } from "../tables/profiles-table"
 import { useState } from "react"
 import Modal from "../modal"
 import { UpdateProfileForm } from "../modal-content/profiles-modal-content"
+import { DeleteUser } from "@/utils/server-actions/delete-user"
+import { CancelConfirmButtons } from "../cancel-confirm"
 
 const ProfileListTable = () => {    
     const [action, setAction] = useState<"delete-profile" | "update-profile" | null >(null)
@@ -42,7 +44,14 @@ const ProfileListTable = () => {
 
             case 'delete-profile':
                 return (
-                    <div>Delete Profile</div>
+                    <div>
+                        <p>Are you sure you want to delete this profile?</p>
+                        
+                        <CancelConfirmButtons
+                            onCancel={() => setOpenModal(false)}
+                            onConfirm={() => handleDelete(selectedItem)}
+                        />
+                    </div>
                 )
 
             default: 
@@ -51,11 +60,13 @@ const ProfileListTable = () => {
     }
 
     const handleDelete = async (item: Profile) => {
+        const result = await DeleteUser(item.id)
 
-    }
-
-    const handleUpdate = async (item: Profile) => {
-
+        if (!result.status) {
+            toast.error(result.message)
+        } else {
+            toast.success(result.message)
+        }
     }
    
     return (
