@@ -89,7 +89,6 @@ const BookingsList = () => {
     }, [requestData]);
 
     const handleDelete = async (id: string) => {
-        console.log(id)
 
         const result = await DeleteBooking(id)
 

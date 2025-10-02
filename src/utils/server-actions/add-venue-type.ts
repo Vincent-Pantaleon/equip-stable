@@ -22,7 +22,6 @@ const AddNewVenueType = async (formData: FormData) => {
     })
 
     if (error) {
-        console.log(error)
         return { status: false, message: "Error inserting new venue type" }
     }
 
