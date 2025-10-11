@@ -16,7 +16,8 @@ import {
     Building,
     ChevronsRight,
     ChevronsLeft,
-    SquareUser
+    SquareUser,
+    CheckCircle2
 } from "lucide-react"
 import { useInfo } from "@/utils/hooks/user-context"
 
@@ -28,6 +29,7 @@ const NavbarItems = [
     { label: "Venues", href: '/admin/venues', icon: MapPinned },
     { label: "Profiles", href: '/admin/profile-list', icon: Users },
     { label: "Offices", href: '/admin/offices', icon: Building },
+    { label: "Release Form", href: '/admin/release-form', icon: CheckCircle2 },
     { label: "Return to Home", href: '/recents', icon: House }
 ]
 
@@ -68,12 +70,14 @@ const DashboardNavbar = () => {
                             <p className="text-center text-lg font-medium">Admin Dashboard</p>
                         </div>
                     </div>
-                    
-
 
                     <div className="flex flex-col gap-y-1 mt-3">
                         {NavbarItems.map((item, index) => {
                             const isActive = currentRoute.startsWith(item.href)
+
+                            if (userInfo?.role !== 'superadmin' && (item.label === "Offices" || item.label === "Profiles")) {
+                                return;
+                            }
 
                             return (
                                 <Link

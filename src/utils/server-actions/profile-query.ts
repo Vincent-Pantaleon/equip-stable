@@ -40,7 +40,7 @@ const GetAdministratorsList = async () => {
     const { data, error } = await supabase
     .from('profiles')
     .select('*')
-    .eq('role', 'administrator')
+    .in('role', ['administrator', 'superadmin'])
 
 
     if (error) {
@@ -48,9 +48,6 @@ const GetAdministratorsList = async () => {
     }
 
     const admins: OptionType[] = data.map((admin) => ({
-        kind: "admin",
-        id: admin.id,
-        name: `${admin.first_name} ${admin.last_name}`,
         label: `${admin.first_name} ${admin.last_name}`, // shown to user
         value: admin.id, // used in the select
     }));
