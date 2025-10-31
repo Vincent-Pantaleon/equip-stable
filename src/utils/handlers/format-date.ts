@@ -59,5 +59,5 @@ export function getTimeLabel(date: string, start: string, end: string): string {
 }
 
 export function formatTime(time: string): string {
-  return dayjs(time, 'HH:mm:ss').format('HH:mm')
+  return dayjs(time, 'HH:mm:ss').format('h:mm A')
 }

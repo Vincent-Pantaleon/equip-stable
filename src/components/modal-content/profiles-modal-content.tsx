@@ -9,12 +9,6 @@ interface FormProps {
 }
 
 const UpdateProfileForm = ({ item, onClose }: FormProps) => {
-    const [openModal, setOpenModal] = useState<boolean>(false)
-    
-    const handleSubmit = () => {
-        
-    }
-
     return (
         <>
             <div className="space-y-4">

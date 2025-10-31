@@ -16,7 +16,9 @@ export async function GetBorrowFormData() {
       locationRes,
       subjectRes,
       purposeRes,
-      equipmentRes
+      equipmentRes,
+      officeRes,
+      venueRes
     ] = await Promise.all([
       supabase.from("department").select("name"),
       supabase.from("designation").select("name"),
@@ -26,7 +28,9 @@ export async function GetBorrowFormData() {
       supabase.from("location_of_use").select("name"),
       supabase.from("subject").select("department: department(name), name"),
       supabase.from("purpose").select("name"),
-      supabase.from("equipment_type").select("type")
+      supabase.from("equipment_type").select("type, office: office_id(office)").eq('is_public', true),
+      supabase.from("office").select("office"),
+      supabase.from("venue_type").select("name, office: office_id(office)").eq('is_public', true)
     ]);
 
     if (
@@ -38,7 +42,9 @@ export async function GetBorrowFormData() {
       locationRes.error ||
       subjectRes.error ||
       purposeRes.error ||
-      equipmentRes.error
+      equipmentRes.error || 
+      officeRes.error ||
+      venueRes.error
     ) {
       console.error({
         dept: deptRes.error,
@@ -49,7 +55,9 @@ export async function GetBorrowFormData() {
         location: locationRes.error,
         subject: subjectRes.error,
         purpose: purposeRes.error,
-        equipment: equipmentRes.error
+        equipment: equipmentRes.error,
+        office: officeRes.error,
+        venue: venueRes.error
       })
       return null
     }
@@ -60,18 +68,21 @@ export async function GetBorrowFormData() {
         label: formatLabel(formatter(item)),
         value: LowercaseAll(formatter(item).replace(/\s+/g, "_")), // fallback if no id
         department: item.department?.name ? item.department.name : undefined,
-      })) : []
+        office: item.office?.office ? LowercaseAll(item.office.office) : undefined
+    })) : []
 
     return {
       department: normalize(deptRes.data, (i) => i.name),
       designation: normalize(designationRes.data, (i) => i.name),
-      gradeLevel: normalize(gradeRes.data, (i) => `${i.level}`),
+      gradeLevel: normalize(gradeRes.data, (i) => `Grade ${i.level}`),
       typeOfRequest: normalize(requestTypeRes.data, (i) => i.name),
       placeOfUse: normalize(placeRes.data, (i) => `${i.room} ${i.number}`),
       locationOfUse: normalize(locationRes.data, (i) => `${i.name} campus`),
       subject: normalize(subjectRes.data, (i) => `${i.name}`),
       purpose: normalize(purposeRes.data, (i) => i.name),
-      equipment: normalize(equipmentRes.data, (i) => i.type)
+      equipment: normalize(equipmentRes.data, (i) => i.type),
+      office: normalize(officeRes.data, (i) => i.office),
+      venue: normalize(venueRes.data, (i) => i.name)
     }
 }
 

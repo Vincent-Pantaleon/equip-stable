@@ -46,7 +46,7 @@ export function BorrowFormValuesDataTable<TData, TValue>({
   return (
     <div className="overflow-hidden rounded-md border p-2 h-full">
         <div className="flex mb-2 items-center justify-between">
-            <h1 className="text-md">{header}</h1>
+            <h1 className="text-md font-bold">{header}</h1>
 
             <Button
                 Icon={Plus}
@@ -61,7 +61,7 @@ export function BorrowFormValuesDataTable<TData, TValue>({
                     <TableRow key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
                             return (
-                            <TableHead key={header.id}>
+                            <TableHead key={header.id} style={{ width: `${header.getSize()}px` }}>
                                 {header.isPlaceholder
                                 ? null
                                 : flexRender(

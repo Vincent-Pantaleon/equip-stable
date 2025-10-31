@@ -53,7 +53,8 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
         }
         
         toast.success(result.message)
-        queryClient.invalidateQueries({queryKey: ['venues-data']})
+        queryClient.invalidateQueries({queryKey: ['office-list']})
+        onClose()
         setOpenModal(false)
     }
     
@@ -104,7 +105,10 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
                 isOpen={openModal}
                 onClose={() => setOpenModal(false)}
             >
-                Are you sure you want to update this office with id <span className="font-semibold">{item.id}</span>
+                <div className="mb-4">
+                    Are you sure you want to update this office with id <span className="font-semibold">{item.id}</span>
+                </div>
+                
 
                 <CancelConfirmButtons
                     onCancel={() => setOpenModal(false)}

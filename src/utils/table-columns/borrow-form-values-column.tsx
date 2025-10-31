@@ -3,10 +3,6 @@ import { Capitalize, CapitalizeAll, formatCreatedAt, formatLabel } from "../hand
 
 export const DesignationColumns: ColumnDef<Designation>[] = [
     {
-        header: "ID",
-        accessorKey: "id",
-    },
-    {
         id: "created_at",
         header: "Created At",
         accessorFn: (row) => {
@@ -39,10 +35,6 @@ export const DesignationColumns: ColumnDef<Designation>[] = [
 ]
 
 export const DepartmentColumns: ColumnDef<Department>[] = [
-    {
-        header: "ID",
-        accessorKey: "id",
-    },
     {
         id: "created_at",
         header: "Created At",
@@ -77,10 +69,6 @@ export const DepartmentColumns: ColumnDef<Department>[] = [
 
 export const PurposeColumns: ColumnDef<Purpose>[] = [
     {
-        header: "ID",
-        accessorKey: "id",
-    },
-    {
         id: "created_at",
         header: "Created At",
         accessorFn: (row) => {
@@ -114,10 +102,6 @@ export const PurposeColumns: ColumnDef<Purpose>[] = [
 
 export const TypeOfRequestColumns: ColumnDef<TypeOfRequest>[]= [
     {
-        header: "ID",
-        accessorKey: "id",
-    },
-    {
         id: "created_at",
         header: "Created At",
         accessorFn: (row) => {
@@ -150,10 +134,6 @@ export const TypeOfRequestColumns: ColumnDef<TypeOfRequest>[]= [
 ]
 
 export const PlaceOfUseColumns: ColumnDef<PlaceOfUse>[] = [
-    {
-        header: "ID",
-        accessorKey: 'id',
-    },
     {
         id: "created_at",
         header: "Created At",
@@ -193,10 +173,6 @@ export const PlaceOfUseColumns: ColumnDef<PlaceOfUse>[] = [
 
 export const LocationOfUseColumns: ColumnDef<LocationOfUse>[] = [
     {
-        header: "ID",
-        accessorKey: 'id',
-    },
-    {
         id: "created_at",
         header: "Created At",
         accessorFn: (row) => {
@@ -229,10 +205,6 @@ export const LocationOfUseColumns: ColumnDef<LocationOfUse>[] = [
 ]
 
 export const SubjectColumns: ColumnDef<Subject>[] = [
-    {
-        header: "ID",
-        accessorKey: 'id',
-    },
     {
         id: "created_at",
         header: "Created At",
@@ -276,10 +248,6 @@ export const SubjectColumns: ColumnDef<Subject>[] = [
 
 export const GradeLevelColumns: ColumnDef<GradeLevel>[] = [
     {
-        header: "ID",
-        accessorKey: 'id',
-    },
-    {
         id: "created_at",
         header: "Created At",
         accessorFn: (row) => {
@@ -316,10 +284,6 @@ export const GradeLevelColumns: ColumnDef<GradeLevel>[] = [
 ]
 
 export const EquipmentColumns: ColumnDef<EquipmentTypeType>[] = [
-    {
-        header: "ID",
-        accessorKey: 'id',
-    },
     {
         id: "created_at",
         header: "Created At",

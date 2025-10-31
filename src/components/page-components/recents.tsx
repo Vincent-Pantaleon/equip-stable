@@ -49,7 +49,7 @@ export default function Recents() {
           <BookingDataTable
             columns={requestColumns}
             data={requestData || []}
-            pageSize={7}
+            pageSize={6}
           />
         )}
       </div>

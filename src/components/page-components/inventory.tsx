@@ -1,7 +1,7 @@
 'use client'
 
 import { equipmentColumns } from "@/utils/table-columns/equipments-columns"
-import { venuesColumns } from "@/utils/table-columns/venues-columns"
+import { venueTypesColumnsNoActions } from "@/utils/table-columns/venues-columns"
 import GetInventoryData from "@/utils/server-actions/inventory-page-query"
 import { useQuery } from "@tanstack/react-query"
 import { toast } from "sonner"
@@ -15,6 +15,8 @@ export default function Inventory() {
         queryFn: GetInventoryData,
         staleTime: 1000 * 60 * 5,
     })
+
+    console.log(InventoryData?.venues)
 
     if (isError) {
         toast.error(isError)
@@ -31,6 +33,7 @@ export default function Inventory() {
                             columns={equipmentColumns} 
                             data={InventoryData?.equipments || []}
                             isEquipmentType={true}
+                            pageSize={8}
                         />
                     </>
                 )}
@@ -41,8 +44,11 @@ export default function Inventory() {
                 ) : (
                     <>
                         <VenuesDataTable 
-                            columns={venuesColumns} 
-                            data={InventoryData?.venues || []} 
+                            columns={venueTypesColumnsNoActions} 
+                            data={InventoryData?.venues || []}
+                            header="Venues"
+                            tableType="venues"
+                            isAdminLayout={false}
                         />
                     </>
                 )}

@@ -59,6 +59,7 @@ const EquipmentUpdateForm = ({ equipment, onClose }: EquipmentUpdateFormProps) =
             queryClient.invalidateQueries({ queryKey: ['equipment-data'] })
         }
 
+        onClose()
         setOpenModal(false)
     }
     
@@ -190,6 +191,7 @@ const EquipmentTypeUpdateForm = ({equipmentType, onClose}: EquipmentTypeUpdateFo
             queryClient.invalidateQueries({ queryKey: ['equipment-type-data'] })
         }
 
+        onClose()
         setOpenModal(false)
     }
 
@@ -221,7 +223,7 @@ const EquipmentTypeUpdateForm = ({equipmentType, onClose}: EquipmentTypeUpdateFo
 
                 <div>
                     <h3 className="text-gray-500">Office</h3>
-                    <p className="font-semibold">{equipmentType.assigned_office ?? "No Office Assigned"}</p>
+                    <p className="font-semibold">{equipmentType.office_id ?? "No Office Assigned"}</p>
                 </div>
 
             </div>

@@ -106,36 +106,36 @@ export type Database = {
       }
       equipment_type: {
         Row: {
-          assigned_office: string | null
           available_count: number
           created_at: string
           id: number
           is_public: boolean | null
+          office_id: string | null
           total_count: number | null
           type: string
         }
         Insert: {
-          assigned_office?: string | null
           available_count: number
           created_at?: string
           id?: number
           is_public?: boolean | null
+          office_id?: string | null
           total_count?: number | null
           type: string
         }
         Update: {
-          assigned_office?: string | null
           available_count?: number
           created_at?: string
           id?: number
           is_public?: boolean | null
+          office_id?: string | null
           total_count?: number | null
           type?: string
         }
         Relationships: [
           {
-            foreignKeyName: "equipment_type_assigned_office_fkey"
-            columns: ["assigned_office"]
+            foreignKeyName: "equipment_type_office_id_fkey"
+            columns: ["office_id"]
             isOneToOne: false
             referencedRelation: "office"
             referencedColumns: ["id"]
@@ -300,7 +300,6 @@ export type Database = {
           avatar_url: string | null
           email: string
           first_name: string | null
-          gender: Database["public"]["Enums"]["gender"] | null
           id: string
           is_online: boolean
           last_name: string | null
@@ -314,7 +313,6 @@ export type Database = {
           avatar_url?: string | null
           email: string
           first_name?: string | null
-          gender?: Database["public"]["Enums"]["gender"] | null
           id: string
           is_online?: boolean
           last_name?: string | null
@@ -328,7 +326,6 @@ export type Database = {
           avatar_url?: string | null
           email?: string
           first_name?: string | null
-          gender?: Database["public"]["Enums"]["gender"] | null
           id?: string
           is_online?: boolean
           last_name?: string | null
@@ -366,6 +363,81 @@ export type Database = {
         }
         Relationships: []
       }
+      releases: {
+        Row: {
+          accepted_by: string | null
+          booking_id: string
+          equipment_id: number | null
+          id: string
+          is_returned: boolean
+          released_by: string | null
+          request_type: Database["public"]["Enums"]["request_type"]
+          time_released: string
+          time_returned: string | null
+          venue_id: number | null
+        }
+        Insert: {
+          accepted_by?: string | null
+          booking_id: string
+          equipment_id?: number | null
+          id?: string
+          is_returned?: boolean
+          released_by?: string | null
+          request_type: Database["public"]["Enums"]["request_type"]
+          time_released?: string
+          time_returned?: string | null
+          venue_id?: number | null
+        }
+        Update: {
+          accepted_by?: string | null
+          booking_id?: string
+          equipment_id?: number | null
+          id?: string
+          is_returned?: boolean
+          released_by?: string | null
+          request_type?: Database["public"]["Enums"]["request_type"]
+          time_released?: string
+          time_returned?: string | null
+          venue_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "releases_accepted_by_fkey"
+            columns: ["accepted_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "releases_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "releases_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "releases_released_by_fkey"
+            columns: ["released_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "releases_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "venue"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       requests: {
         Row: {
           contact_number: string
@@ -373,20 +445,23 @@ export type Database = {
           date_of_use: string
           department: string
           designation: string
-          equipment: string
+          equipment: string | null
           first_name: string
           grade_level: string
           id: string
+          is_active: boolean | null
           last_name: string
           location_of_use: string
+          office: string | null
           place_of_use: string
           purpose: string
           status: Database["public"]["Enums"]["request_status_enums"]
           subject: string
           time_of_end: string
           time_of_start: string
-          type_of_request: string
+          type_of_request: Database["public"]["Enums"]["request_type"]
           user_id: string | null
+          venue: string | null
         }
         Insert: {
           contact_number: string
@@ -394,20 +469,23 @@ export type Database = {
           date_of_use: string
           department: string
           designation: string
-          equipment: string
+          equipment?: string | null
           first_name: string
           grade_level: string
           id?: string
+          is_active?: boolean | null
           last_name: string
           location_of_use: string
+          office?: string | null
           place_of_use: string
           purpose: string
           status?: Database["public"]["Enums"]["request_status_enums"]
           subject: string
           time_of_end: string
           time_of_start: string
-          type_of_request: string
+          type_of_request: Database["public"]["Enums"]["request_type"]
           user_id?: string | null
+          venue?: string | null
         }
         Update: {
           contact_number?: string
@@ -415,20 +493,23 @@ export type Database = {
           date_of_use?: string
           department?: string
           designation?: string
-          equipment?: string
+          equipment?: string | null
           first_name?: string
           grade_level?: string
           id?: string
+          is_active?: boolean | null
           last_name?: string
           location_of_use?: string
+          office?: string | null
           place_of_use?: string
           purpose?: string
           status?: Database["public"]["Enums"]["request_status_enums"]
           subject?: string
           time_of_end?: string
           time_of_start?: string
-          type_of_request?: string
+          type_of_request?: Database["public"]["Enums"]["request_type"]
           user_id?: string | null
+          venue?: string | null
         }
         Relationships: []
       }
@@ -519,6 +600,7 @@ export type Database = {
         Row: {
           created_at: string
           id: number
+          office: string | null
           reference: string
           status: Database["public"]["Enums"]["venue_status"]
           type: number
@@ -526,6 +608,7 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: number
+          office?: string | null
           reference: string
           status?: Database["public"]["Enums"]["venue_status"]
           type: number
@@ -533,11 +616,19 @@ export type Database = {
         Update: {
           created_at?: string
           id?: number
+          office?: string | null
           reference?: string
           status?: Database["public"]["Enums"]["venue_status"]
           type?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "venue_office_fkey"
+            columns: ["office"]
+            isOneToOne: false
+            referencedRelation: "office"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "venue_type_fkey"
             columns: ["type"]
@@ -554,6 +645,7 @@ export type Database = {
           id: number
           is_public: boolean
           name: string
+          office_id: string | null
           total_capacity: number | null
           total_count: number
         }
@@ -563,6 +655,7 @@ export type Database = {
           id?: number
           is_public?: boolean
           name: string
+          office_id?: string | null
           total_capacity?: number | null
           total_count: number
         }
@@ -572,20 +665,26 @@ export type Database = {
           id?: number
           is_public?: boolean
           name?: string
+          office_id?: string | null
           total_capacity?: number | null
           total_count?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "venue_type_office_id_fkey"
+            columns: ["office_id"]
+            isOneToOne: false
+            referencedRelation: "office"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      custom_access_token_hook: {
-        Args: { event: Json }
-        Returns: Json
-      }
+      custom_access_token_hook: { Args: { event: Json }; Returns: Json }
     }
     Enums: {
       app_permission:

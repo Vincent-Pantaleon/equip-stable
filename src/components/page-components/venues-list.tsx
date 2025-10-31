@@ -295,6 +295,7 @@ const VenuesList = () => {
                             data={venuesData?.data || []}
                             header="Venues"
                             tableType={tableType}
+                            isAdminLayout={true}
                         /> 
                     ) : (
                         <VenuesDataTable
@@ -305,6 +306,7 @@ const VenuesList = () => {
                             data={venuesTypeData?.data || []}
                             header="Venue Types"
                             tableType={tableType}
+                            isAdminLayout={true}
                         /> 
                     )
                 )}

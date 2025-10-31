@@ -8,6 +8,7 @@ export default async function GetInventoryData() {
     const { data: venueData, error: venueError } = await supabase
     .from('venue_type')
     .select('*')
+    .eq('is_public', true)
 
     if (venueError) {
         return null
@@ -16,6 +17,7 @@ export default async function GetInventoryData() {
     const { data: equipmentData, error: equipmentError } = await supabase
     .from('equipment_type')
     .select('*')
+    .eq('is_public', true)
 
     if (equipmentError) {
         return null

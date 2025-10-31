@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/accordion"
 import formatDate, { getDateLabel, getTimeLabel, formatTime } from "@/utils/handlers/format-date"
 import { BookingModalContent } from "./modal-content/booking-modal-content"
-import { Capitalize } from "@/utils/handlers/capitalize"
+import { Capitalize, formatLabel } from "@/utils/handlers/capitalize"
 
 export default function AccordionCalendar({ data }: { data: Requests[] }) {
   const groupedData = Object.groupBy(data, item => item.date_of_use)
@@ -41,7 +41,7 @@ export default function AccordionCalendar({ data }: { data: Requests[] }) {
                       <AccordionTrigger className="px-4 py-2 text-base font-medium hover:bg-gray-100">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full text-left">
                           <span>
-                            {Capitalize(request.equipment)}  ({formatTime(request.time_of_start)} - {formatTime(request.time_of_end)})
+                            {request.type_of_request === 'equipment' ? formatLabel(request.equipment as string) : formatLabel(request.venue as string)}  ({formatTime(request.time_of_start)} - {formatTime(request.time_of_end)})
                           </span>
                           <span className="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-2xl font-semibold mt-1 md:mt-0">
                             {getTimeLabel(request.date_of_use, request.time_of_start, request.time_of_end)}

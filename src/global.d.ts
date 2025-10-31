@@ -152,7 +152,8 @@ declare global {
     type OptionType = {
         value: string
         label: string
-        department?: string
+        group?: string
+        office?: string 
     }
 
     type Designation = db['public']['Tables']['designation']['Row']
@@ -191,5 +192,24 @@ declare global {
         };
         id: number;
         level: string;
+    }
+
+    type Release = {
+        id: string,
+        bookings: db['public']['Tables']['requests']['Row']
+        time_released: string,
+        time_returned: string | null,
+        profiles: { 
+            last_name: string, 
+            first_name: string 
+        } | null,
+        accepted_profiles: { 
+            last_name: string, 
+            first_name: string 
+        } | null,
+        is_returned: boolean,
+        venue: db['public']['Tables']['venue']['Row'],
+        equipment: db['public']['Tables']['equipment']['Row'],
+        request_type: 'venue' | 'equipment'
     }
 }

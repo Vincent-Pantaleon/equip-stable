@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Capitalize, CapitalizeAll, formatLabel } from "../handlers/capitalize";
+import { Capitalize, CapitalizeAll, formatLabel,  } from "../handlers/capitalize";
 
 import { Pencil, Trash2 } from "lucide-react";
 
@@ -31,19 +31,24 @@ export const requestColumns: ColumnDef<Requests>[] = [
         },
     }, 
     {
-        header: "Equipment Needed",
-        accessorKey: "equipment",
+        id: "equipment/venue",
+        header: "Equipment/Venue", // or whichever field you primarily use
         cell: ({ row }) => {
-            const value = row.getValue<string>("equipment");
-            return Capitalize(value);
-        },
+            const request = row.original;
+
+            return (
+                <span>
+                    {request.type_of_request === "equipment" ? formatLabel(request.equipment as string) : formatLabel(request.venue as string)}
+                </span>
+            );
+        }
     },
     {
         header: "Subject",
         accessorKey: "subject",
         cell: ({ row }) => {
             const value = row.getValue<string>("subject");
-            return Capitalize(value);
+            return (value);
         },
     },
     {

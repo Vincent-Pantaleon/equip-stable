@@ -19,10 +19,12 @@ const SendRequest = async (formData: FormData) => {
         locationOfUse: formData.get('location_of_use') as string,
         placeOfUse: formData.get('place_of_use') as string,
         equipment: formData.get('equipment') as string,
+        venue: formData.get('venue') as string,
         subject: formData.get('subject') as string,
         dateOfUse: formData.get('date_of_use') as string,
         timeOfStart: formData.get('time_of_start') as string,
-        timeOfEnd: formData.get('time_of_end') as string
+        timeOfEnd: formData.get('time_of_end') as string,
+        office: formData.get('office') as string
     }
 
     const {error: requestError} = await supabase
@@ -39,14 +41,17 @@ const SendRequest = async (formData: FormData) => {
         location_of_use: data.locationOfUse,
         type_of_request: data.typeOfRequest,
         place_of_use: data.placeOfUse,
-        equipment: data.equipment,
+        equipment: data.equipment ? data.equipment : null,
         subject: data.subject,
         date_of_use: data.dateOfUse,
         time_of_start: data.timeOfStart,
-        time_of_end: data.timeOfEnd
+        time_of_end: data.timeOfEnd,
+        venue: data.venue ? data.venue : null,
+        office: data.office
     }])
 
     if (requestError) {
+        console.log(requestError)
         return { status: false, message: "Error filing your request"}
     }
 

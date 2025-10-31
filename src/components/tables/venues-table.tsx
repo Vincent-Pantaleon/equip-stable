@@ -24,7 +24,6 @@ import Button from "../button"
 import { Capitalize } from "@/utils/handlers/capitalize"
 import { useState } from "react"
 import Modal from "../modal"
-import { CancelConfirmButtons } from "../cancel-confirm"
 import { AddVenueForm } from "../page-components/add-venue-form"
 import { AddVenueTypeForm } from "../page-components/add-venue-type-form"
 
@@ -33,13 +32,15 @@ interface DataTableProps<TData, TValue> {
     data: TData[]
     header: string;
     tableType: string;
+    isAdminLayout: boolean;
 }
 
 export function VenuesDataTable<TData, TValue>({
     columns,
     data,
     header,
-    tableType
+    tableType,
+    isAdminLayout = false
 }: DataTableProps<TData, TValue>) {
     const [openModal, setOpenModal] = useState<boolean>(false)
     
@@ -55,12 +56,14 @@ export function VenuesDataTable<TData, TValue>({
                 <h1 className="text-lg">{header}</h1>
 
                 <div>
-                    <Button 
-                        Icon={Plus}
-                        label={`Add ${Capitalize(tableType)}`}
-                        className="px-2"
-                        onClick={() => setOpenModal(true)}
-                    />
+                    {isAdminLayout && (
+                         <Button 
+                            Icon={Plus}
+                            label={`Add ${Capitalize(tableType)}`}
+                            className="px-2"
+                            onClick={() => setOpenModal(true)}
+                        />
+                    )}
                 </div>
             </div>
 
@@ -107,21 +110,21 @@ export function VenuesDataTable<TData, TValue>({
                 </TableBody>
             </Table>
 
-            {openModal && (
-                <Modal
-                    header={`Add ${Capitalize(tableType)}`}
-                    isOpen={openModal}
-                    onClose={() => setOpenModal(false)}
-                >
-                    {/* Add form */}
-                    
-                    {tableType === 'venues' ? (
-                        <AddVenueForm />
-                    ): (
-                        <AddVenueTypeForm onClose={() => setOpenModal(false)}/>
-                    )}
-                </Modal>
-            )}
+
+            <Modal
+                header={`Add ${Capitalize(tableType)}`}
+                isOpen={openModal}
+                onClose={() => setOpenModal(false)}
+            >
+                {/* Add form */}
+                
+                {tableType === 'venues' ? (
+                    <AddVenueForm />
+                ): (
+                    <AddVenueTypeForm onClose={() => setOpenModal(false)}/>
+                )}
+            </Modal>
+
         </div>
     )
 }

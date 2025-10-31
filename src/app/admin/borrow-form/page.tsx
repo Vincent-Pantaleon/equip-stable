@@ -3,7 +3,7 @@ import { FormValuesTableList } from "@/components/page-components/borrow-form-ta
 
 export const metadata: Metadata = {
     title: {
-        absolute: "equip"
+        absolute: "equip | Borrow Form Options"
     }
 }
 

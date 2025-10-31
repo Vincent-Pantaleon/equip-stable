@@ -1,11 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Capitalize } from "../handlers/capitalize";
+import { Capitalize, formatLabel } from "../handlers/capitalize";
 import { getStatusStyles } from "./booking-columns";
 
 import { 
     Pencil,
     Trash2
 } from "lucide-react";
+import Button from "@/components/button";
 
 interface AllRequestColumnsProps {
     onUpdate: (booking: Requests) => void
@@ -31,13 +32,17 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         minSize: 100
     }, 
     {
-        header: "Equipment Needed",
-        accessorKey: "equipment",
-        cell: (row) => {
-            const value = row.getValue<string>();
-            return Capitalize(value);
-        },
-        minSize: 150
+        id: "equipment/venue",
+        header: "Equipment/Venue", // or whichever field you primarily use
+        cell: ({ row }) => {
+            const request = row.original;
+
+            return (
+                <span>
+                    {request.type_of_request === "equipment" ? formatLabel(request.equipment as string) : formatLabel(request.venue as string)}
+                </span>
+            );
+        }
     },
     {
         header: "Subject",
@@ -102,18 +107,19 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
 
             return (
                 <div className="flex gap-2">
-                    <button
-                        className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                    <Button
+                        Icon={Pencil}
+                        className="px-2 py-1 rounded hover:bg-blue-60"
+                        iconColor="text-slate-500"
                         onClick={() => onUpdate(booking)}
-                    >
-                        <Pencil className="w-4 h-4" />
-                    </button>
-                    <button
-                        className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                    />
+                    <Button
+                        Icon={Trash2}
+                        className="px-2 py-1 text-slate-500 rounded hover:bg-blue-60"
+                        buttonColor="bg-red-500"
+                        iconColor="text-red-300"
                         onClick={() => onDelete(booking)}
-                    >
-                        <Trash2 className="w-4 h-4" />
-                    </button>
+                    />
                 </div>
             );
         },

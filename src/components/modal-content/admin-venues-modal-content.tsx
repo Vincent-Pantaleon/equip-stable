@@ -45,6 +45,7 @@ const VenueUpdateForm = ({ item, onClose }: VenueFormProps) => {
         
         toast.success(result.message)
         queryClient.invalidateQueries({queryKey: ['venues-data']})
+        onClose()
         setOpenModal(false)
     }
 
@@ -142,6 +143,7 @@ const VenueTypeUpdateForm = ({ item, onClose }: VenueTypeFormProps) => {
         
         toast.success(result.message)
         queryClient.invalidateQueries({queryKey: ['venues-type-data']})
+        onClose()
         setOpenModal(false)
     }
  

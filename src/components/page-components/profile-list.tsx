@@ -16,7 +16,7 @@ const ProfileListTable = () => {
     const [selectedItem, setSelectedItem] = useState<Profile | null>(null)
     const [openModal, setOpenModal] = useState<boolean>(false)
     
-    const {data, error, isPending} = useQuery({
+    const { data, error } = useQuery({
         queryKey: ['profiles-list'],
         queryFn: GetUsersList,
         staleTime: 5 * 1000 * 5,
@@ -64,6 +64,7 @@ const ProfileListTable = () => {
         if (!result.status) {
             toast.error(result.message)
         } else {
+            setOpenModal(false)
             toast.success(result.message)
         }
     }

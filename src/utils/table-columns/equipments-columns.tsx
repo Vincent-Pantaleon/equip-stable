@@ -7,7 +7,7 @@ export const equipmentColumns: ColumnDef<EquipmentTypeType>[] = [
         accessorKey: "name",
         cell: ({ row }) => {
             return (
-                <p>{Capitalize(row.original.type)}</p>
+                <p className="font-semibold">{Capitalize(row.original.type)}</p>
             )
 
         }

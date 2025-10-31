@@ -143,17 +143,16 @@ const BookingsList = () => {
                 )}
             </div>
             
-            {openEditModal && selectedRequest && (
+
                 <Modal
                     onClose={() => {setOpenEditModal(false), setSelectedRequest(null)}}
                     header="Update Booking"
                     isOpen={openEditModal}
                 >
-                    <BookingModalContent request={selectedRequest} isAdmin={true}/>
+                    <BookingModalContent request={selectedRequest as Requests} isAdmin={true} action={() => setOpenEditModal(false)}/>
                 </Modal>
-            )}
 
-            {openDeleteModal && (
+
                 <Modal
                     header="Delete Booking"
                     isOpen={openDeleteModal}
@@ -173,7 +172,6 @@ const BookingsList = () => {
                         />
                     </div>
                 </Modal>
-            )}
         </div>
         
     )

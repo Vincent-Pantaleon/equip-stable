@@ -122,3 +122,23 @@ export const venueTypesColumns = ({ onUpdate, onDelete }: VenueTypeActionsProps)
         minSize: 100
     }
 ]
+
+export const venueTypesColumnsNoActions: ColumnDef<VenuesType>[] = [
+    {
+        header: "Name",
+        accessorKey: "name",
+        cell: ({ getValue }) => {
+            const value = formatLabel(getValue<string>())
+
+            return <p className="font-semibold">{value}</p>
+        } 
+    },
+    {
+        header: "Total Capacity",
+        accessorKey: "total_capacity"
+    },
+    {
+        header: "Total Count",
+        accessorKey: "total_count"
+    },
+]

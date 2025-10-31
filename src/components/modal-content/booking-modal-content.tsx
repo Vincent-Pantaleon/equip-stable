@@ -21,7 +21,13 @@ const StatusOptions = [
     { label: "Completed", value: "Completed" }
 ]
 
-export function BookingModalContent({ request, isAdmin = false }: { request: Requests, isAdmin?: boolean }) {
+interface ModalProps {
+    request: Requests
+    isAdmin?: boolean
+    action: () => void
+}
+
+export function BookingModalContent({ request, isAdmin = false, action }: ModalProps) {
     const info = useInfo();
     const isModOrAdmin = (info?.role === "administrator" || info?.role === "superadmin") && isAdmin === true;
 
@@ -38,7 +44,7 @@ export function BookingModalContent({ request, isAdmin = false }: { request: Req
         }
 
         setOpenConfirmModal(false)
-
+        action()
         queryClient.invalidateQueries({ queryKey: ["all-requests-data"] });
         toast.success(result.message)
         return
@@ -50,7 +56,7 @@ export function BookingModalContent({ request, isAdmin = false }: { request: Req
                 {/* Top Section */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-auto">
                     <div>
-                        <h3 className="text-gray-500">Request ID</h3>
+                        <h3 className="text-gray-500">Booking ID</h3>
                         <p className="font-bold">{request.id}</p>
                     </div>
                     <div>
@@ -63,7 +69,7 @@ export function BookingModalContent({ request, isAdmin = false }: { request: Req
                     </div>
                     <div>
                         <h3 className="text-gray-500">Department</h3>
-                        <p className="font-bold">{Capitalize(request.department)}</p>
+                        <p className="font-bold">{formatLabel(request.department)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Designation</h3>
@@ -71,15 +77,15 @@ export function BookingModalContent({ request, isAdmin = false }: { request: Req
                     </div>
                     <div>
                         <h3 className="text-gray-500">Grade Level</h3>
-                        <p className="font-bold">{CapitalizeAll(request.grade_level)}</p>
+                        <p className="font-bold">{formatLabel(request.grade_level)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Subject</h3>
-                        <p className="font-bold">{Capitalize(request.subject)}</p>
+                        <p className="font-bold">{formatLabel(request.subject)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Type of Request</h3>
-                        <p className="font-bold">{Capitalize(request.type_of_request)}</p>
+                        <p className="font-bold">{formatLabel(request.type_of_request)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Date of Use</h3>
@@ -88,12 +94,16 @@ export function BookingModalContent({ request, isAdmin = false }: { request: Req
                     <div>
                         <h3 className="text-gray-500">Time of Use</h3>
                         <p className="font-bold">
-                        {formatTime(request.time_of_start)} - {formatTime(request.time_of_end)}
+                            {formatTime(request.time_of_start)} - {formatTime(request.time_of_end)}
                         </p>
                     </div>
-                    <div className="sm:col-span-2">
+                    <div>
                         <h3 className="text-gray-500">Purpose</h3>
                         <p className="font-bold">{Capitalize(request.purpose)}</p>
+                    </div>
+                    <div>
+                        <h3 className="text-gray-500">Office</h3>
+                        <p className="font-bold">{request.office ? formatLabel(request.office) : "No Office"}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Location of Use</h3>
@@ -104,8 +114,8 @@ export function BookingModalContent({ request, isAdmin = false }: { request: Req
                         <p className="font-bold">{formatLabel(request.place_of_use)}</p>
                     </div>
                     <div>
-                        <h3 className="text-gray-500">Equipment</h3>
-                        <p className="font-bold">{Capitalize(request.equipment)}</p>
+                        <h3 className="text-gray-500">{request.type_of_request === 'equipment' ? "Equipment" : "Venue"}</h3>
+                        <p className="font-bold">{request.type_of_request === 'equipment' ? formatLabel(request.equipment as string) : formatLabel(request.venue as string) }</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Created At</h3>

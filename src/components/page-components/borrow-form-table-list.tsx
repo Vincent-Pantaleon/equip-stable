@@ -30,12 +30,11 @@ const FormValuesTableList = () => {
     const TablesList = [
         { label: "Department", columns: DepartmentColumns, data: data?.deptRes.data },
         { label: "Designation", columns: DesignationColumns, data: data?.designationRes.data },
-        { label: "Grade Level", columns: GradeLevelColumns, data: data?.gradeRes.data },
         { label: "Purpose", columns: PurposeColumns, data: data?.purposeRes.data },
         { label: "Type of Request", columns: TypeOfRequestColumns, data: data?.requestTypeRes.data },
-        { label: "Place of Use", columns: PlaceOfUseColumns, data: data?.placeRes.data },
         { label: "Location of Use", columns: LocationOfUseColumns, data: data?.locationRes.data },
-        { label: "Equipment", columns: EquipmentColumns, data: data?.equipmentRes.data },
+        { label: "Grade Level", columns: GradeLevelColumns, data: data?.gradeRes.data },
+        { label: "Place of Use", columns: PlaceOfUseColumns, data: data?.placeRes.data },
         { label: "Subject", columns: SubjectColumns, data: data?.subjectRes.data }
     ]
 
@@ -44,10 +43,8 @@ const FormValuesTableList = () => {
     }
 
     return (
-
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 w-full">
-            <div className="col-span-2 mt-4 mb-2 border-b pb-4">
+        <div className="space-y-4">
+            <div className="mt-4 mb-4 border-b pb-4">
                 <h1 className="text-2xl font-semibold text-gray-800">Borrow Form Values</h1>
                 <p className="mt-1 text-gray-600 text-sm">
                     Add or remove data to be shown in the dropdowns for the borrow form
@@ -61,13 +58,12 @@ const FormValuesTableList = () => {
                 </div>
             ) : (
                 TablesList.map((item, index) => (
-                    <div className={`min-h-[290px] ${item.label === "Department" ? "col-span-2" : ""}`} key={index}>
                         <BorrowFormValuesDataTable
                             columns={item.columns}
                             data={item.data ?? []}
                             header={item.label}
+                            key={index}
                         />
-                    </div>
                 ))
             )}
         </div>

@@ -29,7 +29,7 @@ const NavbarItems = [
     { label: "Venues", href: '/admin/venues', icon: MapPinned },
     { label: "Profiles", href: '/admin/profile-list', icon: Users },
     { label: "Offices", href: '/admin/offices', icon: Building },
-    { label: "Release Form", href: '/admin/release-form', icon: CheckCircle2 },
+    { label: "Releases", href: '/admin/releases', icon: CheckCircle2 },
     { label: "Return to Home", href: '/recents', icon: House }
 ]
 
