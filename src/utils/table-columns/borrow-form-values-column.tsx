@@ -1,7 +1,15 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Capitalize, CapitalizeAll, formatCreatedAt, formatLabel } from "../handlers/capitalize";
 
-export const DesignationColumns: ColumnDef<Designation>[] = [
+import Button from "@/components/button";
+import { Pencil, Trash2 } from "lucide-react";
+
+interface DesignationProps {
+    onDelete: (item: Designation) => void;
+    onUpdate: (item: Designation) => void
+}
+
+export const DesignationColumns = ({ onDelete, onUpdate }: DesignationProps): ColumnDef<Designation>[] => [
     {
         id: "created_at",
         header: "Created At",
@@ -31,10 +39,41 @@ export const DesignationColumns: ColumnDef<Designation>[] = [
 
             return Capitalize(value)
         }
+    },
+    {
+        id: "actions",
+        header: "Actions",
+        cell: ({ row }) => {
+            const booking = row.original; // access row data
+
+            return (
+                <div className="flex gap-2">
+                    <Button
+                        Icon={Pencil}
+                        className="px-2 py-1 rounded hover:bg-blue-60"
+                        iconColor="text-slate-500"
+                        onClick={() => onUpdate(booking)}
+                    />
+                    <Button
+                        Icon={Trash2}
+                        className="px-2 py-1 text-slate-500 rounded hover:bg-blue-60"
+                        buttonColor="bg-red-500"
+                        iconColor="text-red-300"
+                        onClick={() => onDelete(booking)}
+                    />
+                </div>
+            );
+        },
+        minSize: 100
     }
 ]
 
-export const DepartmentColumns: ColumnDef<Department>[] = [
+interface DepartmentProps {
+    onDelete: (item: Department) => void;
+    onUpdate: (item: Department) => void;
+}
+
+export const DepartmentColumns = ({ onDelete, onUpdate }: DepartmentProps): ColumnDef<Department>[] => [
     {
         id: "created_at",
         header: "Created At",
@@ -64,10 +103,41 @@ export const DepartmentColumns: ColumnDef<Department>[] = [
 
             return formatLabel(value)
         }
-    }
+    },
+        {
+            id: "actions",
+            header: "Actions",
+            cell: ({ row }) => {
+                const booking = row.original; // access row data
+    
+                return (
+                    <div className="flex gap-2">
+                        <Button
+                            Icon={Pencil}
+                            className="px-2 py-1 rounded hover:bg-blue-60"
+                            iconColor="text-slate-500"
+                            onClick={() => onUpdate(booking)}
+                        />
+                        <Button
+                            Icon={Trash2}
+                            className="px-2 py-1 text-slate-500 rounded hover:bg-blue-60"
+                            buttonColor="bg-red-500"
+                            iconColor="text-red-300"
+                            onClick={() => onDelete(booking)}
+                        />
+                    </div>
+                );
+            },
+            minSize: 100
+        }
 ]
 
-export const PurposeColumns: ColumnDef<Purpose>[] = [
+interface PurposeProps {
+    onDelete: (item: Purpose) => void;
+    onUpdate: (item: Purpose) => void;
+}
+
+export const PurposeColumns = ({ onDelete, onUpdate }: PurposeProps): ColumnDef<Purpose>[] => [
     {
         id: "created_at",
         header: "Created At",
@@ -97,10 +167,41 @@ export const PurposeColumns: ColumnDef<Purpose>[] = [
 
             return Capitalize(value)
         }
-    }
+    },
+        {
+            id: "actions",
+            header: "Actions",
+            cell: ({ row }) => {
+                const booking = row.original; // access row data
+    
+                return (
+                    <div className="flex gap-2">
+                        <Button
+                            Icon={Pencil}
+                            className="px-2 py-1 rounded hover:bg-blue-60"
+                            iconColor="text-slate-500"
+                            onClick={() => onUpdate(booking)}
+                        />
+                        <Button
+                            Icon={Trash2}
+                            className="px-2 py-1 text-slate-500 rounded hover:bg-blue-60"
+                            buttonColor="bg-red-500"
+                            iconColor="text-red-300"
+                            onClick={() => onDelete(booking)}
+                        />
+                    </div>
+                );
+            },
+            minSize: 100
+        }
 ]
 
-export const TypeOfRequestColumns: ColumnDef<TypeOfRequest>[]= [
+interface TypeOfRequestProps {
+    onDelete: (item: TypeOfRequest) => void;
+    onUpdate: (item: TypeOfRequest) => void;
+}
+
+export const TypeOfRequestColumns = ({ onDelete, onUpdate }: TypeOfRequestProps): ColumnDef<TypeOfRequest>[] => [
     {
         id: "created_at",
         header: "Created At",
@@ -128,12 +229,43 @@ export const TypeOfRequestColumns: ColumnDef<TypeOfRequest>[]= [
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
-            return Capitalize(value)
+            return formatLabel(value)
         }
-    }
+    },
+        {
+            id: "actions",
+            header: "Actions",
+            cell: ({ row }) => {
+                const booking = row.original; // access row data
+    
+                return (
+                    <div className="flex gap-2">
+                        <Button
+                            Icon={Pencil}
+                            className="px-2 py-1 rounded hover:bg-blue-60"
+                            iconColor="text-slate-500"
+                            onClick={() => onUpdate(booking)}
+                        />
+                        <Button
+                            Icon={Trash2}
+                            className="px-2 py-1 text-slate-500 rounded hover:bg-blue-60"
+                            buttonColor="bg-red-500"
+                            iconColor="text-red-300"
+                            onClick={() => onDelete(booking)}
+                        />
+                    </div>
+                );
+            },
+            minSize: 100
+        }
 ]
 
-export const PlaceOfUseColumns: ColumnDef<PlaceOfUse>[] = [
+interface PlaceOfUseProps {
+    onDelete: (item: PlaceOfUse) => void;
+    onUpdate: (item: PlaceOfUse) => void;
+}
+
+export const PlaceOfUseColumns = ({ onDelete, onUpdate }: PlaceOfUseProps): ColumnDef<PlaceOfUse>[] => [
     {
         id: "created_at",
         header: "Created At",
@@ -168,10 +300,41 @@ export const PlaceOfUseColumns: ColumnDef<PlaceOfUse>[] = [
         id: "room_number",
         header: "Room Number",
         accessorFn: (row) => `${CapitalizeAll(row.room)} ${row.number}`,
-    }
+    },
+        {
+            id: "actions",
+            header: "Actions",
+            cell: ({ row }) => {
+                const booking = row.original; // access row data
+    
+                return (
+                    <div className="flex gap-2">
+                        <Button
+                            Icon={Pencil}
+                            className="px-2 py-1 rounded hover:bg-blue-60"
+                            iconColor="text-slate-500"
+                            onClick={() => onUpdate(booking)}
+                        />
+                        <Button
+                            Icon={Trash2}
+                            className="px-2 py-1 text-slate-500 rounded hover:bg-blue-60"
+                            buttonColor="bg-red-500"
+                            iconColor="text-red-300"
+                            onClick={() => onDelete(booking)}
+                        />
+                    </div>
+                );
+            },
+            minSize: 100
+        }
 ]
 
-export const LocationOfUseColumns: ColumnDef<LocationOfUse>[] = [
+interface LocationOfUseProps {
+    onDelete: (item: Department) => void;
+    onUpdate: (item: Department) => void;
+}
+
+export const LocationOfUseColumns = ({ onDelete, onUpdate }: LocationOfUseProps): ColumnDef<LocationOfUse>[] => [
     {
         id: "created_at",
         header: "Created At",
@@ -199,12 +362,43 @@ export const LocationOfUseColumns: ColumnDef<LocationOfUse>[] = [
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
-            return `${formatLabel(value)} Campus`
+            return `${formatLabel(value)}`
         }
-    }
+    },
+        {
+            id: "actions",
+            header: "Actions",
+            cell: ({ row }) => {
+                const booking = row.original; // access row data
+    
+                return (
+                    <div className="flex gap-2">
+                        <Button
+                            Icon={Pencil}
+                            className="px-2 py-1 rounded hover:bg-blue-60"
+                            iconColor="text-slate-500"
+                            onClick={() => onUpdate(booking)}
+                        />
+                        <Button
+                            Icon={Trash2}
+                            className="px-2 py-1 text-slate-500 rounded hover:bg-blue-60"
+                            buttonColor="bg-red-500"
+                            iconColor="text-red-300"
+                            onClick={() => onDelete(booking)}
+                        />
+                    </div>
+                );
+            },
+            minSize: 100
+        }
 ]
 
-export const SubjectColumns: ColumnDef<Subject>[] = [
+interface SubjectProps {
+    onDelete: (item: Subject) => void;
+    onUpdate: (item: Subject) => void;
+}
+
+export const SubjectColumns = ({ onDelete, onUpdate }: SubjectProps): ColumnDef<Subject>[] => [
     {
         id: "created_at",
         header: "Created At",
@@ -241,12 +435,43 @@ export const SubjectColumns: ColumnDef<Subject>[] = [
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
-            return Capitalize(value)
+            return formatLabel(value)
         }
-    }
+    },
+        {
+            id: "actions",
+            header: "Actions",
+            cell: ({ row }) => {
+                const booking = row.original; // access row data
+    
+                return (
+                    <div className="flex gap-2">
+                        <Button
+                            Icon={Pencil}
+                            className="px-2 py-1 rounded hover:bg-blue-60"
+                            iconColor="text-slate-500"
+                            onClick={() => onUpdate(booking)}
+                        />
+                        <Button
+                            Icon={Trash2}
+                            className="px-2 py-1 text-slate-500 rounded hover:bg-blue-60"
+                            buttonColor="bg-red-500"
+                            iconColor="text-red-300"
+                            onClick={() => onDelete(booking)}
+                        />
+                    </div>
+                );
+            },
+            minSize: 100
+        }
 ]
 
-export const GradeLevelColumns: ColumnDef<GradeLevel>[] = [
+interface GradeLevelProps {
+    onDelete: (item: GradeLevel) => void;
+    onUpdate: (item: GradeLevel) => void;
+}
+
+export const GradeLevelColumns = ({ onUpdate, onDelete }: GradeLevelProps): ColumnDef<GradeLevel>[] => [
     {
         id: "created_at",
         header: "Created At",
@@ -280,42 +505,31 @@ export const GradeLevelColumns: ColumnDef<GradeLevel>[] = [
     {
         header: "Level",
         accessorKey: "level"
-    }
-]
-
-export const EquipmentColumns: ColumnDef<EquipmentTypeType>[] = [
-    {
-        id: "created_at",
-        header: "Created At",
-        accessorFn: (row) => {
-            const { formatted_date, formatted_time } = formatCreatedAt(row.created_at);
-            return { formatted_date, formatted_time }; // return raw object
-        },
-        cell: ({ getValue }) => {
-            const { formatted_date, formatted_time } = getValue() as {
-                formatted_date: string;
-                formatted_time: string;
-            };
-
-            return (
-                <div>
-                    <p>{formatted_date}</p>
-                    <p className="text-sm text-gray-500">{formatted_time}</p>
-                </div>
-            );
-        },
     },
-    {
-        id: "equipment",
-        header: "Equipment",
-        accessorFn: (row) => {
-            const value = row.type
-
-            return formatLabel(value)
+        {
+            id: "actions",
+            header: "Actions",
+            cell: ({ row }) => {
+                const booking = row.original; // access row data
+    
+                return (
+                    <div className="flex gap-2">
+                        <Button
+                            Icon={Pencil}
+                            className="px-2 py-1 rounded hover:bg-blue-60"
+                            iconColor="text-slate-500"
+                            onClick={() => onUpdate(booking)}
+                        />
+                        <Button
+                            Icon={Trash2}
+                            className="px-2 py-1 text-slate-500 rounded hover:bg-blue-60"
+                            buttonColor="bg-red-500"
+                            iconColor="text-red-300"
+                            onClick={() => onDelete(booking)}
+                        />
+                    </div>
+                );
+            },
+            minSize: 100
         }
-    },
-    {
-        header: "Total Count",
-        accessorKey: "total_count"
-    },
 ]

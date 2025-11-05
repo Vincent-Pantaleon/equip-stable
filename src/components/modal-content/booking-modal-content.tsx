@@ -15,10 +15,8 @@ import { toast } from "sonner";
 import { SelectInput } from "../input";
 
 const StatusOptions = [
-    { label: "Pending", value: "pending" },
     { label: "Approved", value: "approved" },
     { label: "Declined", value: "declined" },
-    { label: "Completed", value: "Completed" }
 ]
 
 interface ModalProps {

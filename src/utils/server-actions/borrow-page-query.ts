@@ -77,7 +77,7 @@ export async function GetBorrowFormData() {
       gradeLevel: normalize(gradeRes.data, (i) => `Grade ${i.level}`),
       typeOfRequest: normalize(requestTypeRes.data, (i) => i.name),
       placeOfUse: normalize(placeRes.data, (i) => `${i.room} ${i.number}`),
-      locationOfUse: normalize(locationRes.data, (i) => `${i.name} campus`),
+      locationOfUse: normalize(locationRes.data, (i) => `${i.name}`),
       subject: normalize(subjectRes.data, (i) => `${i.name}`),
       purpose: normalize(purposeRes.data, (i) => i.name),
       equipment: normalize(equipmentRes.data, (i) => i.type),
@@ -98,17 +98,15 @@ export async function GetAllBorrowFormData() {
       locationRes,
       subjectRes,
       purposeRes,
-      equipmentRes
     ] = await Promise.all([
-      supabase.from("department").select("*"),
-      supabase.from("designation").select("*"),
-      supabase.from("grade_level").select("*, department: department(name)"),
-      supabase.from("type_of_request").select("*"),
-      supabase.from("place_of_use").select("*, department: department(name)"),
-      supabase.from("location_of_use").select("*"),
-      supabase.from("subject").select("*, department: department(name)"),
-      supabase.from("purpose").select("*"),
-      supabase.from("equipment_type").select("*")
+      supabase.from("department").select("*").order('created_at', { ascending: false }),
+      supabase.from("designation").select("*").order('created_at', { ascending: false }),
+      supabase.from("grade_level").select("*, department: department(id, name)").order('created_at', { ascending: false }),
+      supabase.from("type_of_request").select("*").order('created_at', { ascending: false }),
+      supabase.from("place_of_use").select("*, department: department(id, name)").order('created_at', { ascending: false }),
+      supabase.from("location_of_use").select("*").order('created_at', { ascending: false }),
+      supabase.from("subject").select("*, department: department(id, name)").order('created_at', { ascending: false }),
+      supabase.from("purpose").select("*").order('created_at', { ascending: false }),
     ]);
 
     if (
@@ -119,8 +117,7 @@ export async function GetAllBorrowFormData() {
       placeRes.error ||
       locationRes.error ||
       subjectRes.error ||
-      purposeRes.error ||
-      equipmentRes.error
+      purposeRes.error
     ) {
       console.error({
         dept: deptRes.error,
@@ -131,7 +128,6 @@ export async function GetAllBorrowFormData() {
         location: locationRes.error,
         subject: subjectRes.error,
         purpose: purposeRes.error,
-        equipment: equipmentRes.error
       })
       return null
     }
@@ -145,6 +141,5 @@ export async function GetAllBorrowFormData() {
       locationRes,
       subjectRes,
       purposeRes,
-      equipmentRes
     }
 }

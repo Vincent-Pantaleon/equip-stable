@@ -125,5 +125,4 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         },
         minSize: 100
     }
-
 ]
