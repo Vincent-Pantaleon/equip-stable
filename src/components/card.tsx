@@ -24,7 +24,7 @@ const CardContainer = ({ children }: CardContainerProps) => {
 
 const CardContent = ({ children }: CardContentProps) => {
     return (
-        <div className="text-2xl self-center">
+        <div className="text-3xl font-semibold text-gray-900">
             {children}
         </div>
     )
@@ -32,7 +32,7 @@ const CardContent = ({ children }: CardContentProps) => {
 
 const CardDescription = ({ children }: CardDescriptionProps) => {
     return (
-        <div>
+        <div className="text-gray-600">
             {children}
         </div>
     )

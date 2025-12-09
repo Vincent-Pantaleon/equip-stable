@@ -10,7 +10,7 @@ export default function MainLayoutLoading() {
                 alt="equip icon"
             />
 
-            <p>Getting things read for you!</p>
+            <p>Getting things ready for you!</p>
         </div>
     )
 }
