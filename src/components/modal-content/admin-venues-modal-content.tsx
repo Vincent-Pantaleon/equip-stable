@@ -1,6 +1,6 @@
 'use client'
 
-import { formatCreatedAt } from "@/utils/handlers/capitalize"
+import { formatCreatedAt, formatLabel } from "@/utils/handlers/capitalize"
 import { Input, SelectInput } from "../input"
 import { CancelConfirmButtons } from "../cancel-confirm"
 import { useState } from "react"
@@ -27,7 +27,8 @@ const VenueUpdateForm = ({ item, onClose }: VenueFormProps) => {
     const [openModal, setOpenModal] = useState<boolean>(false)
     const queryClient = useQueryClient()
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
         setOpenModal(true);
     };
 
@@ -67,17 +68,19 @@ const VenueUpdateForm = ({ item, onClose }: VenueFormProps) => {
                 </div>
                 <div>
                     <h3 className="text-gray-500">Venue Type</h3>
-                    <p className="font-semibold">{item.type.name}</p>
+                    <p className="font-semibold">{formatLabel(item.venue_type.venue_name)}</p>
                 </div>
             </div>
 
-            <form className="rounded-2xl p-6 shadow-sm space-y-2 text-black">
+            <form className="rounded-2xl p-6 shadow-sm space-y-2 text-black"
+                onSubmit={handleSubmit}
+            >
                 <Input
                     id="reference"
                     label="Reference"
                     name="reference"
                     type="text"
-                    defaultValue={item.reference}
+                    defaultValue={item.venue_name}
                 />
                 <SelectInput 
                     label="Status"
@@ -85,12 +88,12 @@ const VenueUpdateForm = ({ item, onClose }: VenueFormProps) => {
                     options={StatusOptions || []}
                     defaultValue={item.status}
                 />
-            </form>
 
-            <CancelConfirmButtons 
-                onCancel={onClose}
-                onConfirm={handleSubmit}
-            />
+                <CancelConfirmButtons 
+                    onCancel={onClose}
+                    onConfirm={() => {}}
+                />
+            </form>
 
             {openModal && (
                 <Modal
@@ -173,14 +176,7 @@ const VenueTypeUpdateForm = ({ item, onClose }: VenueTypeFormProps) => {
                     label="Venue Name"
                     name="name"
                     type="text"
-                    defaultValue={item.name}
-                />
-                <Input
-                    id="total_count"
-                    label="Total Count"
-                    name="total_count"
-                    type="number"
-                    defaultValue={item.total_count}
+                    defaultValue={item.venue_name}
                 />
                 <Input
                     id="total_capacity"

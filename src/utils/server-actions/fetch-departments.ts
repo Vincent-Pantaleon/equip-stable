@@ -8,7 +8,7 @@ const FetchDepartmentOptions = async () => {
 
     const { data, error } = await supabase
     .from('department')
-    .select('id, name')
+    .select('id, department_name')
 
     if (error) {
         return { status: false, message: "Error fetching departments" }
@@ -16,7 +16,7 @@ const FetchDepartmentOptions = async () => {
 
     const departmentData = data.map((item) => (
         {
-            label: formatLabel(item.name),
+            label: formatLabel(item.department_name),
             value: item.id
         }
     )) 

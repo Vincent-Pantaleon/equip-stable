@@ -60,6 +60,16 @@ const EditBorrowFormItem = ({ item, table, onClose }: FormProps) => {
         }
     }
 
+    const nameFieldMap: Record<string, string> = {
+        department: 'department_name',
+        designation: 'designation_name',
+        purpose: 'purpose_name',
+        type_of_request: 'type_name',
+        location_of_use: 'location_name',
+    }
+
+
+
     return (
         <>
             <form
@@ -72,7 +82,7 @@ const EditBorrowFormItem = ({ item, table, onClose }: FormProps) => {
                         label="Item Name"
                         name="name"
                         type="text"
-                        defaultValue={formatLabel(item.name)}
+                        defaultValue={formatLabel(item?.[nameFieldMap[table]]) ?? ''}
                     />
                 )}
 
@@ -82,7 +92,7 @@ const EditBorrowFormItem = ({ item, table, onClose }: FormProps) => {
                             label="Department"
                             name="department"
                             options={data?.data || []}
-                            defaultValue={item.department.id}
+                            defaultValue={item.department_id}
                         />
 
                         {(table === 'grade_level') && (
@@ -91,7 +101,7 @@ const EditBorrowFormItem = ({ item, table, onClose }: FormProps) => {
                                 label="Level"
                                 name="level"
                                 type="text"
-                                defaultValue={item.level}
+                                defaultValue={item.grade_level}
                             />
                         )}
 
@@ -121,7 +131,7 @@ const EditBorrowFormItem = ({ item, table, onClose }: FormProps) => {
                                 label="Subject"
                                 name="subject"
                                 type="text"
-                                defaultValue={formatLabel(item.name)}
+                                defaultValue={formatLabel(item.subject_name)}
                             />
                         )}
                     </>

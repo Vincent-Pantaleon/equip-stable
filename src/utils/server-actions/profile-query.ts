@@ -25,13 +25,44 @@ const  GetUsersList = async () => {
 
     const { data, error } = await supabase
     .from('profiles')
-    .select('*, office: office_assigned(office)')
+    .select(`
+        id,
+        first_name,
+        last_name,
+        email,
+        school_id,
+        role,
+        is_in_charge,
+        office: office_id(
+            office_name
+        )
+    `)
 
     if (error) {
+        console.log(error)
         return { status: false, message: "Error fetching profiles list"}
     }
 
-    return { status: true, message: "Profiles fetched successfully", data: data}
+    const normalizedData = (data ?? []).map((user) => {
+        const office = Array.isArray(user.office)
+            ? user.office[0]
+            : user.office
+
+        return {
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            role: user.role,
+            school_id: user.school_id,
+            is_in_charge: user.is_in_charge,
+            office: {
+                office_name: office?.office_name ?? null,
+            }
+        }
+    })
+
+    return { status: true, message: "Profiles fetched successfully", data: normalizedData}
 }
 
 const GetAdministratorsList = async () => {

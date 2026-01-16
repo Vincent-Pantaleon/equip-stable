@@ -18,17 +18,12 @@ export default function BorrowForm() {
     const [office, setOffice] = useState<string>('')
     const [type, setType] = useState<'venue' | 'equipment'>('equipment')
 
-    console.log("Office: ", office)
-
     const { data, error } = useQuery({
         queryKey: ['borrow-form-data'],
         queryFn: GetBorrowFormData,
         staleTime: Infinity,
         gcTime: Infinity
     })
-
-    console.log(data?.equipment)
-    console.log(data?.venue)
 
     if (error) {
         toast.error("Error fetching data")
@@ -56,8 +51,6 @@ export default function BorrowForm() {
             toast.success(result.message);
         }
         setPendingForm(null);
-
-        console.log(result)
     };
 
     return (
@@ -71,7 +64,7 @@ export default function BorrowForm() {
                     <Input id="first_name" name="first_name" label="First Name" type="text"/>
                     <Input id="last_name" name="last_name" label="Last Name" type="text"/>
                     <SelectInput divStyle="order-3" label="Designation" name="designation" options={data?.designation || [] }/>
-                    <SelectInput divStyle="order-5" label="Department" name="department" options={data?.department || []} onChange={(e) => setDepartment(e.target.value)}/>
+                    <SelectInput divStyle="order-5" label="Department" name="department" options={data?.department || []} onChange={(e) => setDepartment(e.target.value as string)}/>
                     <Input divStyle="order-4" id="contact_number" name="contact_number" label="Contact Number" type="tel" placeholder="ex. 09123456789" pattern="0[9][0-9]{2}[0-9]{3}[0-9]{4}"/>
                     <SelectInput divStyle="order-6" label="Grade Level" name="grade_level" options={data?.gradeLevel || []} group={department}/>
                 </Section>
@@ -79,7 +72,11 @@ export default function BorrowForm() {
                 {/* purpose, type of request, location of use, place of use */}
                 <Section header="Equipment Usage Details">
                     <SelectInput divStyle="md:col-span-2" label="Purpose" name="purpose" options={data?.purpose || []}/>
-                    <SelectInput divStyle="order-3" label="Type of Request" name="type_of_request" options={data?.typeOfRequest || []} onChange={(e) => setType(e.target.value as 'venue' | 'equipment')}/>
+                    <SelectInput divStyle="order-3" label="Type of Request" name="type_of_request" options={data?.typeOfRequest || []} onChange={(e) => {
+                        const selected = data?.typeOfRequest.find(
+                            (item) => item.value === e.target.value
+                        );
+                        setType(selected?.label.toLocaleLowerCase() as 'venue' | 'equipment');}}/>
                     <SelectInput divStyle="order-5" label="Location of Use" name="location_of_use" options={data?.locationOfUse || []}/>
                     <SelectInput divStyle="order-4" label="Room" name="place_of_use" options={data?.placeOfUse || []} group={department}/>
                     <SelectInput divStyle="order-6" label="Office" name="office" options={data?.office || []} onChange={(e) => setOffice(e.target.value)}/>
@@ -87,7 +84,7 @@ export default function BorrowForm() {
 
                 {/* equipment, subject, date of use, time of start, time of end */}
                 <Section header="Equipment and Schedule">
-                    <SelectInput divStyle="md:col-span-2" label={type === 'equipment' ? "Equipment" : "Venue"} name={type === 'equipment' ? "equipment" : "venue"} options={(type === 'equipment' ? data?.equipment : data?.venue) || []} office={office}/>
+                    <SelectInput divStyle="md:col-span-2" label={type === 'equipment' ? "Equipment" : "Venue"} name={type === 'equipment' ? "equipment" : "venue"} options={(type === 'equipment' ? data?.equipment : data?.venue) || []} group={office}/>
                     <SelectInput divStyle="order-3" label="Subject" name="subject" options={data?.subject || []} group={department}/>
                     <Input divStyle="order-4" id="date_of_use" name="date_of_use" label="Date of Use" type="date"/>
                     <Input divStyle="order-5" id="time_of_start" name="time_of_start" label="Time of Start" type="time"/>

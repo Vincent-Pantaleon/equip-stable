@@ -4,6 +4,15 @@
 import { jwtDecode } from 'jwt-decode'
 import { createClient } from '../supabase/server'
 
+type JwtType = {
+  user_role: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  office_id: string;
+  office_name: string;
+}
+
 export async function GetUserInfo() {
   const supabase = await createClient()
 
@@ -13,7 +22,7 @@ export async function GetUserInfo() {
 
   if (!session) return null
 
-  const jwt: any = jwtDecode(session.access_token)
+  const jwt: JwtType = jwtDecode(session.access_token)
 
   // These fields must be added via your custom_access_token_hook in Supabase
   const userInfo = {
@@ -21,6 +30,8 @@ export async function GetUserInfo() {
     first_name: jwt.first_name,
     last_name: jwt.last_name,
     email: jwt.email,
+    office_id: jwt.office_id,
+    office_name: jwt.office_name
   }
 
   return userInfo

@@ -23,7 +23,6 @@ interface SelectInputProps {
   options: OptionType[];
   group?: string;
   defaultValue?: string | number;
-  office?: string;
 }
 
 interface SectionProps {
@@ -56,7 +55,7 @@ export const Input = React.memo(function Input({
         placeholder={placeholder}
         pattern={pattern}
         disabled={isDisabled}
-        autoComplete="off-"
+        autoComplete={type === "password" ? "off" : ""}
         defaultValue={defaultValue ?? ""}
       />
     </div>
@@ -84,23 +83,7 @@ export const SelectInput = React.memo(function SelectInput({
   options,
   group,
   defaultValue,
-  office,
 }: SelectInputProps) {
-  const filteredOptions = Array.isArray(options)
-    ? options.filter((item) => {
-        // 1️⃣ No filtering if neither department nor office is provided
-        if (!group && !office) return true;
-
-        // 2️⃣ If group is provided, match it
-        if (group && item.group === group) return true;
-
-        // 3️⃣ If office is provided, match it
-        if (office && item.office === office) return true;
-
-        return false;
-      })
-    : [];
-
   return (
     <div className={divStyle}>
       <label htmlFor={name}>{label}</label>
@@ -116,13 +99,23 @@ export const SelectInput = React.memo(function SelectInput({
           Select an option
         </option>
 
-        {filteredOptions.map((item, index) => (
-          <option key={index} value={item.value}>
-            {item.label ?? "Unknown Item"}
-          </option>
-        ))}
+        {options
+          ?.filter((item) => {
+            // If no group is selected → show all
+            if (!group) return true;
+
+            // If item has no group assigned → hide it
+            if (item.group == null) return false;
+
+            // Normal filtering
+            return item.group === group;
+          })
+          .map((item, index) => (
+            <option key={index} value={item.value}>
+              {item.label ?? "Unknown Item"}
+            </option>
+          ))}
       </select>
     </div>
   );
 });
-

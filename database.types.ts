@@ -10,134 +10,288 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "13.0.5"
+    PostgrestVersion: "14.1"
   }
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          contact_number: string
+          created_at: string
+          date_of_use: string
+          department_id: string
+          designation_id: string
+          equipment_id: string | null
+          first_name: string
+          grade_level_id: string
+          id: string
+          is_active: boolean
+          last_name: string
+          location_of_use_id: string
+          office_id: string
+          place_of_use_id: string
+          purpose_id: string
+          status: Database["public"]["Enums"]["booking_type"]
+          subject_id: string
+          time_of_end: string
+          time_of_start: string
+          type_of_request_id: string
+          user_id: string
+          venue_id: string | null
+        }
+        Insert: {
+          contact_number: string
+          created_at?: string
+          date_of_use: string
+          department_id: string
+          designation_id: string
+          equipment_id?: string | null
+          first_name: string
+          grade_level_id: string
+          id?: string
+          is_active?: boolean
+          last_name: string
+          location_of_use_id: string
+          office_id: string
+          place_of_use_id: string
+          purpose_id: string
+          status?: Database["public"]["Enums"]["booking_type"]
+          subject_id: string
+          time_of_end: string
+          time_of_start: string
+          type_of_request_id: string
+          user_id?: string
+          venue_id?: string | null
+        }
+        Update: {
+          contact_number?: string
+          created_at?: string
+          date_of_use?: string
+          department_id?: string
+          designation_id?: string
+          equipment_id?: string | null
+          first_name?: string
+          grade_level_id?: string
+          id?: string
+          is_active?: boolean
+          last_name?: string
+          location_of_use_id?: string
+          office_id?: string
+          place_of_use_id?: string
+          purpose_id?: string
+          status?: Database["public"]["Enums"]["booking_type"]
+          subject_id?: string
+          time_of_end?: string
+          time_of_start?: string
+          type_of_request_id?: string
+          user_id?: string
+          venue_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "department"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_designation_id_fkey"
+            columns: ["designation_id"]
+            isOneToOne: false
+            referencedRelation: "designation"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_equipment_id_fkey"
+            columns: ["equipment_id"]
+            isOneToOne: false
+            referencedRelation: "equipment_type"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_grade_level_id_fkey"
+            columns: ["grade_level_id"]
+            isOneToOne: false
+            referencedRelation: "grade_level"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_location_of_use_id_fkey"
+            columns: ["location_of_use_id"]
+            isOneToOne: false
+            referencedRelation: "location_of_use"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_office_id_fkey"
+            columns: ["office_id"]
+            isOneToOne: false
+            referencedRelation: "offices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_place_of_use_id_fkey"
+            columns: ["place_of_use_id"]
+            isOneToOne: false
+            referencedRelation: "place_of_use"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_purpose_id_fkey"
+            columns: ["purpose_id"]
+            isOneToOne: false
+            referencedRelation: "purpose"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subject"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_type_of_request_id_fkey"
+            columns: ["type_of_request_id"]
+            isOneToOne: false
+            referencedRelation: "type_of_request"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_venue_id_fkey"
+            columns: ["venue_id"]
+            isOneToOne: false
+            referencedRelation: "venue_type"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       department: {
         Row: {
           created_at: string
-          id: number
-          name: string
+          department_name: string
+          id: string
         }
         Insert: {
           created_at?: string
-          id?: number
-          name: string
+          department_name: string
+          id?: string
         }
         Update: {
           created_at?: string
-          id?: number
-          name?: string
+          department_name?: string
+          id?: string
         }
         Relationships: []
       }
       designation: {
         Row: {
           created_at: string
-          id: number
-          name: string
+          designation_name: string
+          id: string
         }
         Insert: {
           created_at?: string
-          id?: number
-          name: string
+          designation_name: string
+          id?: string
         }
         Update: {
           created_at?: string
-          id?: number
-          name?: string
+          designation_name?: string
+          id?: string
         }
         Relationships: []
       }
       equipment: {
         Row: {
-          code: string
           created_at: string
           date_acquired: string
-          id: number
+          equipment_type_id: string
+          id: string
           item_name: string
-          office_assigned: string | null
-          reference: string
+          office_id: string | null
+          property_code: string | null
+          reference_number: string
           serial_number: string
           status: Database["public"]["Enums"]["equipment_status"]
-          type: number
         }
         Insert: {
-          code: string
           created_at?: string
           date_acquired: string
-          id?: number
+          equipment_type_id: string
+          id?: string
           item_name: string
-          office_assigned?: string | null
-          reference: string
+          office_id?: string | null
+          property_code?: string | null
+          reference_number: string
           serial_number: string
           status?: Database["public"]["Enums"]["equipment_status"]
-          type: number
         }
         Update: {
-          code?: string
           created_at?: string
           date_acquired?: string
-          id?: number
+          equipment_type_id?: string
+          id?: string
           item_name?: string
-          office_assigned?: string | null
-          reference?: string
+          office_id?: string | null
+          property_code?: string | null
+          reference_number?: string
           serial_number?: string
           status?: Database["public"]["Enums"]["equipment_status"]
-          type?: number
         }
         Relationships: [
           {
-            foreignKeyName: "equipment_office_assigned_fkey"
-            columns: ["office_assigned"]
+            foreignKeyName: "equipment_equipment_type_id_fkey"
+            columns: ["equipment_type_id"]
             isOneToOne: false
-            referencedRelation: "office"
+            referencedRelation: "equipment_type"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "equipment_type_fkey"
-            columns: ["type"]
+            foreignKeyName: "equipment_office_id_fkey"
+            columns: ["office_id"]
             isOneToOne: false
-            referencedRelation: "equipment_type"
+            referencedRelation: "offices"
             referencedColumns: ["id"]
           },
         ]
       }
       equipment_type: {
         Row: {
-          available_count: number
           created_at: string
-          id: number
-          is_public: boolean | null
+          id: string
+          is_public: boolean
           office_id: string | null
-          total_count: number | null
-          type: string
+          type_name: string
         }
         Insert: {
-          available_count: number
           created_at?: string
-          id?: number
-          is_public?: boolean | null
+          id?: string
+          is_public?: boolean
           office_id?: string | null
-          total_count?: number | null
-          type: string
+          type_name: string
         }
         Update: {
-          available_count?: number
           created_at?: string
-          id?: number
-          is_public?: boolean | null
+          id?: string
+          is_public?: boolean
           office_id?: string | null
-          total_count?: number | null
-          type?: string
+          type_name?: string
         }
         Relationships: [
           {
             foreignKeyName: "equipment_type_office_id_fkey"
             columns: ["office_id"]
             isOneToOne: false
-            referencedRelation: "office"
+            referencedRelation: "offices"
             referencedColumns: ["id"]
           },
         ]
@@ -145,28 +299,67 @@ export type Database = {
       grade_level: {
         Row: {
           created_at: string
-          department: number
-          id: number
-          level: number
+          department_id: string | null
+          grade_level: number | null
+          id: string
         }
         Insert: {
           created_at?: string
-          department: number
-          id?: number
-          level: number
+          department_id?: string | null
+          grade_level?: number | null
+          id?: string
         }
         Update: {
           created_at?: string
-          department?: number
-          id?: number
-          level?: number
+          department_id?: string | null
+          grade_level?: number | null
+          id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "grade_level_department_fkey"
-            columns: ["department"]
+            foreignKeyName: "grade_level_department_id_fkey"
+            columns: ["department_id"]
             isOneToOne: false
             referencedRelation: "department"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      in_charge: {
+        Row: {
+          created_at: string
+          id: string
+          office_id: string
+          profile_id: string
+          role: Database["public"]["Enums"]["roles"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          office_id: string
+          profile_id: string
+          role: Database["public"]["Enums"]["roles"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          office_id?: string
+          profile_id?: string
+          role?: Database["public"]["Enums"]["roles"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "in_charge_office_id_fkey"
+            columns: ["office_id"]
+            isOneToOne: false
+            referencedRelation: "offices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "in_charge_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -174,18 +367,18 @@ export type Database = {
       location_of_use: {
         Row: {
           created_at: string
-          id: number
-          name: string
+          id: string
+          location_name: string
         }
         Insert: {
           created_at?: string
-          id?: number
-          name: string
+          id?: string
+          location_name: string
         }
         Update: {
           created_at?: string
-          id?: number
-          name?: string
+          id?: string
+          location_name?: string
         }
         Relationships: []
       }
@@ -234,61 +427,50 @@ export type Database = {
           },
         ]
       }
-      office: {
+      offices: {
         Row: {
           created_at: string
           id: string
-          in_charge: string | null
-          office: string | null
+          office_name: string
         }
         Insert: {
           created_at?: string
           id?: string
-          in_charge?: string | null
-          office?: string | null
+          office_name: string
         }
         Update: {
           created_at?: string
           id?: string
-          in_charge?: string | null
-          office?: string | null
+          office_name?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "office_in_charge_fkey"
-            columns: ["in_charge"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       place_of_use: {
         Row: {
           created_at: string
-          department: number
-          id: number
-          number: string
-          room: Database["public"]["Enums"]["room_enums"]
+          department_id: string | null
+          id: string
+          number: string | null
+          room: Database["public"]["Enums"]["room_enums"] | null
         }
         Insert: {
           created_at?: string
-          department: number
-          id?: number
-          number: string
-          room: Database["public"]["Enums"]["room_enums"]
+          department_id?: string | null
+          id?: string
+          number?: string | null
+          room?: Database["public"]["Enums"]["room_enums"] | null
         }
         Update: {
           created_at?: string
-          department?: number
-          id?: number
-          number?: string
-          room?: Database["public"]["Enums"]["room_enums"]
+          department_id?: string | null
+          id?: string
+          number?: string | null
+          room?: Database["public"]["Enums"]["room_enums"] | null
         }
         Relationships: [
           {
-            foreignKeyName: "place_of_use_department_fkey"
-            columns: ["department"]
+            foreignKeyName: "place_of_use_department_id_fkey"
+            columns: ["department_id"]
             isOneToOne: false
             referencedRelation: "department"
             referencedColumns: ["id"]
@@ -297,50 +479,44 @@ export type Database = {
       }
       profiles: {
         Row: {
-          avatar_url: string | null
-          email: string
+          created_at: string
+          email: string | null
           first_name: string | null
           id: string
-          is_online: boolean
+          is_online: boolean | null
           last_name: string | null
-          office_assigned: string | null
-          role: Database["public"]["Enums"]["app_role"] | null
+          office_id: string | null
+          role: Database["public"]["Enums"]["roles"] | null
           school_id: string | null
-          updated_at: string | null
-          website: string | null
         }
         Insert: {
-          avatar_url?: string | null
-          email: string
+          created_at?: string
+          email?: string | null
           first_name?: string | null
           id: string
-          is_online?: boolean
+          is_online?: boolean | null
           last_name?: string | null
-          office_assigned?: string | null
-          role?: Database["public"]["Enums"]["app_role"] | null
+          office_id?: string | null
+          role?: Database["public"]["Enums"]["roles"] | null
           school_id?: string | null
-          updated_at?: string | null
-          website?: string | null
         }
         Update: {
-          avatar_url?: string | null
-          email?: string
+          created_at?: string
+          email?: string | null
           first_name?: string | null
           id?: string
-          is_online?: boolean
+          is_online?: boolean | null
           last_name?: string | null
-          office_assigned?: string | null
-          role?: Database["public"]["Enums"]["app_role"] | null
+          office_id?: string | null
+          role?: Database["public"]["Enums"]["roles"] | null
           school_id?: string | null
-          updated_at?: string | null
-          website?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "profiles_office_assigned_fkey"
-            columns: ["office_assigned"]
+            foreignKeyName: "profiles_office_id_fkey"
+            columns: ["office_id"]
             isOneToOne: false
-            referencedRelation: "office"
+            referencedRelation: "offices"
             referencedColumns: ["id"]
           },
         ]
@@ -348,212 +524,44 @@ export type Database = {
       purpose: {
         Row: {
           created_at: string
-          id: number
-          name: string
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          name: string
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          name?: string
-        }
-        Relationships: []
-      }
-      releases: {
-        Row: {
-          accepted_by: string | null
-          booking_id: string
-          equipment_id: number | null
           id: string
-          is_returned: boolean
-          released_by: string | null
-          request_type: Database["public"]["Enums"]["request_type"]
-          time_released: string
-          time_returned: string | null
-          venue_id: number | null
+          purpose_name: string
         }
         Insert: {
-          accepted_by?: string | null
-          booking_id: string
-          equipment_id?: number | null
-          id?: string
-          is_returned?: boolean
-          released_by?: string | null
-          request_type: Database["public"]["Enums"]["request_type"]
-          time_released?: string
-          time_returned?: string | null
-          venue_id?: number | null
-        }
-        Update: {
-          accepted_by?: string | null
-          booking_id?: string
-          equipment_id?: number | null
-          id?: string
-          is_returned?: boolean
-          released_by?: string | null
-          request_type?: Database["public"]["Enums"]["request_type"]
-          time_released?: string
-          time_returned?: string | null
-          venue_id?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "releases_accepted_by_fkey"
-            columns: ["accepted_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "releases_booking_id_fkey"
-            columns: ["booking_id"]
-            isOneToOne: false
-            referencedRelation: "requests"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "releases_equipment_id_fkey"
-            columns: ["equipment_id"]
-            isOneToOne: false
-            referencedRelation: "equipment"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "releases_released_by_fkey"
-            columns: ["released_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "releases_venue_id_fkey"
-            columns: ["venue_id"]
-            isOneToOne: false
-            referencedRelation: "venue"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      requests: {
-        Row: {
-          contact_number: string
-          created_at: string
-          date_of_use: string
-          department: string
-          designation: string
-          equipment: string | null
-          first_name: string
-          grade_level: string
-          id: string
-          is_active: boolean | null
-          last_name: string
-          location_of_use: string
-          office: string | null
-          place_of_use: string
-          purpose: string
-          status: Database["public"]["Enums"]["request_status_enums"]
-          subject: string
-          time_of_end: string
-          time_of_start: string
-          type_of_request: Database["public"]["Enums"]["request_type"]
-          user_id: string | null
-          venue: string | null
-        }
-        Insert: {
-          contact_number: string
           created_at?: string
-          date_of_use: string
-          department: string
-          designation: string
-          equipment?: string | null
-          first_name: string
-          grade_level: string
           id?: string
-          is_active?: boolean | null
-          last_name: string
-          location_of_use: string
-          office?: string | null
-          place_of_use: string
-          purpose: string
-          status?: Database["public"]["Enums"]["request_status_enums"]
-          subject: string
-          time_of_end: string
-          time_of_start: string
-          type_of_request: Database["public"]["Enums"]["request_type"]
-          user_id?: string | null
-          venue?: string | null
+          purpose_name: string
         }
         Update: {
-          contact_number?: string
           created_at?: string
-          date_of_use?: string
-          department?: string
-          designation?: string
-          equipment?: string | null
-          first_name?: string
-          grade_level?: string
           id?: string
-          is_active?: boolean | null
-          last_name?: string
-          location_of_use?: string
-          office?: string | null
-          place_of_use?: string
-          purpose?: string
-          status?: Database["public"]["Enums"]["request_status_enums"]
-          subject?: string
-          time_of_end?: string
-          time_of_start?: string
-          type_of_request?: Database["public"]["Enums"]["request_type"]
-          user_id?: string | null
-          venue?: string | null
-        }
-        Relationships: []
-      }
-      role_permissions: {
-        Row: {
-          id: number
-          permission: Database["public"]["Enums"]["app_permission"]
-          role: Database["public"]["Enums"]["app_role"]
-        }
-        Insert: {
-          id?: number
-          permission: Database["public"]["Enums"]["app_permission"]
-          role: Database["public"]["Enums"]["app_role"]
-        }
-        Update: {
-          id?: number
-          permission?: Database["public"]["Enums"]["app_permission"]
-          role?: Database["public"]["Enums"]["app_role"]
+          purpose_name?: string
         }
         Relationships: []
       }
       subject: {
         Row: {
           created_at: string
-          department: number
-          id: number
-          name: string
+          department_id: string | null
+          id: string
+          subject_name: string | null
         }
         Insert: {
           created_at?: string
-          department: number
-          id?: number
-          name: string
+          department_id?: string | null
+          id?: string
+          subject_name?: string | null
         }
         Update: {
           created_at?: string
-          department?: number
-          id?: number
-          name?: string
+          department_id?: string | null
+          id?: string
+          subject_name?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "subject_department_fkey"
-            columns: ["department"]
+            foreignKeyName: "subject_department_id_fkey"
+            columns: ["department_id"]
             isOneToOne: false
             referencedRelation: "department"
             referencedColumns: ["id"]
@@ -563,75 +571,57 @@ export type Database = {
       type_of_request: {
         Row: {
           created_at: string
-          id: number
-          name: Database["public"]["Enums"]["request_type"]
+          id: string
+          type_name: string
         }
         Insert: {
           created_at?: string
-          id?: number
-          name: Database["public"]["Enums"]["request_type"]
+          id?: string
+          type_name: string
         }
         Update: {
           created_at?: string
-          id?: number
-          name?: Database["public"]["Enums"]["request_type"]
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          id: number
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Insert: {
-          id?: number
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Update: {
-          id?: number
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
+          id?: string
+          type_name?: string
         }
         Relationships: []
       }
       venue: {
         Row: {
           created_at: string
-          id: number
-          office: string | null
-          reference: string
-          status: Database["public"]["Enums"]["venue_status"]
-          type: number
+          id: string
+          office_id: string | null
+          status: Database["public"]["Enums"]["venue_status"] | null
+          venue_name: string | null
+          venue_type: string | null
         }
         Insert: {
           created_at?: string
-          id?: number
-          office?: string | null
-          reference: string
-          status?: Database["public"]["Enums"]["venue_status"]
-          type: number
+          id?: string
+          office_id?: string | null
+          status?: Database["public"]["Enums"]["venue_status"] | null
+          venue_name?: string | null
+          venue_type?: string | null
         }
         Update: {
           created_at?: string
-          id?: number
-          office?: string | null
-          reference?: string
-          status?: Database["public"]["Enums"]["venue_status"]
-          type?: number
+          id?: string
+          office_id?: string | null
+          status?: Database["public"]["Enums"]["venue_status"] | null
+          venue_name?: string | null
+          venue_type?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "venue_office_fkey"
-            columns: ["office"]
+            foreignKeyName: "venue_office_id_fkey"
+            columns: ["office_id"]
             isOneToOne: false
-            referencedRelation: "office"
+            referencedRelation: "offices"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "venue_type_fkey"
-            columns: ["type"]
+            foreignKeyName: "venue_venue_type_fkey"
+            columns: ["venue_type"]
             isOneToOne: false
             referencedRelation: "venue_type"
             referencedColumns: ["id"]
@@ -640,41 +630,35 @@ export type Database = {
       }
       venue_type: {
         Row: {
-          available_count: number
           created_at: string
-          id: number
+          id: string
           is_public: boolean
-          name: string
           office_id: string | null
           total_capacity: number | null
-          total_count: number
+          venue_name: string
         }
         Insert: {
-          available_count: number
           created_at?: string
-          id?: number
+          id?: string
           is_public?: boolean
-          name: string
           office_id?: string | null
           total_capacity?: number | null
-          total_count: number
+          venue_name: string
         }
         Update: {
-          available_count?: number
           created_at?: string
-          id?: number
+          id?: string
           is_public?: boolean
-          name?: string
           office_id?: string | null
           total_capacity?: number | null
-          total_count?: number
+          venue_name?: string
         }
         Relationships: [
           {
             foreignKeyName: "venue_type_office_id_fkey"
             columns: ["office_id"]
             isOneToOne: false
-            referencedRelation: "office"
+            referencedRelation: "offices"
             referencedColumns: ["id"]
           },
         ]
@@ -687,26 +671,11 @@ export type Database = {
       custom_access_token_hook: { Args: { event: Json }; Returns: Json }
     }
     Enums: {
-      app_permission:
-        | "status_change"
-        | "send_message"
-        | "add_user"
-        | "edit_user"
-        | "edit_tables"
-        | "send_request"
-        | "receive_message"
-      app_role: "administrator" | "user" | "moderator" | "superadmin"
-      department_enums:
-        | "kindergarten"
-        | "elementary"
-        | "high_school"
-        | "senior_high_school"
-      equipment_status: "stored" | "out" | "returned" | "maintenance"
-      gender: "male" | "female" | "other"
-      request_status_enums: "pending" | "approved" | "declined" | "completed"
-      request_type: "venue" | "equipment"
+      booking_type: "pending" | "approved" | "declined" | "completed"
+      equipment_status: "stored" | "out" | "maintenance" | "returned"
+      roles: "user" | "moderator" | "administrator" | "superadmin"
       room_enums: "gs" | "hs"
-      venue_status: "open" | "closed" | "in_use" | "available" | "maintenance"
+      venue_status: "available" | "in_use" | "maintenance"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -834,28 +803,11 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_permission: [
-        "status_change",
-        "send_message",
-        "add_user",
-        "edit_user",
-        "edit_tables",
-        "send_request",
-        "receive_message",
-      ],
-      app_role: ["administrator", "user", "moderator", "superadmin"],
-      department_enums: [
-        "kindergarten",
-        "elementary",
-        "high_school",
-        "senior_high_school",
-      ],
-      equipment_status: ["stored", "out", "returned", "maintenance"],
-      gender: ["male", "female", "other"],
-      request_status_enums: ["pending", "approved", "declined", "completed"],
-      request_type: ["venue", "equipment"],
+      booking_type: ["pending", "approved", "declined", "completed"],
+      equipment_status: ["stored", "out", "maintenance", "returned"],
+      roles: ["user", "moderator", "administrator", "superadmin"],
       room_enums: ["gs", "hs"],
-      venue_status: ["open", "closed", "in_use", "available", "maintenance"],
+      venue_status: ["available", "in_use", "maintenance"],
     },
   },
 } as const

@@ -1,10 +1,8 @@
 'use server'
 
 import { supabaseAdmin } from "../supabase/service";
-import { createClient } from "../supabase/server";
 
 export const AddNewUser = async (formData: FormData) => {
-    const supabase = await createClient()
   
     const data = {
         email: formData.get("email") as string,
@@ -16,6 +14,14 @@ export const AddNewUser = async (formData: FormData) => {
         role: formData.get("role") as string,
         office_assigned: formData.get("office_assigned") as string,
     };
+
+    let is_in_charge_flag = false;
+
+    if (data.role === 'administrator') {
+        is_in_charge_flag = true
+    } else {
+        is_in_charge_flag = false
+    }
 
     // ✅ Validation first
     if (!data.email || !data.password) {
@@ -37,7 +43,8 @@ export const AddNewUser = async (formData: FormData) => {
                 last_name: data.lname ?? null,
                 school_id: data.school_id ?? null,
                 role: data.role ?? "user", // fallback role
-                office_assigned: data.office_assigned ?? null,
+                office_id: data.office_assigned ?? null,
+                is_in_charge: is_in_charge_flag,
             }
         });
 

@@ -26,8 +26,9 @@ export const requestColumns: ColumnDef<Requests>[] = [
         accessorKey: "purpose", 
         size: 90,
         cell: ({ row }) => {
-            const value = row.getValue<string>("purpose");
-            return Capitalize(value);
+            const value = row.original.purpose.purpose_name;
+
+            return formatLabel(value);
         },
     }, 
     {
@@ -38,7 +39,7 @@ export const requestColumns: ColumnDef<Requests>[] = [
 
             return (
                 <span>
-                    {request.type_of_request === "equipment" ? formatLabel(request.equipment as string) : formatLabel(request.venue as string)}
+                    {request.type_of_request.type_name === "equipment" ? formatLabel(request.equipment.type_name as string) : formatLabel(request.venue.venue_name as string)}
                 </span>
             );
         }
@@ -47,8 +48,8 @@ export const requestColumns: ColumnDef<Requests>[] = [
         header: "Subject",
         accessorKey: "subject",
         cell: ({ row }) => {
-            const value = row.getValue<string>("subject");
-            return (value);
+            const value = row.original.subject;
+            return formatLabel(value.subject_name);
         },
     },
     {
@@ -69,8 +70,9 @@ export const requestColumns: ColumnDef<Requests>[] = [
         header: "Room",
         accessorKey: "place_of_use",
         cell: ({ row }) => {
-            const value = row.getValue<string>("place_of_use");
-            return formatLabel(value);
+            const value = row.original.place_of_use;
+
+            return `${CapitalizeAll(value.room)} ${value.number}`;
         },
     },
     {
@@ -93,7 +95,7 @@ export const requestColumns: ColumnDef<Requests>[] = [
         header: "Status",
         accessorKey: "status",
         cell: ({ row }) => {
-            const status = row.getValue("status") as string;
+            const status = row.original.status;
             const statusClass = getStatusStyles(status);
 
             return (

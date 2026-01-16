@@ -20,6 +20,7 @@ import { useQueryClient } from "@tanstack/react-query"
 
 import { CardContainer, CardContent, CardDescription, CardWrapper } from "../card"
 import { formatLabel } from "@/utils/handlers/capitalize"
+import { FetchOfficeOptions } from "@/utils/server-actions/fetch-office"
 
 type VenueStatusCount = {
     total: number
@@ -95,6 +96,13 @@ const VenuesList = () => {
     if (venuesTypeError) {
         toast.error(venuesTypeError.message)
     }
+
+    const { data: officeData, error: officeError } = useQuery({
+        queryKey: ['office-options'],
+        queryFn: FetchOfficeOptions,
+    })
+
+    if (officeError) toast.error(officeError.message)
     
     const isLoading = venuesPending || venuesTypePending
 
@@ -116,7 +124,7 @@ const VenuesList = () => {
             maintenance: 0,
         };
 
-        venuesData.data.forEach((req) => {
+        venuesData.data.forEach((req: any) => {
             if (req.status in newCounts) {
                 newCounts[req.status as keyof VenueStatusCount] += 1;
             }
@@ -296,6 +304,9 @@ const VenuesList = () => {
                             header="Venues"
                             tableType={tableType}
                             isAdminLayout={true}
+                            pageSize={8}
+                            options={officeData?.data || []}
+                            isInventory={false}
                         /> 
                     ) : (
                         <VenuesDataTable
@@ -307,6 +318,9 @@ const VenuesList = () => {
                             header="Venue Types"
                             tableType={tableType}
                             isAdminLayout={true}
+                            pageSize={8}
+                            options={officeData?.data || []}
+                            isInventory={false}
                         /> 
                     )
                 )}

@@ -28,7 +28,7 @@ const EditFormItem = async ({ table, form, item }: ActionProps) => {
             const { error: departmentError } = await supabase
             .from('department')
             .update({
-                name: formatSpaceToUnderscore(formData.name)
+                department_name: formatSpaceToUnderscore(formData.name)
             })
             .eq('id', item.id)
 
@@ -42,7 +42,7 @@ const EditFormItem = async ({ table, form, item }: ActionProps) => {
             const { error: designationError } = await supabase
             .from('designation')
             .update({
-                name: formatSpaceToUnderscore(formData.name)
+                designation_name: formatSpaceToUnderscore(formData.name)
             })
             .eq('id', item.id)
 
@@ -56,7 +56,7 @@ const EditFormItem = async ({ table, form, item }: ActionProps) => {
             const { error: purposeError } = await supabase
             .from('purpose')
             .update({
-                name: formatSpaceToUnderscore(formData.name)
+                purpose_name: formatSpaceToUnderscore(formData.name)
             })
             .eq('id', item.id)
 
@@ -69,7 +69,7 @@ const EditFormItem = async ({ table, form, item }: ActionProps) => {
             const { error: typeError } = await supabase
             .from('type_of_request')
             .update({
-                name: formatSpaceToUnderscore(formData.name)
+                type_name: formatSpaceToUnderscore(formData.name)
             })
             .eq('id', item.id)
 
@@ -82,7 +82,7 @@ const EditFormItem = async ({ table, form, item }: ActionProps) => {
             const { error: locationError } = await supabase
             .from('location_of_use')
             .update({
-                name: formatSpaceToUnderscore(formData.name)
+                location_name: formatSpaceToUnderscore(formData.name)
             })
             .eq('id', item.id)
 
@@ -95,8 +95,8 @@ const EditFormItem = async ({ table, form, item }: ActionProps) => {
             const { error: gradeError } = await supabase
             .from('grade_level')
             .update({
-                department: formData.department,
-                level: formData.level
+                department_id: formData.department,
+                grade_level: formData.level
             })
             .eq('id', item.id)
 
@@ -109,7 +109,7 @@ const EditFormItem = async ({ table, form, item }: ActionProps) => {
             const { error: placeError } = await supabase
             .from('place_of_use')
             .update({
-                department: formData.department,
+                department_id: formData.department,
                 room: formData.room,
                 number: formData.number
             })
@@ -124,8 +124,8 @@ const EditFormItem = async ({ table, form, item }: ActionProps) => {
             const { error: subjectError } = await supabase
             .from('subject')
             .update({
-                department: formData.department,
-                name: formatSpaceToUnderscore(formData.subject),
+                department_id: formData.department,
+                subject_name: formatSpaceToUnderscore(formData.subject),
             })
             .eq('id', item.id)
 

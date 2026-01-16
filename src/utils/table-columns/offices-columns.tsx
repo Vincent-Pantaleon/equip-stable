@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Capitalize } from "../handlers/capitalize";
+import { Capitalize, formatLabel } from "../handlers/capitalize";
 import formatDate from "../handlers/format-date";
 import Button from "@/components/button";
 import { formatCreatedAt } from "../handlers/capitalize";
@@ -14,7 +14,7 @@ interface TypeActionProps {
 export const OfficeTableColumns = ({ onUpdate, onDelete }: TypeActionProps): ColumnDef<Office>[] => [
     {
         header: "Office ID",
-        accessorKey: "id",
+        accessorFn: (row) => row.id,
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
@@ -25,10 +25,9 @@ export const OfficeTableColumns = ({ onUpdate, onDelete }: TypeActionProps): Col
             )
         }
     },
-
     {
         header: "Created at",
-        accessorKey: "created_at",
+        accessorFn: (row) => row.created_at,
         cell: ({ getValue }) => {
             const value = getValue<string>() // get raw cell value
             return (
@@ -44,15 +43,20 @@ export const OfficeTableColumns = ({ onUpdate, onDelete }: TypeActionProps): Col
         }
     },
     {
-        header: "Office",
-        accessorKey: "office",
+        header: "Office Name",
+        accessorFn: (row) => row.office_name,
+        cell: ({ getValue }) => {
+            const value = getValue()
+
+            return <p className="font-semibold">{formatLabel(value as string)}</p>
+        },
         size: 200
     },
     {
         header: "Person In Charge",
         accessorFn: row => {
-            const fname = row.in_charge.first_name
-            const lname = row.in_charge.last_name
+            const fname = row.profile.first_name
+            const lname = row.profile.last_name
 
             const full = Capitalize(fname) + " " + Capitalize(lname)
 

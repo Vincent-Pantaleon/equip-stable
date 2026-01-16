@@ -8,14 +8,14 @@ const GetEquipmentTypes = async () => {
     
     const { data, error } = await supabase
     .from('equipment_type')
-    .select('type')
+    .select('id, type_name')
 
     if (error) {
         return { status: false, message: "Failed fetching equipment types" }
     }
 
     const normalizedData = data.map((item) => (
-        { label: formatLabel(item.type), value: formatSpaceToUnderscore(item.type) }
+        { label: formatLabel(item.type_name), value: item.id }
     ))
 
     return { status: true, message: "Equipment types fetched successfully", data: normalizedData}

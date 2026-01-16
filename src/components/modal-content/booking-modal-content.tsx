@@ -15,8 +15,10 @@ import { toast } from "sonner";
 import { SelectInput } from "../input";
 
 const StatusOptions = [
+    { label: "Pending", value: "pending" },
     { label: "Approved", value: "approved" },
     { label: "Declined", value: "declined" },
+    { label: "Completed", value: "completed" }
 ]
 
 interface ModalProps {
@@ -67,23 +69,23 @@ export function BookingModalContent({ request, isAdmin = false, action }: ModalP
                     </div>
                     <div>
                         <h3 className="text-gray-500">Department</h3>
-                        <p className="font-bold">{formatLabel(request.department)}</p>
+                        <p className="font-bold">{formatLabel(request.department.department_name)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Designation</h3>
-                        <p className="font-bold">{Capitalize(request.designation)}</p>
+                        <p className="font-bold">{Capitalize(request.designation.designation_name)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Grade Level</h3>
-                        <p className="font-bold">{formatLabel(request.grade_level)}</p>
+                        <p className="font-bold">{(request.grade_level.grade_level)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Subject</h3>
-                        <p className="font-bold">{formatLabel(request.subject)}</p>
+                        <p className="font-bold">{formatLabel(request.subject.subject_name)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Type of Request</h3>
-                        <p className="font-bold">{formatLabel(request.type_of_request)}</p>
+                        <p className="font-bold">{formatLabel(request.type_of_request.type_name)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Date of Use</h3>
@@ -97,23 +99,23 @@ export function BookingModalContent({ request, isAdmin = false, action }: ModalP
                     </div>
                     <div>
                         <h3 className="text-gray-500">Purpose</h3>
-                        <p className="font-bold">{Capitalize(request.purpose)}</p>
+                        <p className="font-bold">{Capitalize(request.purpose.purpose_name)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Office</h3>
-                        <p className="font-bold">{request.office ? formatLabel(request.office) : "No Office"}</p>
+                        <p className="font-bold">{request.office ? formatLabel(request.office.office_name) : "No Office"}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Location of Use</h3>
-                        <p className="font-bold">{formatLabel(request.location_of_use)}</p>
+                        <p className="font-bold">{formatLabel(request.location_of_use.location_name)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Place of Use</h3>
-                        <p className="font-bold">{formatLabel(request.place_of_use)}</p>
+                        <p className="font-bold">{formatLabel(request.place_of_use.room)} {formatLabel(request.place_of_use.number)}</p>
                     </div>
                     <div>
-                        <h3 className="text-gray-500">{request.type_of_request === 'equipment' ? "Equipment" : "Venue"}</h3>
-                        <p className="font-bold">{request.type_of_request === 'equipment' ? formatLabel(request.equipment as string) : formatLabel(request.venue as string) }</p>
+                        <h3 className="text-gray-500">{request.type_of_request.type_name === 'equipment' ? "Equipment" : "Venue"}</h3>
+                        <p className="font-bold">{request.type_of_request.type_name === 'equipment' ? formatLabel(request.equipment.type_name as string) : formatLabel(request.venue.venue_name as string) }</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Created At</h3>

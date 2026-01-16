@@ -84,7 +84,7 @@ const EquipmentUpdateForm = ({ equipment, onClose }: EquipmentUpdateFormProps) =
 
             <div>
                 <h3 className="text-gray-500">Equipment Type</h3>
-                <p className="font-semibold">{Capitalize(equipment.type.type)}</p>
+                <p className="font-semibold">{Capitalize(equipment.type.type_name)}</p>
             </div>
 
             <div>
@@ -111,16 +111,16 @@ const EquipmentUpdateForm = ({ equipment, onClose }: EquipmentUpdateFormProps) =
                     label="Reference"
                     name="reference"
                     type="text"
-                    defaultValue={equipment.reference as string}
-                    placeholder={equipment.reference}
+                    defaultValue={equipment.reference_number as string}
+                    placeholder={equipment.reference_number}
                 />
                 <Input
                     id="code"
                     label="Code"
                     name="code"
                     type="text"
-                    defaultValue={equipment.code as string}
-                    placeholder={equipment.code as string}
+                    defaultValue={equipment.property_code as string}
+                    placeholder={equipment.property_code as string}
                 />
                 <Input
                     id="serial_number"
@@ -223,7 +223,7 @@ const EquipmentTypeUpdateForm = ({equipmentType, onClose}: EquipmentTypeUpdateFo
 
                 <div>
                     <h3 className="text-gray-500">Office</h3>
-                    <p className="font-semibold">{equipmentType.office_id ?? "No Office Assigned"}</p>
+                    <p className="font-semibold">{equipmentType.office.id ?? "No Office Assigned"}</p>
                 </div>
 
             </div>
@@ -233,14 +233,7 @@ const EquipmentTypeUpdateForm = ({equipmentType, onClose}: EquipmentTypeUpdateFo
                     label="Type"
                     name="type"
                     type="text"
-                    defaultValue={Capitalize(String(equipmentType.type))}
-                />
-                <Input
-                    id="total_count"
-                    label="Total Count"
-                    name="total_count"
-                    type="number"
-                    defaultValue={String(equipmentType.total_count)}
+                    defaultValue={Capitalize(String(equipmentType.type_name))}
                 />
                 <SelectInput
                     label="Public"

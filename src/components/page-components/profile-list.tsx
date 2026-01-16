@@ -25,7 +25,7 @@ const ProfileListTable = () => {
     if (error) {
         toast.error(error.message)
     }
-
+    
     const handleAction = (actionType: typeof action, item: Profile | null) => {
         setSelectedItem(item)
         setAction(actionType)
@@ -91,7 +91,7 @@ const ProfileListTable = () => {
             {openModal && (
                 <Modal
                     header={
-                        action === "update-profile" ? "Update Profile" :
+                        action === "update-profile" ? "View Profile" :
                         action === "delete-profile" ? "Delete Profile" : 
                         ""
                     }

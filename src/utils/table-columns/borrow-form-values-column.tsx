@@ -33,7 +33,7 @@ export const DesignationColumns = ({ onDelete, onUpdate }: DesignationProps): Co
     },
     {
         header: "Designation",
-        accessorKey: "name",
+        accessorKey: "designation_name",
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
@@ -97,7 +97,7 @@ export const DepartmentColumns = ({ onDelete, onUpdate }: DepartmentProps): Colu
     },
     {
         header: "Department",
-        accessorKey: "name",
+        accessorKey: "department_name",
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
@@ -161,7 +161,7 @@ export const PurposeColumns = ({ onDelete, onUpdate }: PurposeProps): ColumnDef<
     },
     {
         header: "Purpose",
-        accessorKey: "name",
+        accessorKey: "purpose_name",
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
@@ -225,7 +225,7 @@ export const TypeOfRequestColumns = ({ onDelete, onUpdate }: TypeOfRequestProps)
     },
     {
         header: "Type",
-        accessorKey: "name",
+        accessorKey: "type_name",
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
@@ -291,7 +291,7 @@ export const PlaceOfUseColumns = ({ onDelete, onUpdate }: PlaceOfUseProps): Colu
         id: "department",
         header: "Department",
         accessorFn: (row) => {
-            const value = row.department.name
+            const value = row.department.department_name
 
             return formatLabel(value)
         }
@@ -330,8 +330,8 @@ export const PlaceOfUseColumns = ({ onDelete, onUpdate }: PlaceOfUseProps): Colu
 ]
 
 interface LocationOfUseProps {
-    onDelete: (item: Department) => void;
-    onUpdate: (item: Department) => void;
+    onDelete: (item: LocationOfUse) => void;
+    onUpdate: (item: LocationOfUse) => void;
 }
 
 export const LocationOfUseColumns = ({ onDelete, onUpdate }: LocationOfUseProps): ColumnDef<LocationOfUse>[] => [
@@ -358,7 +358,7 @@ export const LocationOfUseColumns = ({ onDelete, onUpdate }: LocationOfUseProps)
     },
     {
         header: "Location",
-        accessorKey: "name",
+        accessorKey: "location_name",
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
@@ -424,14 +424,14 @@ export const SubjectColumns = ({ onDelete, onUpdate }: SubjectProps): ColumnDef<
         id: "department",
         header: "Department",
         accessorFn: (row) => {
-            const value = row.department.name
+            const value = row.department.department_name
 
             return formatLabel(value)
         }
     },
     {
         header: "Subject",
-        accessorKey: "name",
+        accessorKey: "subject_name",
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
@@ -497,14 +497,14 @@ export const GradeLevelColumns = ({ onUpdate, onDelete }: GradeLevelProps): Colu
         id: "department",
         header: "Department",
         accessorFn: (row) => {
-            const value = row.department.name
+            const value = row.department.department_name
 
             return formatLabel(value)
         }
     },
     {
         header: "Level",
-        accessorKey: "level"
+        accessorKey: "grade_level"
     },
         {
             id: "actions",

@@ -3,6 +3,7 @@ import { Capitalize, formatLabel } from "../handlers/capitalize";
 
 import { Pencil, Trash2 } from "lucide-react";
 import Button from "@/components/button";
+import { VenuesTypeNormalized } from "../server-actions/inventory-page-query";
 
 interface VenueActionsProps {
     onUpdate: (venue: Venues) => void
@@ -19,15 +20,16 @@ export const venuesColumns = ({ onUpdate, onDelete }: VenueActionsProps ): Colum
         id: "venue_type",
         header: "Type",
         accessorFn: (row) => {
-            const value = row.type.name
+            const value = row.venue_type.venue_name
 
             return value;
         },
         cell: ({ getValue }) => <p className="font-semibold">{formatLabel(getValue<string>())}</p>
     },
     {
-        header: "Reference",
-        accessorKey: "reference"
+        header: "Venue Name",
+        accessorKey: "venue_name",
+        cell: ({ getValue }) => <p className="font-semibold">{formatLabel(getValue<string>())}</p>
     },
     {
         header: "Status",
@@ -37,6 +39,16 @@ export const venuesColumns = ({ onUpdate, onDelete }: VenueActionsProps ): Colum
 
             return <p className="font-semibold">{value ? Capitalize(value) : "N/A"}</p>
         }
+    },
+    {
+        id: "officeFilter",
+        header: "Office",
+        accessorFn: (row) => row.office?.id, // value used for filtering
+        filterFn: (row, columnId, filterValue) => {
+            if (!filterValue) return true; // no filter, show all
+            return row.getValue(columnId) === filterValue;
+        },
+        cell: ({ row }) => formatLabel(row.original.office.office_name as string) // display office name in table
     },
     {
         id: "actions",
@@ -70,7 +82,7 @@ export const venuesColumns = ({ onUpdate, onDelete }: VenueActionsProps ): Colum
 export const venueTypesColumns = ({ onUpdate, onDelete }: VenueTypeActionsProps): ColumnDef<VenuesType>[] => [
     {
         header: "Name",
-        accessorKey: "name",
+        accessorKey: "venue_name",
         cell: ({ getValue }) => {
             const value = formatLabel(getValue<string>())
 
@@ -82,10 +94,6 @@ export const venueTypesColumns = ({ onUpdate, onDelete }: VenueTypeActionsProps)
         accessorKey: "total_capacity"
     },
     {
-        header: "Total Count",
-        accessorKey: "total_count"
-    },
-    {
         header: "Public",
         accessorKey: "is_public",
         cell: ({ getValue }) => {
@@ -93,6 +101,16 @@ export const venueTypesColumns = ({ onUpdate, onDelete }: VenueTypeActionsProps)
 
             return <p className="font-semibold">{value}</p>
         }
+    },
+    {
+        id: "officeFilter",
+        header: "Office",
+        accessorFn: (row) => row.office?.id, // value used for filtering
+        filterFn: (row, columnId, filterValue) => {
+            if (!filterValue) return true; // no filter, show all
+            return row.getValue(columnId) === filterValue;
+        },
+        cell: ({ row }) => formatLabel(row.original.office?.office_name as string) // display office name in table
     },
     {
         id: "actions",
@@ -123,10 +141,10 @@ export const venueTypesColumns = ({ onUpdate, onDelete }: VenueTypeActionsProps)
     }
 ]
 
-export const venueTypesColumnsNoActions: ColumnDef<VenuesType>[] = [
+export const venueTypesColumnsNoActions: ColumnDef<VenuesTypeNormalized>[] = [
     {
         header: "Name",
-        accessorKey: "name",
+        accessorKey: "venue_name",
         cell: ({ getValue }) => {
             const value = formatLabel(getValue<string>())
 
@@ -138,7 +156,13 @@ export const venueTypesColumnsNoActions: ColumnDef<VenuesType>[] = [
         accessorKey: "total_capacity"
     },
     {
-        header: "Total Count",
-        accessorKey: "total_count"
-    },
+        header: "Office",
+        id: "officeFilter",
+        accessorFn: (row) => row.office?.id, // value used for filtering
+        filterFn: (row, columnId, filterValue) => {
+            if (!filterValue) return true; // no filter, show all
+            return row.getValue(columnId) === filterValue;
+        },
+        cell: ({ row }) => formatLabel(row.original.office?.office_name as string) // display office name in table
+    }
 ]

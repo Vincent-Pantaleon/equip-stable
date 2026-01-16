@@ -8,8 +8,8 @@ const EditEquipmentInformation = async (formData: FormData, equipment: Equipment
 
     const updates = {
         item_name: formatSpaceToUnderscore(formData.get("item_name") as string),
-        reference: formData.get("reference"),
-        code: formData.get("code"),
+        reference_number: formData.get("reference"),
+        property_code: formData.get("code"),
         serial_number: formData.get("serial_number"),
         status: formData.get("status"),
     }

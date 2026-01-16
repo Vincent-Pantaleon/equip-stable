@@ -8,15 +8,19 @@ import { toast } from "sonner"
 import { EquipmentsDataTable } from "../tables/equipments-table"
 import { VenuesDataTable } from "../tables/venues-table"
 import InventoryLoading from "@/app/(app)/inventory/loading"
+import { useQueryClient } from "@tanstack/react-query"
 
 export default function Inventory() {
     const { data: InventoryData, isPending, isError } = useQuery({
         queryKey: ['inventory-data'],
         queryFn: GetInventoryData,
-        staleTime: 1000 * 60 * 5,
     })
 
-    console.log(InventoryData?.venues)
+    console.log(InventoryData)
+
+    // const queryClient = useQueryClient()
+
+    // queryClient.invalidateQueries({queryKey: ['inventory-data']})
 
     if (isError) {
         toast.error(isError)
@@ -32,8 +36,10 @@ export default function Inventory() {
                         <EquipmentsDataTable 
                             columns={equipmentColumns} 
                             data={InventoryData?.equipments || []}
-                            isEquipmentType={true}
+                            isEquipmentType={false}
                             pageSize={8}
+                            offices={InventoryData?.offices || []}
+                            isInventory={true}
                         />
                     </>
                 )}
@@ -49,6 +55,9 @@ export default function Inventory() {
                             header="Venues"
                             tableType="venues"
                             isAdminLayout={false}
+                            options={InventoryData?.offices || []}
+                            pageSize={8}
+                            isInventory={true}
                         />
                     </>
                 )}

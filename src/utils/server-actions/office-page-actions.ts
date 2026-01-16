@@ -1,27 +1,39 @@
 'use server'
 
+import { formatLabel, formatSpaceToUnderscore } from "../handlers/capitalize"
 import { createClient } from "../supabase/server"
+
 
 const GetOfficeList = async () => {
     const supabase = await createClient()
 
     const { data, error } = await supabase
-    .from('office')
-    .select('*, in_charge: in_charge(first_name, last_name, id)')
+    .from('offices')
+    .select('id, office_name, created_at, profile: profile(id, first_name, last_name)')
 
     if (error) {
+        console.log(error)
         return { status: false, message: "Failed fetching office list" }
     }
 
-    return { status: true, message: "Fetched office list successfully", data: data }
+    const normalizedData = data.map((office) => ({
+        id: office.id,
+        office_name: office.office_name,
+        created_at: office.created_at,
+        profile: office.profile.length > 0
+        ? office.profile[0]
+        : null
+    }))
+
+    return { status: true, message: "Fetched office list successfully", data: normalizedData }
 }
 
 const GetOfficeNames = async () => {
     const supabase = await createClient()
 
     const { data, error } = await supabase.
-    from('office')
-    .select('office, id')
+    from('offices')
+    .select('office_name, id')
 
     if (error) {
         return { status: false, message: "Failed fetching office list" }
@@ -29,7 +41,7 @@ const GetOfficeNames = async () => {
 
     const normalized =
         data?.map((item) => ({
-        label: item.office,
+        label: formatLabel(item.office_name),
         value: item.id,
     })) ?? []
 
@@ -43,35 +55,53 @@ const GetOfficeNames = async () => {
 const AddNewOffice = async (formData: FormData) => {
     const supabase = await createClient()
 
-    const data = {
-        office: formData.get('office') as string,
-        id: formData.get('in_charge') as string,
+    const officeName = formData.get('office') as string
+    const profileId = formData.get('in_charge') as string
+
+    if (!officeName || !profileId) {
+        return { status: false, message: "Missing required fields" }
     }
 
-    // logic to find if in_charge is valid or not
-    const { error: profileError } = await supabase 
-    .from('profiles')
-    .select('id')
-    .eq('id', data.id)
+    // 1️⃣ Validate profile exists
+    const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', profileId)
+        .single()
 
     if (profileError) {
         return { status: false, message: "Profile does not exist" }
     }
 
-    const { error: insertError } = await supabase
-    .from('office')
-    .insert([
-        { 
-            office: data.office, 
-            in_charge: data.id
-        }
-    ])
+    // 2️⃣ Insert office AND get ID immediately
+    const { data: office, error: officeError } = await supabase
+        .from('offices')
+        .insert({
+            office_name: formatSpaceToUnderscore(officeName),
+        })
+        .select('id')
+        .single()
 
-    if (insertError) {
-        return { status: false, message: "Failed adding new office" }
+    if (officeError) {
+        console.error(officeError)
+        return { status: false, message: "Failed to create office" }
     }
 
-    return { status: true, message: "Successfully added new office"}
+    // 3️⃣ Create junction row
+    const { error: inChargeError } = await supabase
+        .from('in_charge')
+        .insert({
+        office_id: office.id,
+        profile_id: profileId,
+        })
+
+    if (inChargeError) {
+        console.error(inChargeError)
+        return { status: false, message: "Failed to assign in charge" }
+    }
+
+    return { status: true, message: "Successfully added new office" }
 }
+
 
 export { GetOfficeList, GetOfficeNames, AddNewOffice }

@@ -43,7 +43,6 @@ export default function LoginForm() {
         }
     }, [error])
 
-
     return (
         <form
             onSubmit={handleSubmit}

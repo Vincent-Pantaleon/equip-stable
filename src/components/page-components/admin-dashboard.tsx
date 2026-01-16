@@ -114,7 +114,7 @@ const AdminDashboard = () => {
                     <MainLayoutLoading />
                 ) : (
                     <div className='grid gap-2 p-2 overflow-auto grid-cols-2'>
-                        {/* Line Chart - BOOKING BY MONTH */}
+                        {/* Line Chart - BOOKING BY MONTH  (NEED FIXING ASAP) */}
                         <div className='p-3 outline-1 rounded-lg'>
                             <h2 className='text-lg mb-4'>Booking Activity</h2>
                             <div>
@@ -149,11 +149,7 @@ const AdminDashboard = () => {
                                         }}
                                     />
 
-                                    <Legend
-                                        wrapperStyle={{
-                                        color: "#374151",
-                                        }}
-                                    />
+                                    <Legend />
 
                                     <Line
                                         type="monotone"
@@ -167,7 +163,7 @@ const AdminDashboard = () => {
 
                             </div>
                         </div>
-                        {/* Bar Chart - BY ITEM (SWAP BETWEEN EQUIPMENT OR VENUE)*/}
+                        {/* Bar Chart - BY ITEM (SWAP BETWEEN EQUIPMENT OR VENUE) (NEED FIXING ASAP)*/}
                         <div className='p-3 outline-1 rounded-lg'>
                             <h2 className='text-lg mb-4'>Total Borrowed Items</h2>
 

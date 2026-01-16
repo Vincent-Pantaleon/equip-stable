@@ -22,17 +22,33 @@ import {
 import { Button } from "../ui/button"
 
 import { useState } from "react"
+import { TableFilter } from "../table-filter"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     pageSize: number
+    offices?: {
+        label: string
+        value: string
+    }[]
+    role?: string
 }
+
+const options = [
+    { label: "All", value: "" },
+    { label: "Pending", value: "pending" },
+    { label: "Approved", value: "approved" },
+    { label: "Declined", value: "declined" },
+    { label: "Completed", value: "completed" },
+]
 
 export function BookingDataTable<TData, TValue>({
     columns,
     data,
-    pageSize
+    pageSize,
+    offices,
+    role
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [pagination, setPagination] = useState({
@@ -44,7 +60,10 @@ export function BookingDataTable<TData, TValue>({
         data,
         columns,
         state: { columnFilters, pagination },
-        onColumnFiltersChange: setColumnFilters,
+        onColumnFiltersChange: (updater) => {
+            setColumnFilters(updater),
+            setPagination((prev) => ({ ...prev, pageIndex: 0 }))
+        },
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         columnResizeMode: "onChange",
@@ -57,19 +76,26 @@ export function BookingDataTable<TData, TValue>({
             <div className="flex mb-2 items-center justify-between">
                 <h1 className="text-lg">Bookings</h1>
 
-                <div className="border-1 rounded-lg px-1">
-                    <select 
-                        name="filter" 
-                        id="filter" 
+                <div className="flex gap-2 items-center">
+                    <label htmlFor="status_filter">Status:</label>
+                    <TableFilter
+                        name="status_filter"
+                        onChange={(e) => table.getColumn("status")?.setFilterValue(e.target.value || undefined)}
                         value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
-                        onChange={(e) => table.getColumn("status")?.setFilterValue(e.target.value || undefined)
-                    }>
-                        <option value="">All</option>
-                        <option value="pending">Pending</option>
-                        <option value="approved">Approved</option>
-                        <option value="declined">Declined</option>
-                        <option value="completed">Completed</option>
-                    </select>
+                        options={options}
+                    />
+
+                    {role === 'superadmin' && (
+                        <>
+                            <label htmlFor="office_filter">Office:</label>
+                            <TableFilter
+                                name="office_filter"
+                                onChange={(e) => table.getColumn("offices")?.setFilterValue(e.target.value || undefined)}
+                                value={(table.getColumn("offices")?.getFilterValue() as string) ?? ""}
+                                options={offices || []}
+                            />
+                        </>
+                    )}
                 </div>
             </div>
             

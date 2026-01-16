@@ -1,19 +1,21 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Capitalize } from "../handlers/capitalize";
+import { Capitalize, formatLabel } from "../handlers/capitalize";
+import { EquipmentTypeNormalized } from "../server-actions/inventory-page-query";
 
-export const equipmentColumns: ColumnDef<EquipmentTypeType>[] = [
+export const equipmentColumns: ColumnDef<EquipmentTypeNormalized>[] = [
     {
         header: "Equipment",
         accessorKey: "name",
-        cell: ({ row }) => {
-            return (
-                <p className="font-semibold">{Capitalize(row.original.type)}</p>
-            )
-
-        }
+        cell: ({ row }) => <p className="font-semibold">{Capitalize(row.original.type_name)}</p>
     },
     {
-        header: "Total Count",
-        accessorKey: "total_count"
+        id: "officeFilter",
+        header: "Office",
+        accessorFn: (row) => row.office?.id, // value used for filtering
+        filterFn: (row, columnId, filterValue) => {
+            if (!filterValue) return true; // no filter, show all
+            return row.getValue(columnId) === filterValue;
+        },
+        cell: ({ row }) => formatLabel(row.original.office?.office_name as string) // display office name in table
     }
-]
+];

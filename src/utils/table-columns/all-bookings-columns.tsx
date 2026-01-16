@@ -20,14 +20,14 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         header: "Filer's Name",
         accessorFn: row => `${Capitalize(row.first_name)} ${Capitalize(row.last_name)}`,
         cell: ({ getValue }) => getValue(),
-        minSize: 100
+        minSize: 200
     },
     {
         header: "Activity",
         accessorKey: "purpose", 
-        cell: (row) => {
-            const value = row.getValue<string>();
-            return Capitalize(value);
+        cell: ({ row }) => {
+            const value = row.original.purpose;
+            return formatLabel(value.purpose_name);
         },
         minSize: 100
     }, 
@@ -39,7 +39,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
 
             return (
                 <span>
-                    {request.type_of_request === "equipment" ? formatLabel(request.equipment as string) : formatLabel(request.venue as string)}
+                    {request.type_of_request.type_name === "equipment" ? formatLabel(request.equipment.type_name as string) : formatLabel(request.venue.venue_name as string)}
                 </span>
             );
         }
@@ -47,9 +47,9 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
     {
         header: "Subject",
         accessorKey: "subject",
-        cell: (row) => {
-            const value = row.getValue<string>();
-            return Capitalize(value);
+        cell: ({ row }) => {
+            const value = row.original.subject;
+            return formatLabel(value.subject_name);
         },
         minSize: 100
     },
@@ -97,7 +97,19 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
                 </div>
             );
         },
-        minSize: 100
+        minSize: 100,
+        filterFn: "equalsString"
+    },
+    {
+        id: "offices",
+        header: "Office",
+        accessorFn: ( row ) => row.office.id,
+        cell: ({ row }) => {
+            const value = row.original.office.office_name
+
+            return formatLabel(value) ?? "Error"
+        },
+        filterFn: "equalsString"
     },
     {
         id: "actions",
@@ -124,5 +136,5 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
             );
         },
         minSize: 100
-    }
+    },
 ]

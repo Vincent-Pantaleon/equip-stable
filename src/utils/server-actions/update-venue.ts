@@ -1,6 +1,6 @@
 'use server'
 
-import { Capitalize,LowercaseAll } from "../handlers/capitalize"
+import { Capitalize,formatLabel,LowercaseAll } from "../handlers/capitalize"
 import { createClient } from "../supabase/server"
 
 const GetTypes = async () => {
@@ -8,31 +8,31 @@ const GetTypes = async () => {
 
     const { data, error } = await supabase
     .from('venue_type')
-    .select('id, name')
+    .select('id, venue_name')
 
     if (error) {
         return { status: false, message: "Error fetching types" }
     }
 
     const normalizedData = data.map((item) => (
-        { value: item.id, label: Capitalize(item.name) }
+        { value: item.id, label: formatLabelw(item.venue_name) }
     ))
 
     return { status: true, message: "Types fetched successfully", data: normalizedData }
 }
 
-const UpdateVenue = async (formData: FormData, id: number) => {
+const UpdateVenue = async (formData: FormData, id: string) => {
     const supabase = await createClient()
 
     const data = {
-        reference: formData.get("reference") as string,
+        venue_name: formData.get("reference") as string,
         status: formData.get('status') as string,
     }
     
     const { error } = await supabase
     .from('venue')
     .update({
-        reference: data.reference,
+        venue_name: data.venue_name,
         status: data.status
     })
     .eq('id', id)
@@ -44,12 +44,11 @@ const UpdateVenue = async (formData: FormData, id: number) => {
     return { status: true, message: "Venue Update Successful"}
 }
 
-const UpdateVenueType = async (formData: FormData, id: number) => {
+const UpdateVenueType = async (formData: FormData, id: string) => {
     const supabase = await createClient()
 
     const data = {
-        name: formData.get('name'),
-        total_count: formData.get('total_count'),
+        venue_name: formData.get('name'),
         total_capacity: formData.get('total_capacity'),
         is_public: formData.get('is_public')
     }
@@ -57,14 +56,14 @@ const UpdateVenueType = async (formData: FormData, id: number) => {
     const { error } = await supabase
     .from('venue_type')
     .update({
-        'name': data.name,
-        'total_count': data.total_count,
+        'venue_name': data.venue_name,
         'total_capacity': data.total_capacity,
         'is_public': data.is_public
     })
     .eq('id', id)
 
     if (error) {
+        console.log(error)
         return { status: false, message: "Error updating venue" }
     }
 

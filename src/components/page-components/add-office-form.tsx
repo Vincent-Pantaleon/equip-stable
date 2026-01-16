@@ -23,7 +23,7 @@ const AddNewOfficeForm = () => {
         queryKey: ['administrator-list'],
         queryFn: GetAdministratorsList
     })
-
+    
     if (error) {
         toast.error("Error Fetching Administrator List")
     }
@@ -71,6 +71,8 @@ const AddNewOfficeForm = () => {
                     options={data?.data || []}
                     divStyle="col-span-2"
                 />
+
+
 
                 <Button
                     label="Submit"

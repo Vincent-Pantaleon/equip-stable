@@ -8,8 +8,7 @@ const UpdateEquipmentTypeItem = async (formData: FormData, equipmentType: Equipm
     const supabase = await createClient()
 
     const data = {
-        type: (LowercaseAll(formData.get('type') as string)),
-        total_count: Number(formData.get('total_count')),
+        type_name: (LowercaseAll(formData.get('type') as string)),
         is_public: formData.get('is_public') === 'true',
     }
 
@@ -28,6 +27,7 @@ const UpdateEquipmentTypeItem = async (formData: FormData, equipmentType: Equipm
     .eq('id', equipmentType.id)
 
     if (error) {
+        console.log(error)
         return { status: false, message: "Error updating equipment type" }
     }
 

@@ -15,8 +15,7 @@ import { CancelConfirmButtons } from '../cancel-confirm'
 import { EditBorrowFormItem } from './edit-borrow-form-item-form'
 import { DeleteFormValue } from '@/utils/server-actions/delete-form-value'
 
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { formatLabel } from '@/utils/handlers/capitalize'
+import { useQueryClient } from '@tanstack/react-query'
 
 const FormValuesTableList = () => {
     const [openModal, setOpenModal] = useState(false)

@@ -1,13 +1,14 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query"
-import { GetAllRequestData } from "@/utils/server-actions/request-query"
+import { GetAdminRequestData, GetRecentRequestData } from "@/utils/server-actions/request-query"
 import { useMemo, useState, useEffect } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 
 import { BookingDataTable } from "../tables/booking-table"
 import { allRequestColumns } from "@/utils/table-columns/all-bookings-columns"
 import { DeleteBooking } from "@/utils/server-actions/delete-booking"
+import { useInfo } from "@/utils/hooks/user-context"
 
 import Modal from "../modal"
 import { toast } from "sonner"
@@ -45,10 +46,11 @@ const BookingsList = () => {
     });
 
     const queryClient = useQueryClient()
+    const user = useInfo()
 
     const { data: requestData, error: requestError, isPending: requestPending } = useQuery({
         queryKey: ['all-requests-data'],
-        queryFn: GetAllRequestData,
+        queryFn: GetAdminRequestData,
         staleTime: 1000 * 60 * 5,
     })
 
@@ -72,14 +74,14 @@ const BookingsList = () => {
         if (!requestData) return;
 
         const newCounts: StatusCount = {
-            total: requestData.length,
+            total: requestData.requestData.length,
             pending: 0,
             approved: 0,
             declined: 0,
             completed: 0,
         };
 
-        requestData.forEach((req) => {
+        requestData.requestData.forEach((req) => {
             if (req.status in newCounts) {
             newCounts[req.status as keyof StatusCount] += 1;
             }
@@ -137,8 +139,10 @@ const BookingsList = () => {
                 ) : (
                     <BookingDataTable
                         columns={memoizedColumns}
-                        data={requestData || []}
+                        data={requestData?.requestData || []}
                         pageSize={10}
+                        offices={requestData?.officeData || []}
+                        role={user?.role ?? ""}
                     />
                 )}
             </div>

@@ -14,11 +14,12 @@ export default async function GetMessageData() {
     
     const { data: messageData, error: messageError } = await supabase
         .from('messages')
-        .select('id, sender: sender_id(email, first_name,last_name), message, subject, created_at, is_viewed')
+        .select('id, sender: sender_id(email, first_name, last_name), message, subject, created_at, is_viewed')
         .eq('recipient_id', user)
         .order('created_at', { ascending: false });
 
     if (messageError) {
+        console.log(messageError)
         return null
     }
 

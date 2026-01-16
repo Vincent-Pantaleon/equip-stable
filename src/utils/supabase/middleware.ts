@@ -9,7 +9,7 @@ export async function updateSession(request: NextRequest) {
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!,
     {
       cookies: {
         getAll() {
@@ -81,6 +81,29 @@ export async function updateSession(request: NextRequest) {
   ) {
     const url = request.nextUrl.clone()
     url.pathname = '/recents'
+    return NextResponse.redirect(url)
+  }
+
+  if (
+    user && 
+    request.nextUrl.pathname.startsWith('/admin/borrow-form') &&
+    (role === 'moderator' || role === 'administrator')
+  ) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/admin/dashboard'
+    return NextResponse.redirect(url)
+  }
+
+  if (
+    user &&
+    role === 'moderator' && 
+    (
+      request.nextUrl.pathname.startsWith('/admin/profile-list') || 
+      request.nextUrl.pathname.startsWith('/admin/offices')
+    )
+  ) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/admin/dashboard'
     return NextResponse.redirect(url)
   }
 

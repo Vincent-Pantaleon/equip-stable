@@ -6,7 +6,7 @@ const DeleteBooking = async (id: string) => {
     const supabase = await createClient()
 
     const { error } = await supabase
-    .from('requests')
+    .from('bookings')
     .delete()
     .eq('id', id)
 

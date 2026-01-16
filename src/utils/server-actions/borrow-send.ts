@@ -28,26 +28,26 @@ const SendRequest = async (formData: FormData) => {
     }
 
     const {error: requestError} = await supabase
-    .from('requests')
+    .from('bookings')
     .insert([{
         user_id: userId,
         first_name: data.fname,
         last_name: data.lname,
-        designation: data.designation,
-        department: data.department,
+        designation_id: data.designation,
+        department_id: data.department,
         contact_number: data.contactNumber,
-        grade_level: data.gradeLevel,
-        purpose: data.purpose,
-        location_of_use: data.locationOfUse,
-        type_of_request: data.typeOfRequest,
-        place_of_use: data.placeOfUse,
-        equipment: data.equipment ? data.equipment : null,
-        subject: data.subject,
+        grade_level_id: data.gradeLevel,
+        purpose_id: data.purpose,
+        location_of_use_id: data.locationOfUse,
+        type_of_request_id: data.typeOfRequest,
+        place_of_use_id: data.placeOfUse,
+        equipment_id: data.equipment ? data.equipment : null,
+        subject_id: data.subject,
         date_of_use: data.dateOfUse,
         time_of_start: data.timeOfStart,
         time_of_end: data.timeOfEnd,
-        venue: data.venue ? data.venue : null,
-        office: data.office
+        venue_id: data.venue ? data.venue : null,
+        office_id: data.office
     }])
 
     if (requestError) {

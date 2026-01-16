@@ -24,6 +24,7 @@ import {
     CardDescription,
     CardWrapper
 } from "../card"
+import { FetchOfficeOptions } from "@/utils/server-actions/fetch-office"
 
 type EquipmentStatusCount = {
     total: number;
@@ -77,7 +78,13 @@ const AdminEquipments = () => {
     staleTime: 1000 * 60 * 5
   })
 
+  const { data: officeData, error: officeError } = useQuery({
+    queryKey: ['office-data'],
+    queryFn: FetchOfficeOptions,
+  })
+
   if (equipmentError) toast.error(equipmentError.message)
+    if(officeError) toast.error(officeError.message)
 
   const isLoading = typePending || equipmentPending
 
@@ -124,7 +131,7 @@ const AdminEquipments = () => {
           maintenance: 0,
       };
 
-    equipmentData.data.forEach((req) => {
+    equipmentData.data.forEach((req: any) => {
           if (req.status in newCounts) {
           newCounts[req.status as keyof EquipmentStatusCount] += 1;
           }
@@ -180,8 +187,8 @@ const AdminEquipments = () => {
 
   // Component
   return (
-    <div className="flex flex-col gap-y-4 h-full">
-      <div className="col-span-2 mt-4 border-b pb-4">
+    <div className="flex flex-col h-full">
+      <div className="col-span-2 my-4 border-b pb-4">
         <h1 className="text-2xl font-semibold text-gray-800">Equipment inventory</h1>
         <p className="mt-1 text-gray-600 text-sm">
           Manage the list of available equipment and update their quantities.
@@ -231,7 +238,7 @@ const AdminEquipments = () => {
             <Skeleton className="h-10 w-1/5"/>
           </div>
         ) : (
-          <div className="flex justify-end">
+          <div className="flex justify-end mb-4">
             <div className="flex w-fit rounded-lg border-1 p-1 text-sm text-nowrap">
               <button 
                 className={`flex-1 py-1 px-2 rounded-lg hover:cursor-pointer ${!isEquipmentTypeVisible ? 'bg-blue-100 text-slate-700 border-gray-400' : 'text-slate-400' }`}
@@ -262,6 +269,8 @@ const AdminEquipments = () => {
             isEquipmentType={isEquipmentTypeVisible}
             isAdminLayout={true}
             pageSize={7}
+            offices={ officeData?.data || []}
+            isInventory={true}
           />
         ) : (
           <EquipmentsDataTable
@@ -273,6 +282,8 @@ const AdminEquipments = () => {
             isEquipmentType={isEquipmentTypeVisible}
             isAdminLayout={true}
             pageSize={7}
+            offices={officeData?.data || []}
+            isInventory={true}
           />
         )}
       </div>

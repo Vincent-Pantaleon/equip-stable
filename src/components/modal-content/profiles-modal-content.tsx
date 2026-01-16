@@ -1,7 +1,6 @@
 'use client'
 
-import { useState } from "react"
-import { CancelConfirmButtons } from "../cancel-confirm"
+import { formatLabel } from "@/utils/handlers/capitalize"
 
 interface FormProps {
     item: Profile
@@ -30,20 +29,20 @@ const UpdateProfileForm = ({ item, onClose }: FormProps) => {
                         <p className="font-semibold">{item.last_name}</p>
                     </div>
                     <div>
-                        <h3 className="text-gray-500">School ID</h3>
-                        <p className="font-semibold">{item.school_id}</p>
-                    </div>
-                    <div>
                         <h3 className="text-gray-500">Role</h3>
                         <p className="font-semibold">{item.role}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Assigned Office</h3>
-                        <p className="font-semibold">{item.office.office}</p>
+                        <p className="font-semibold">{formatLabel(item.office.office_name)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">School ID</h3>
-                        <p className="font-semibold">{item.is_online ? "Online" : "Offline"}</p>
+                        <p className="font-semibold">{item.school_id}</p>
+                    </div>
+                    <div>
+                        <h3 className="text-gray-500">Is In Charge</h3>
+                        <p className="font-semibold">{item.is_in_charge ? "Yes" : "No"}</p>
                     </div>
                 </div>
 

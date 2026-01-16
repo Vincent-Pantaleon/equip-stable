@@ -62,7 +62,7 @@ const AddVenueForm = () => {
                 />
                 <Input
                     id="reference"
-                    label="Reference"
+                    label="Venue Name"
                     name="reference"
                     type="text"
                 />
@@ -81,7 +81,7 @@ const AddVenueForm = () => {
                     isOpen={openModal}
                     onClose={() => setOpenModal(false)}
                 >
-
+                    Confirm Adding New Venue?
                     <CancelConfirmButtons
                         onCancel={() => setOpenModal(false)}
                         onConfirm={handleConfirm}

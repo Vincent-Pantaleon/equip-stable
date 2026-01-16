@@ -19,7 +19,7 @@ export default function AccordionCalendar({ data }: { data: Requests[] }) {
           <AccordionItem
             key={index}
             value={`item-${index}`}
-            className="rounded-md border-2 border-black/50 shadow-sm overflow-hidden"
+            className="rounded-md border-1 overflow-hidden"
           >
             <AccordionTrigger className="bg-hover-color px-4 py-2 text-lg font-semibold hover:bg-form-input-color transition-all">
               <div className="flex items-center gap-2">
@@ -41,7 +41,7 @@ export default function AccordionCalendar({ data }: { data: Requests[] }) {
                       <AccordionTrigger className="px-4 py-2 text-base font-medium hover:bg-gray-100">
                         <div className="flex flex-col md:flex-row md:items-center md:justify-between w-full text-left">
                           <span>
-                            {request.type_of_request === 'equipment' ? formatLabel(request.equipment as string) : formatLabel(request.venue as string)}  ({formatTime(request.time_of_start)} - {formatTime(request.time_of_end)})
+                            {request.type_of_request.type_name === 'equipment' ? formatLabel(request.equipment.type_name as string) ?? '-' : formatLabel(request.venue.venue_name as string) ?? '-'}  ({formatTime(request.time_of_start)} - {formatTime(request.time_of_end)})
                           </span>
                           <span className="text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-2xl font-semibold mt-1 md:mt-0">
                             {getTimeLabel(request.date_of_use, request.time_of_start, request.time_of_end)}
@@ -50,7 +50,7 @@ export default function AccordionCalendar({ data }: { data: Requests[] }) {
                       </AccordionTrigger>
 
                       <AccordionContent className="px-4 py-3 bg-gray-50 text-sm text-gray-700">
-                        <BookingModalContent request={request} />
+                        <BookingModalContent request={request} action={() => {}}/>
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>

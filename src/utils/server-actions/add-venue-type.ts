@@ -2,23 +2,24 @@
 
 import { createClient } from "../supabase/server"
 import { formatSpaceToUnderscore } from "../handlers/capitalize"
+import { GetUserInfo } from "../data/decode"
 
 const AddNewVenueType = async (formData: FormData) => {
     const supabase = await createClient()
     
+    const user = await GetUserInfo()
+
     const data = {
-        name: formData.get('name'),
-        total_count: Number(formData.get('total_count')) ,
+        venue_name: formData.get('name'),
         total_capacity: Number(formData.get('total_capacity')),
     }
 
     const { error } = await supabase
     .from('venue_type')
     .insert({
-        'name': formatSpaceToUnderscore(data.name as string),
-        'total_capacity': data.total_capacity,
-        'total_count': data.total_count,
-        'available_count': data.total_count
+        venue_name: formatSpaceToUnderscore(data.venue_name as string),
+        total_capacity: data.total_capacity,
+        office_id: user?.office_id,
     })
 
     if (error) {

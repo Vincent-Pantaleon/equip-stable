@@ -12,17 +12,6 @@ export default async function Logout() {
         return { status: false, message: "No active session found" };
     }
 
-    const userId = data.user.id;
-
-    const { error: updateError } = await supabase
-        .from("profiles")
-        .update({ is_online: false })
-        .eq("id", userId);
-
-    if (updateError) {
-        return { status: false, message: Capitalize(updateError.message) };
-    }
-
     const { error: signOutError } = await supabase.auth.signOut({ scope: 'global' });
 
     if (signOutError) {

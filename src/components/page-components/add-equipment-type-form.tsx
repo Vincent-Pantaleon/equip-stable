@@ -3,16 +3,28 @@
 import { InsertNewEquipmentType } from "@/utils/server-actions/admin-equipments-actions"
 import { toast } from "sonner"
 import Button from "../button"
-import { Input } from "../input"
+import { Input, SelectInput } from "../input"
 import Modal from "../modal"
 import { useState } from "react"
-import { useQueryClient } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { GetOfficeNames } from "@/utils/server-actions/office-page-actions"
+import { useInfo } from "@/utils/hooks/user-context"
 
 const AddEquipmentTypeForm = () => {
   const [openModal, setOpenModal] = useState(false)
   const [formData, setFormData] = useState<FormData | null>(null)
 
+  const {data: officeList, error: officeError } = useQuery({
+    queryKey: ['office-list'],
+    queryFn: GetOfficeNames
+  })
+
+  if (officeError) {
+    toast.error(officeError.message)
+  }
+
   const queryClient = useQueryClient()
+  const user = useInfo()
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -50,14 +62,14 @@ const AddEquipmentTypeForm = () => {
           required
           divStyle="col-span-2"
         />
-        <Input
-          label="Total Count"
-          id="total_count"
-          name="total_count"
-          type="number"
-          required
-          divStyle="col-span-2"
-        />
+
+        {user?.role === 'superadmin' && (
+          <SelectInput 
+            label="Office"
+            name="office_name"
+            options={officeList?.data ?? []}
+          />
+        )}
 
         <Button
           label="Submit"

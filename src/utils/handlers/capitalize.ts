@@ -16,7 +16,7 @@ export function formatLabel(text: string): string {
   return text
     .split("_") // replace underscores
     .map(
-      word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase() // capitalize each word
+      word => word.charAt(0).toUpperCase() + word.slice(1) // capitalize each word
     )
     .join(" "); // join back with spaces
 }

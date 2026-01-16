@@ -1,4 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table"
+import { formatCreatedAt, formatLabel } from "../handlers/capitalize";
 
 export const messageColumns: ColumnDef<Messages>[] = [
   {
@@ -6,27 +7,25 @@ export const messageColumns: ColumnDef<Messages>[] = [
     accessorKey: "sender",
     size: 100,
     cell: ({ row }) => {
-
-      let user;
-
-      if (row.original.sender.first_name && row.original.sender.last_name) {
-        user = row.original.sender.first_name + ' ' + row.original.sender.last_name
-      } else {
-        user = "Unknown Sender"
-      }
-
-      const isViewed = row.original.is_viewed
+      const name = `${row.original.sender.first_name} ${row.original.sender.last_name}`;
+      const isViewed = true;
 
       return (
-        <div className="flex items-center">
-          {/* Pulsing dot */}
-          {!isViewed && (
-            <span className="absolute left-0 flex h-3 w-3">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-600 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-            </span>
-          )}
-          {user}
+        <div className="flex items-center gap-2">
+          {/* The Dot container - fixed width ensures names align even if dot is hidden */}
+          <div className="flex-shrink-0 w-3 h-3">
+            {isViewed && (
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-600 opacity-75"></span>
+                <span className="relative inline-flex rounded-full w-3 h-3 bg-blue-500"></span>
+              </span>
+            )}
+          </div>
+          
+          {/* The Name */}
+          <span className={isViewed ? "font-semibold text-black" : "text-gray-600"}>
+            {name}
+          </span>
         </div>
       )
     }
@@ -47,29 +46,24 @@ export const messageColumns: ColumnDef<Messages>[] = [
     )
   },
   {
-    id: "messageTime",
-    header: "Time",
-    accessorKey: "created_at",
-    cell: ({ row }) => {
-      const createdAt = new Date(row.original.created_at)
-      return createdAt.toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      })
-    }
+    id: "created_at",
+    header: "Received On",
+    accessorFn: (row) => {
+        const { formatted_date, formatted_time } = formatCreatedAt(row.created_at);
+        return { formatted_date, formatted_time }; // return raw object
+    },
+    cell: ({ getValue }) => {
+        const { formatted_date, formatted_time } = getValue() as {
+            formatted_date: string;
+            formatted_time: string;
+        };
+
+        return (
+            <div>
+                <p>{formatted_date}</p>
+                <p className="text-sm text-gray-500">{formatted_time}</p>
+            </div>
+        );
+    },
   },
-  {
-    id: "messageDate",
-    header: "Date",
-    accessorKey: "created_at",
-    cell: ({ row }) => {
-      const createdAt = new Date(row.original.created_at)
-      return createdAt.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",  // "June"
-        day: "numeric"  // "9"
-      })
-    }
-  }
 ]

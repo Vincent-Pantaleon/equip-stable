@@ -15,18 +15,5 @@ export default async function HandleLogin(form: FormData) {
         return { status: false, message: error.message }
     }
 
-    if (data?.user) {   
-        const { data: status, error } = await supabase
-        .from('profiles')
-        .update({ is_online: true })
-        .eq('id', data.user.id)
-
-        if (error) {
-            return { status: false, message: error.message }
-        }
-
-        return { status: true, message: "Login Successful" }
-    }
-
-    return { status: false, message: 'Unknown error occurred.' };
+    return { status: true, message: "Login Successful" }
 }

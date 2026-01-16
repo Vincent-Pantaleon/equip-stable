@@ -56,12 +56,6 @@ const AddVenueTypeForm = ({ onClose }: FormProps) => {
                     type="text"
                 />
                 <Input
-                    id="total_count"
-                    label="Total Count"
-                    name="total_count"
-                    type="number"
-                />
-                <Input
                     id="total_capacity"
                     label="Total Capacity"
                     name="total_capacity"

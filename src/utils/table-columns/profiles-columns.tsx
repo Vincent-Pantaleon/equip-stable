@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Capitalize } from "../handlers/capitalize";
+import { Capitalize, formatLabel } from "../handlers/capitalize";
 
 import Button from "@/components/button";
 import { Trash2, View } from "lucide-react";
@@ -11,36 +11,55 @@ interface ProfilesActionsProps {
 
 export const profilesColumns = ({ onUpdate, onDelete }: ProfilesActionsProps): ColumnDef<Profile>[] => [
     {
-        id: "name",
         header: "Name",
-        accessorFn: (row) => `${row.first_name} ${row.last_name}`
-        
+        id: "name",
+        accessorFn: (row) => {
+            let name = `${row.first_name} ${row.last_name}`
+            
+            return name;
+        },
+        cell: ({getValue}) => {
+            const value = getValue()
+
+            return <p className="font-semibold">{value as string}</p>
+        }
     },
     {
-        header: "School ID",
-        accessorKey: "school_id"
+        header: "Office Assigned",
+        id: "office_name",
+        accessorFn: (row) => {
+            const office = row.office
+
+            return office.office_name
+        },
+        cell: ({getValue}) => {
+            const value = getValue()
+
+            return <p>{formatLabel(value as string)}</p>
+        }
+    },
+    {
+        header: "Email",
+        id: "email",
+        accessorFn: (row) => {
+            const email = row.email
+
+            return email;
+        }
     },
     {
         header: "Role",
-        accessorKey: "role"
-    },
-    {
-        header: "Status",
-        accessorKey: "is_online",
-        cell: ({ row }) => {
-            const status = row.original.is_online ? "Online" : "Offline"
-            const color = row.original.is_online ? "text-green-400" : "text-red-500"
-            return (
-                <span className={`${color} font-semibold`}>
-                    {status}
-                </span>
-            )
+        id: "role",
+        accessorFn: (row) => {
+            const role = row.role
+
+            return role;
         },
-    },
-    {
-        id: "assigned_office",
-        header: "Assigned Office",
-        accessorFn: (row) => row.office.office
+        cell: ({getValue}) => {
+            const value = getValue()
+
+            return <p className="font-semibold">{value as string}</p>
+        }
     },
     {
         id: "actions",

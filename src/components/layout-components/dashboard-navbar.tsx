@@ -20,6 +20,7 @@ import {
     CheckCircle2
 } from "lucide-react"
 import { useInfo } from "@/utils/hooks/user-context"
+import { formatLabel } from "@/utils/handlers/capitalize"
 
 const NavbarItems = [
     { label: "Dashboard", href: '/admin/dashboard', icon: LayoutDashboard },
@@ -39,8 +40,8 @@ const DashboardNavbar = () => {
     const userInfo = useInfo()
 
     return (
-        <div className="h-full w-full flex flex-col bg-blue-900 text-white">          
-            <div className={`flex  p-2 ${isMenuVisible ? "justify-end" : "justify-center"}`}>
+        <div className="h-full w-full flex flex-col items-center bg-blue-900 text-white">          
+            <div className={`flex w-full p-2 ${isMenuVisible ? "justify-end" : "justify-center"}`}>
                 <button
                     onClick={() => setIsMenuVisible(prev => !prev)}
                     className="w-fit hover:cursor-pointer p-1"
@@ -51,6 +52,16 @@ const DashboardNavbar = () => {
                 </button>
             </div>
 
+            <div className="h-40">
+                <div className={isMenuVisible ? "flex flex-col items-center" : "hidden"}>
+                    <div>
+                        <Image src={'/urios_logo.png'} alt="FSUU logo" height={100} width={100} style={{ width: 'auto', height: 'auto' }}/>
+                    </div>
+                    
+                    <p className="text-center text-lg font-medium">Admin Dashboard</p>
+                </div>
+            </div>
+
             <AnimatePresence>
                 <motion.div
                     key="navbar"
@@ -58,24 +69,14 @@ const DashboardNavbar = () => {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -200 }}
                     transition={{ duration: 0.3 }}
-                    className="flex flex-col p-4 w-full"
+                    className="flex flex-col p-4 w-full overflow-auto"
                 >
-
-                    <div className="h-40">
-                        <div className={isMenuVisible ? "flex flex-col items-center" : "hidden"}>
-                            <div>
-                                <Image src={'/urios_logo.png'} alt="FSUU logo" height={100} width={100} style={{ width: 'auto', height: 'auto' }}/>
-                            </div>
-                            
-                            <p className="text-center text-lg font-medium">Admin Dashboard</p>
-                        </div>
-                    </div>
 
                     <div className="flex flex-col gap-y-1 mt-3">
                         {NavbarItems.map((item, index) => {
                             const isActive = currentRoute.startsWith(item.href)
 
-                            if (userInfo?.role !== 'superadmin' && (item.label === "Offices" || item.label === "Profiles")) {
+                            if (userInfo?.role !== 'superadmin' && (item.label === "Offices" || item.label === "Profiles" || item.label === 'Borrow Form')) {
                                 return;
                             }
 
@@ -106,9 +107,10 @@ const DashboardNavbar = () => {
                         {`${userInfo?.first_name} ${userInfo?.last_name}`}
                     </div>
 
-                    <div className="text-gray-400">
+                    <div className="text-gray-400 w-full">
                         <p>{userInfo?.email}</p>
                         <p>{userInfo?.role}</p>
+                        <p>{formatLabel(userInfo?.office_name as string) ?? "No Office"}</p>
                     </div>
 
                 </div>

@@ -30,13 +30,12 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
         staleTime: 1000 * 60 * 5
     })
 
-    console.log(data?.data)
-
     if(error) {
         toast.error(error.message)
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
         setOpenModal(true)
     }
 
@@ -46,7 +45,7 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
 
         const formData = new FormData(form);
 
-        const result = await UpdateOffice(formData, item.id)
+        const result = await UpdateOffice(formData, item.office.id, item.id)
 
         if (!result.status) {
             toast.error(result.message)
@@ -63,28 +62,29 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
             <div className="grid grid-cols-2 gap-6 text-sm text-gray-800 bg-white rounded-2xl p-6 shadow-sm">
                 <div>
                     <h3 className="text-gray-500">ID</h3>
-                    <p className="font-semibold">{item.id}</p>
+                    <p className="font-semibold">{item.office.id}</p>
                 </div>
                 <div>
                     <h3 className="text-gray-500">Created At</h3>
                     <p className="font-semibold">
-                        {formatCreatedAt(item.created_at).formatted_date}
+                        {formatCreatedAt(item.office.created_at).formatted_date}
                     </p>
                     <p className="font-semibold">
-                        {formatCreatedAt(item.created_at).formatted_time}
+                        {formatCreatedAt(item.office.created_at).formatted_time}
                     </p>
                 </div>
             </div>
 
             <form
                 className="space-y-2"
+                onSubmit={handleSubmit}
             >
                 <Input
                     id="office_name"
                     label="Office"
                     name="office_name"
                     type="text"
-                    defaultValue={item.office}
+                    defaultValue={item.office.office_name}
                 />
 
                 <SelectInput
@@ -93,12 +93,12 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
                     options={data?.data || []}
                     defaultValue={item.in_charge.id}
                 />
-            </form>
 
-            <CancelConfirmButtons
-                onCancel={onClose}
-                onConfirm={handleSubmit}
-            />
+                <CancelConfirmButtons
+                    onCancel={onClose}
+                    onConfirm={() => {}}
+                />
+            </form>
 
             <Modal
                 header="Confirm Office Update"
@@ -106,7 +106,7 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
                 onClose={() => setOpenModal(false)}
             >
                 <div className="mb-4">
-                    Are you sure you want to update this office with id <span className="font-semibold">{item.id}</span>
+                    Are you sure you want to update this office with id <span className="font-semibold">{item.office.id}</span>
                 </div>
                 
 

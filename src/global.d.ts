@@ -1,4 +1,6 @@
+import { StringToBoolean } from "class-variance-authority/types";
 import type { Database as db } from "../database.types";
+import { OfficeList } from "./components/page-components/offices-list";
 
 declare global {    
     type Messages = {
@@ -19,33 +21,105 @@ declare global {
         requestData: Requests[];
     }
 
-    type Requests = db['public']['Tables']['requests']['Row']
+    type Requests = {
+        id: string;
+        created_at: string;
+        user_id: string;
+        first_name: string;
+        last_name: string;
+        designation: {
+            id: string;
+            designation_name: string;
+        };
+        department: {
+            id: string;
+            department_name: string;
+        };
+        contact_number: string;
+        grade_level: {
+            id: string;
+            grade_level: string;
+            department: {
+                department_name: string;
+            };
+        };
+        purpose: {
+            id: string;
+            purpose_name: string;
+        };
+        type_of_request: {
+            id: string;
+            type_name: string;
+        };
+        location_of_use: {
+            id: string;
+            location_name: string;
+        };
+        place_of_use: {
+            id: string;
+            room: string;
+            number: string;
+            department: {
+                department_name: string;
+            }
+        };
+        equipment: {
+            id: string;
+            type_name: string;
+        };
+        subject: {
+            id: string;
+            subject_name: string;
+            department: {
+                department_name: string;
+            }
+        };
+        date_of_use: string;
+        time_of_start: string;
+        time_of_end: string;
+        status: string;
+        is_active: boolean;
+        venue: {
+            id: string;
+            venue_name: string;
+        };
+        office: {
+            id: string;
+            office_name: string;
+        };
+    }
 
     type Equipments = {
-        code: string | null;
+        property_code: string | null;
         created_at: string;
         date_acquired: string | null;
         id: number;
         item_name: string | null;
-        reference: string;
+        reference_number: string;
         serial_number: string | null;
         status: db["public"]["Enums"]["equipment_status"];
         type: {
-            type: string;
+            type_name: string;
         };
+        office: {
+            id: string
+            office_name: string
+        }
     }
-
-    type VenuesType = db['public']['Tables']['venue_type']['Row']
 
     type Venues = {
         created_at: string;
-        id: number;
-        reference: string;
+        id: string;
+        venue_name: string;
         status: db["public"]["Enums"]["venue_status"];
-        type: {
-            name: string;
+        venue_type: {
+            venue_name: string;
             id: number;
         };
+        office: {
+            id: string;
+            office_name;
+        }
     }
 
     type InventoryType = {
@@ -112,34 +186,51 @@ declare global {
     }
 
     type Profile = {
-        avatar_url: string | null
-        email: string
-        first_name: string | null
-        id: string
-        is_online: boolean
-        last_name: string | null
-        office_assigned: string | null
-        role: Database["public"]["Enums"]["app_role"] | null
-        school_id: string | null
-        updated_at: string | null
-        website: string | null
+        id: string;
+        school_id: string;
+        first_name: string;
+        last_name: string;
+        email: string;
+        role: string;
+        is_in_charge: boolean;
         office: {
-            office: string;
-        }
+            office_name: string;
+        };
     }
 
 
-    type EquipmentTypeType = db['public']['Tables']['equipment_type']['Row']
-
-    type Office = {
+    type EquipmentTypeType = {
         created_at: string;
         id: string;
-        in_charge: {
+        type_name: string;
+        office: {
+            id: string;
+            office_name: string;
+        }
+        is_public: boolean;
+    }
+
+    type VenuesType = {
+        created_at: string;
+        id: string;
+        venue_name: string;
+        total_capacity: number;
+        office: {
+            id: string;
+            office_name: string;
+        }
+        is_public: boolean;
+    }
+
+    type Office = {
+        id: string;
+        office_name: string;
+        created_at: string;
+        profile: {
             first_name: string;
             last_name: string;
             id: string;
         }
-        office: string;
     }
 
     interface SectionProps {
@@ -167,7 +258,7 @@ declare global {
     type PlaceOfUse = {
         created_at: string;
         department: {
-            name: string;
+            department_name: string;
         };
         id: number;
         number: string;
@@ -179,7 +270,7 @@ declare global {
     type Subject = {
         created_at: string;
         department: {
-            name: string;
+            department_name: string;
         };
         id: number;
         name: string;
@@ -188,7 +279,7 @@ declare global {
     type GradeLevel = {
         created_at: string;
         department: {
-            name: string;
+            department_name: string;
         };
         id: number;
         level: string;

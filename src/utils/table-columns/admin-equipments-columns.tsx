@@ -59,7 +59,7 @@ export const adminEquipmentTypeColumns = ({ onUpdate, onDelete }: TypeActionProp
     // },
     {
         header: "Type",
-        accessorKey: "type",
+        accessorKey: "type_name",
         cell: ({ getValue }) => {
             const value = getValue<string>()
             return (
@@ -67,10 +67,10 @@ export const adminEquipmentTypeColumns = ({ onUpdate, onDelete }: TypeActionProp
             )
         }
     },
-    {
-        header: "Total Count",
-        accessorKey: "total_count",
-    },
+    // {
+    //     header: "Total Count",
+    //     accessorKey: "total_count",
+    // },
     {
         header: "Public",
         accessorKey: "is_public",
@@ -80,6 +80,17 @@ export const adminEquipmentTypeColumns = ({ onUpdate, onDelete }: TypeActionProp
 
             return <p className="font-semibold">{label}</p>
         }
+    },
+    {
+        
+        header: "Office",
+        id: "officeFilter",
+        accessorFn: (row) => row.office?.id, // value used for filtering
+        filterFn: (row, columnId, filterValue) => {
+            if (!filterValue) return true; // no filter, show all
+            return row.getValue(columnId) === filterValue;
+        },
+        cell: ({ row }) => formatLabel(row.original.office.office_name as string) // display office name in table
     },
     {
         id: "actions",
@@ -148,7 +159,7 @@ export const adminEquipmentColumns = ({ onUpdate, onDelete } : EquipmentActionPr
     {
         id: 'type',
         header: "Type",
-        accessorFn: (row) => Capitalize(row.type.type),
+        accessorFn: (row) => Capitalize(row.type.type_name),
         cell: ({ getValue }) => (
             <p className="font-semibold">{formatLabel(getValue() as string)}</p>
         ),
@@ -162,15 +173,26 @@ export const adminEquipmentColumns = ({ onUpdate, onDelete } : EquipmentActionPr
     },
     {
         header: "Reference",
-        accessorKey: "reference"
+        accessorKey: "reference_number"
     },
     {
         header: "Property Code",
-        accessorKey: "code"
+        accessorKey: "property_code"
     },
     {
         header: "Serial Number",
         accessorKey: "serial_number"
+    },
+    {
+        
+        header: "Office",
+        id: "officeFilter",
+        accessorFn: (row) => row.office?.id, // value used for filtering
+        filterFn: (row, columnId, filterValue) => {
+            if (!filterValue) return true; // no filter, show all
+            return row.getValue(columnId) === filterValue;
+        },
+        cell: ({ row }) => formatLabel(row.original.office.office_name as string) // display office name in table
     },
     {
         header: "Status",

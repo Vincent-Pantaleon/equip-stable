@@ -69,13 +69,13 @@ const AddEquipmentForm = () => {
                         type="text"
                     />
                     <Input
-                        label="Reference"
+                        label="Reference Number"
                         id="reference"
                         name="reference"
                         type="text"
                     />
                     <Input
-                        label="Item Code"
+                        label="Property Code"
                         id="item_code"
                         name="item_code"
                         type="text"

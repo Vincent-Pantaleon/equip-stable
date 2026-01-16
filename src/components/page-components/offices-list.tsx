@@ -20,6 +20,8 @@ const OfficeList = () => {
 
     const queryClient = useQueryClient()
 
+    console.log("Selected Item: ", selectedItem)
+
     const { data, error, isPending } = useQuery({
         queryKey: ['office-list'],
         queryFn: GetOfficeList

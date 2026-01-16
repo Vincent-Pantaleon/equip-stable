@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "update": "npx supabase gen types typescript --project-id vpytipmfajxllcxyywlo --schema public > database.types.ts"
+    "update": "npx supabase gen types typescript --project-id rvjlnnyduceqcisthejm --schema public > database.types.ts"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.11",

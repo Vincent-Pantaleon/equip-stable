@@ -29,7 +29,7 @@ const AddNewValue = async ({ table, form }: ActionProps) => {
             const { error: departmentError } = await supabase
             .from('department')
             .insert({
-                name: formatSpaceToUnderscore(formData.name)
+                department_name: formatSpaceToUnderscore(formData.name)
             })
 
             if (departmentError) {
@@ -41,7 +41,7 @@ const AddNewValue = async ({ table, form }: ActionProps) => {
             const { error: designationError } = await supabase
             .from('designation')
             .insert({
-                name: formatSpaceToUnderscore(formData.name)
+                designation_name: formatSpaceToUnderscore(formData.name)
             })
 
             if (designationError) {
@@ -53,7 +53,7 @@ const AddNewValue = async ({ table, form }: ActionProps) => {
             const { error: purposeError } = await supabase
             .from('purpose')
             .insert({
-                name: formatSpaceToUnderscore(formData.name)
+                purpose_name: formatSpaceToUnderscore(formData.name)
             })
 
             if (purposeError) {
@@ -65,7 +65,7 @@ const AddNewValue = async ({ table, form }: ActionProps) => {
             const { error: typeError } = await supabase
             .from('type_of_request')
             .insert({
-                name: formatSpaceToUnderscore(formData.name)
+                type_name: formatSpaceToUnderscore(formData.name)
             })
 
             if (typeError) {
@@ -77,7 +77,7 @@ const AddNewValue = async ({ table, form }: ActionProps) => {
             const { error: locationError } = await supabase
             .from('location_of_use')
             .insert({
-                name: formatSpaceToUnderscore(formData.name)
+                location_name: formatSpaceToUnderscore(formData.name)
             })
 
             if (locationError) {
@@ -89,8 +89,8 @@ const AddNewValue = async ({ table, form }: ActionProps) => {
             const { error: gradeError } = await supabase
             .from('grade_level')
             .insert({
-                department: formData.department,
-                level: formData.level
+                department_id: formData.department,
+                grade_level: formData.level
             })
 
             if (gradeError) {
@@ -102,7 +102,7 @@ const AddNewValue = async ({ table, form }: ActionProps) => {
             const { error: placeError } = await supabase
             .from('place_of_use')
             .insert({
-                department: formData.department,
+                department_id: formData.department,
                 room: formData.room,
                 number: formData.number
             })
@@ -116,8 +116,8 @@ const AddNewValue = async ({ table, form }: ActionProps) => {
             const { error: subjectError } = await supabase
             .from('subject')
             .insert({
-                department: formData.department,
-                name: formatSpaceToUnderscore(formData.subject),
+                department_id: formData.department,
+                subject_name: formatSpaceToUnderscore(formData.subject),
             })
 
             if (subjectError) {
