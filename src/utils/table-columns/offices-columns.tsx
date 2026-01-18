@@ -13,19 +13,6 @@ interface TypeActionProps {
 
 export const OfficeTableColumns = ({ onUpdate, onDelete }: TypeActionProps): ColumnDef<Office>[] => [
     {
-        header: "Office ID",
-        accessorFn: (row) => row.id,
-        cell: ({ getValue }) => {
-            const value = getValue<string>()
-
-            return (
-                <p className="font-semibold">
-                    {value}
-                </p>
-            )
-        }
-    },
-    {
         header: "Created at",
         accessorFn: (row) => row.created_at,
         cell: ({ getValue }) => {
@@ -55,8 +42,8 @@ export const OfficeTableColumns = ({ onUpdate, onDelete }: TypeActionProps): Col
     {
         header: "Person In Charge",
         accessorFn: row => {
-            const fname = row.profile.first_name
-            const lname = row.profile.last_name
+            const fname = row.profile.first_name || ""
+            const lname = row.profile.last_name || ""
 
             const full = Capitalize(fname) + " " + Capitalize(lname)
 

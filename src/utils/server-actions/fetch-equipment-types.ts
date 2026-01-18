@@ -15,7 +15,10 @@ const GetEquipmentTypes = async () => {
     }
 
     const normalizedData = data.map((item) => (
-        { label: formatLabel(item.type_name), value: item.id }
+        { 
+            label: formatLabel(item.type_name), 
+            value: item.id 
+        }
     ))
 
     return { status: true, message: "Equipment types fetched successfully", data: normalizedData}

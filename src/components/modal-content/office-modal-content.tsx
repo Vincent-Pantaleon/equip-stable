@@ -1,6 +1,6 @@
 'use client'
 
-import { formatCreatedAt } from "@/utils/handlers/capitalize"
+import { formatCreatedAt, formatLabel } from "@/utils/handlers/capitalize"
 import { Input, SelectInput } from "../input";
 
 import { useQuery } from "@tanstack/react-query";
@@ -45,7 +45,7 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
 
         const formData = new FormData(form);
 
-        const result = await UpdateOffice(formData, item.office.id, item.id)
+        const result = await UpdateOffice(formData, item.id)
 
         if (!result.status) {
             toast.error(result.message)
@@ -62,15 +62,15 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
             <div className="grid grid-cols-2 gap-6 text-sm text-gray-800 bg-white rounded-2xl p-6 shadow-sm">
                 <div>
                     <h3 className="text-gray-500">ID</h3>
-                    <p className="font-semibold">{item.office.id}</p>
+                    <p className="font-semibold">{item.id}</p>
                 </div>
                 <div>
                     <h3 className="text-gray-500">Created At</h3>
                     <p className="font-semibold">
-                        {formatCreatedAt(item.office.created_at).formatted_date}
+                        {formatCreatedAt(item.created_at).formatted_date}
                     </p>
                     <p className="font-semibold">
-                        {formatCreatedAt(item.office.created_at).formatted_time}
+                        {formatCreatedAt(item.created_at).formatted_time}
                     </p>
                 </div>
             </div>
@@ -84,14 +84,14 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
                     label="Office"
                     name="office_name"
                     type="text"
-                    defaultValue={item.office.office_name}
+                    defaultValue={formatLabel(item.office_name)}
                 />
 
                 <SelectInput
                     label="Employee In Charge"
                     name="in_charge"
                     options={data?.data || []}
-                    defaultValue={item.in_charge.id}
+                    defaultValue={item.profile.id}
                 />
 
                 <CancelConfirmButtons
@@ -106,7 +106,7 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
                 onClose={() => setOpenModal(false)}
             >
                 <div className="mb-4">
-                    Are you sure you want to update this office with id <span className="font-semibold">{item.office.id}</span>
+                    Are you sure you want to update this office with id <span className="font-semibold">{item.id}</span>
                 </div>
                 
 

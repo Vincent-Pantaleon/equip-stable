@@ -40,7 +40,7 @@ const OfficeList = () => {
     const handleDelete = async () => {
         if (!selectedItem) return;
 
-        const result = await DeleteOffice(selectedItem)
+        const result = await DeleteOffice(selectedItem.id)
 
         if (!result.status) {
             toast.error(result.message)
