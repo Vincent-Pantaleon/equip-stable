@@ -40,10 +40,6 @@ const UpdateProfileForm = ({ item, onClose }: FormProps) => {
                         <h3 className="text-gray-500">School ID</h3>
                         <p className="font-semibold">{item.school_id}</p>
                     </div>
-                    <div>
-                        <h3 className="text-gray-500">Is In Charge</h3>
-                        <p className="font-semibold">{item.is_in_charge ? "Yes" : "No"}</p>
-                    </div>
                 </div>
 
                 <div className="flex justify-end">

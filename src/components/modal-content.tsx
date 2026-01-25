@@ -5,7 +5,7 @@ import formatDate, { formatTime } from "@/utils/handlers/format-date";
 import { useInfo } from "@/utils/hooks/user-context";
 
 // Message Modal Content
-export function MessageModalContent({ message }: { message: Messages }) {
+export function MessageModalContent({ message }: { message: Message }) {
   const senderName =
     message.sender.first_name || message.sender.last_name
       ? `${Capitalize(message.sender.first_name || "")} ${Capitalize(message.sender.last_name || "")}`

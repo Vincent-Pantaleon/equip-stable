@@ -70,7 +70,7 @@ const ReleaseModalContent = ({ item, onClose }: ReleaseModalContentProps) => {
                     </div>
                     <div>
                         <h3 className="text-gray-500">{item.request_type === 'equipment' ? "Equipment" : "Venue"}</h3>
-                        <p className="font-semibold">{item.request_type === 'equipment' ? formatLabel(item.equipment.item_name) : formatLabel(item.venue.reference)}</p>
+                        <p className="font-semibold">{item.request_type === 'equipment' ? formatLabel(item.equipment.item_name) : formatLabel(item.venue.venue_name as string)}</p>
                     </div>
                 </div>
 

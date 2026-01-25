@@ -72,7 +72,7 @@ export function DataTable<TData, TValue>({
   })
 
   // States for selected items on each table
-  const [selectedMessage, setSelectedMessage] = useState<Messages | null>(null)
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
   const [selectedRequest, setSelectedRequest] = useState<Requests | null>(null)
   const [selectedEquipment, setSelectedEquipment] = useState<Equipments | null>(null)
   const [selectedVenue, setSelectedVenue] = useState<Venues | null>(null)
@@ -121,7 +121,7 @@ export function DataTable<TData, TValue>({
                     if (tableType === "messages") {
                       //go to recents if the user clicks from recents page
                       // router.push(`/recents/message/${(row.original as Messages).id}`);
-                      setSelectedMessage(row.original as Messages)
+                      setSelectedMessage(row.original as Message)
                     } else if (tableType === "requests") {
                       // go to recents if the user clicks from recents page
                       // router.push(`/recents/request/${(row.original as Requests).id}`);

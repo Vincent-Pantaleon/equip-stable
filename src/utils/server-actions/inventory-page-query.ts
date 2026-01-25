@@ -17,12 +17,12 @@ export default async function GetInventoryData() {
 
     const { data: venueData, error: venueError } = await supabase
     .from('venue_type')
-    .select('id, venue_name, total_capacity, office: office_id(id, office_name), is_public')
+    .select('venue_name, total_capacity, office: office_id(id, office_name), is_public')
     .eq('is_public', true)
 
     const { data: equipmentData, error: equipmentError } = await supabase
     .from('equipment_type')
-    .select('id, type_name, office: office_id(id, office_name), is_public')
+    .select('type_name, office: office_id(id, office_name), is_public')
     .eq('is_public', true)
 
     const { data: officeData, error: officeError } = await supabase

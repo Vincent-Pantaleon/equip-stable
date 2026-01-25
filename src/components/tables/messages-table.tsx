@@ -5,6 +5,7 @@ import { Send } from "lucide-react"
 
 import { useRouter } from "next/navigation"
 import { Button as UIButton } from "../ui/button"
+import { updateMessageView } from "@/utils/server-actions/update-message-view"
 
 import {
     ColumnDef,
@@ -26,12 +27,12 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { SelectInput } from "../input"
 import { TableFilter } from "../table-filter"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    onRowClick?: (row: TData) => void
 }
 
 const options = [
@@ -42,6 +43,7 @@ const options = [
 export function MessageDataTable<TData, TValue>({
     columns,
     data,
+    onRowClick
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [pagination, setPagination] = useState({
@@ -115,6 +117,8 @@ export function MessageDataTable<TData, TValue>({
                                 <TableRow
                                     key={row.id}
                                     data-state={row.getIsSelected() && "selected"}
+                                    // On row click, open a modal with message details
+                                    onClick={() => onRowClick?.(row.original)}
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -123,7 +127,7 @@ export function MessageDataTable<TData, TValue>({
                                     ))}
                                 </TableRow>
                             ))
-                    ) : (
+                        ) : (
                         <TableRow>
                             <TableCell colSpan={columns.length} className="h-24 text-center">
                                 No results.

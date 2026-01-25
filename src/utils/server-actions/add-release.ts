@@ -16,8 +16,8 @@ const AddRelease = async ({ formData }: ReleaseInsertProps) => {
 
     // Fetch the related booking request
     const { data: request, error: requestError } = await supabase
-        .from('requests')
-        .select('*')
+        .from('bookings')
+        .select('*, type_of_request: type_of_request_id(type_name)')
         .eq('id', booking_id)
         .single<Requests>()
 
@@ -26,19 +26,20 @@ const AddRelease = async ({ formData }: ReleaseInsertProps) => {
     }
 
     // Extract the type from the fetched request
-    const type = request.type_of_request
+    const type = request.type_of_request.type_name
 
     if (type === 'equipment') {
         const { error } = await supabase
         .from('releases')
         .insert({
             booking_id,
-            request_type: request.type_of_request,
+            request_type: request.type_of_request.type_name,
             equipment_id: formData.get('item_id') as string,
             released_by: user?.id || null,
         })
 
         if (error) {
+            console.log("Release Error: ", error)
             return { status: false, message: "Error releasing equipment" }
         }
 
@@ -50,7 +51,7 @@ const AddRelease = async ({ formData }: ReleaseInsertProps) => {
         .from('releases')
         .insert({
             booking_id,
-            request_type: request.type_of_request,
+            request_type: request.type_of_request.type_name,
             venue_id: formData.get('item_id') as string,
             released_by: user?.id || null,
         })

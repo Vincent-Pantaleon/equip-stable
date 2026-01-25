@@ -3,8 +3,8 @@ import type { Database as db } from "../database.types";
 import { OfficeList } from "./components/page-components/offices-list";
 
 declare global {    
-    type Messages = {
-        id: number;
+    type Message = {
+        id: string;
         sender: {
             email: string;
             first_name: string;
@@ -17,7 +17,7 @@ declare global {
     }
 
     type RecentsData = {
-        messageData: Messages[];
+        messageData: Message[];
         requestData: Requests[];
     }
 
@@ -192,7 +192,6 @@ declare global {
         last_name: string;
         email: string;
         role: string;
-        is_in_charge: boolean;
         office: {
             office_name: string;
         };
@@ -200,8 +199,6 @@ declare global {
 
 
     type EquipmentTypeType = {
-        created_at: string;
-        id: string;
         type_name: string;
         office: {
             id: string;
@@ -211,8 +208,6 @@ declare global {
     }
 
     type VenuesType = {
-        created_at: string;
-        id: string;
         venue_name: string;
         total_capacity: number;
         office: {

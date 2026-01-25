@@ -17,9 +17,9 @@ export const EquipmentReleaseListColumns = ({ onUpdate, onDelete }: ReleaseActio
             const type = row.original.request_type;
 
             if (type === 'equipment') {
-                return <div className="font-semibold">{formatLabel(row.original.equipment.item_name)}</div>
+                return <div className="font-semibold">{formatLabel(row.original.equipment.item_name as string)}</div>
             } else {
-                return <div className="font-semibold">{formatLabel(row.original.venue.reference)}</div>
+                return <div className="font-semibold">{formatLabel(row.original.venue.venue_name as string)}</div>
             }
         }
     },

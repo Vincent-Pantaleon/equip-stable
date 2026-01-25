@@ -23,7 +23,6 @@ const AddVenueForm = () => {
     const { data, error } = useQuery({
         queryKey: ['venue-options'],
         queryFn: GetTypes,
-        staleTime: Infinity
     })
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

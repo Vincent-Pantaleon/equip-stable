@@ -23,7 +23,6 @@ import { useInfo } from "@/utils/hooks/user-context"
 import { formatLabel } from "@/utils/handlers/capitalize"
 
 const NavbarItems = [
-    { label: "Dashboard", href: '/admin/dashboard', icon: LayoutDashboard },
     { label: "Bookings", href: '/admin/bookings', icon: Layers2 },
     { label: "Borrow Form", href: '/admin/borrow-form', icon: Layers},
     { label: "Inventory", href: '/admin/inventory', icon: FolderOpen },

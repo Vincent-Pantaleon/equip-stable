@@ -30,19 +30,27 @@ const ReleaseForm = ({ onClose }: FormProps) => {
         queryFn: GetBookings,
     })
 
+    // 1. Always call hooks at the top level (no if statements)
     const { data: equipmentsData, error: equipmentsError } = useQuery({
         queryKey: ['equipments-options'],
         queryFn: GetEquipments,
-    })
+        // 2. Only run this query if requestType is 'equipment'
+        enabled: requestType === 'equipment', 
+    });
 
     const { data: venuesData, error: venuesError } = useQuery({
         queryKey: ['venues-options'],
         queryFn: GetVenues,
-    })
+        // 2. Only run this query if requestType is 'venue'
+        enabled: requestType === 'venue',
+    });
 
     const bookingsOptions = useMemo(() => bookingsData?.data || [], [bookingsData])
     const equipmentsOptions = useMemo(() => equipmentsData?.data || [], [equipmentsData])
     const venuesOptions = useMemo(() => venuesData?.data || [], [venuesData])
+
+    console.log("Equipments Options: ", equipmentsOptions)
+    console.log("Venues Options: ", venuesOptions)
 
     if (equipmentsError || venuesError) {
         toast.error(equipmentsError?.message || venuesError?.message)
@@ -60,8 +68,6 @@ const ReleaseForm = ({ onClose }: FormProps) => {
         setFormData(formData)
         setOpenModal(true)
     }
-
-    console.log(bookingsData)
 
     const handleConfirm = async () => {
         if (!formData) return;
@@ -99,14 +105,16 @@ const ReleaseForm = ({ onClose }: FormProps) => {
                         }
                     }}
                 />
-                <SelectInput
-                    label={requestType === 'equipment' ? "Select Equipment" : "Select Venue"}
-                    name="item_id"
-                    options={ (requestType === 'equipment' ? equipmentsOptions : venuesOptions) || [] }
-                    group={group}
-                    office={office}
-                />
 
+                {(requestType && group && office) && (
+                    <SelectInput    
+                        label={requestType === 'equipment' ? "Select Equipment" : "Select Venue"}
+                        name="item_id"
+                        options={ (requestType === 'equipment' ? equipmentsOptions : venuesOptions) || [] }
+                        group={group}
+                    />
+                )}
+                
                 <CancelConfirmButtons
                     onCancel={onClose}
                     onConfirm={() => {}}

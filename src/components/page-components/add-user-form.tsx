@@ -54,6 +54,7 @@ const AddUserForm = ({ onClose }: FormProps) => {
             toast.error(result.message)
         }
 
+        setOpenModal(false)
         toast.success(result.message)
     }
 

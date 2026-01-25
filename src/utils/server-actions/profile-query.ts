@@ -32,7 +32,6 @@ const  GetUsersList = async () => {
         email,
         school_id,
         role,
-        is_in_charge,
         office: office_id(
             office_name
         )
@@ -55,7 +54,6 @@ const  GetUsersList = async () => {
             email: user.email,
             role: user.role,
             school_id: user.school_id,
-            is_in_charge: user.is_in_charge,
             office: {
                 office_name: office?.office_name ?? null,
             }

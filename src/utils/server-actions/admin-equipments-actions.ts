@@ -16,7 +16,10 @@ const InsertNewEquipmentType = async (formData: FormData) => {
     const { error } = await supabase
     .from('equipment_type')
     .insert([
-        { type_name: FormData.type, office_id: user?.office_id  }
+        { 
+            type_name: FormData.type, 
+            office_id: user?.office_id  
+        }
     ])
 
     if (error) {

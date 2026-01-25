@@ -22,8 +22,6 @@ const GetOfficeList = async () => {
         profile: Array.isArray(office.profile) ? office.profile[0] : office.profile
     }))
 
-    console.log("Normalized Data: ", normalizedData)
-
     return { status: true, message: "Fetched office list successfully", data: normalizedData }
 }
 
