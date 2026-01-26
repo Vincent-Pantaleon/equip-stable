@@ -9,6 +9,10 @@ export const equipmentColumns: ColumnDef<EquipmentTypeNormalized>[] = [
         cell: ({ row }) => <p className="font-semibold">{Capitalize(row.original.type_name)}</p>
     },
     {
+        header: "Count",
+        accessorKey: 'count'
+    },
+    {
         id: "officeFilter",
         header: "Office",
         accessorFn: (row) => row.office?.id, // value used for filtering

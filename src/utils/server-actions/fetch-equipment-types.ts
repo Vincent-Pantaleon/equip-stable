@@ -1,7 +1,7 @@
 'use server'
 
 import { createClient } from "../supabase/server"
-import { formatLabel, formatSpaceToUnderscore } from "../handlers/capitalize"
+import { formatLabel } from "../handlers/capitalize"
 
 const GetEquipmentTypes = async () => {
     const supabase = await createClient()

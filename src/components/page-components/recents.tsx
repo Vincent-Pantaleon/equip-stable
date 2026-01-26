@@ -14,7 +14,6 @@ import GetMessageData from "@/utils/server-actions/message-query"
 import Modal from "../modal"
 import { updateMessageView } from "@/utils/server-actions/update-message-view"
 import { MessageModalContent } from "../modal-content"
-import { MessageModalContant } from "../modal-content/message-modal-content"
 
 export default function Recents() {
   const [openModal, setOpenModal] = useState<boolean>(false)

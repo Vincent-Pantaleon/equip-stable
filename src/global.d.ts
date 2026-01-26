@@ -205,6 +205,7 @@ declare global {
             office_name: string;
         }
         is_public: boolean;
+        count: number
     }
 
     type VenuesType = {
@@ -215,6 +216,7 @@ declare global {
             office_name: string;
         }
         is_public: boolean;
+        count: number;
     }
 
     type Office = {

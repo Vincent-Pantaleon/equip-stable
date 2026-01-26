@@ -152,6 +152,10 @@ export const venueTypesColumnsNoActions: ColumnDef<VenuesTypeNormalized>[] = [
         } 
     },
     {
+        header: "Count",
+        accessorKey: 'count'
+    },
+    {
         header: "Total Capacity",
         accessorKey: "total_capacity"
     },

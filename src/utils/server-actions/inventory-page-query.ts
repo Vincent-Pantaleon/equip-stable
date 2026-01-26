@@ -17,13 +17,15 @@ export default async function GetInventoryData() {
 
     const { data: venueData, error: venueError } = await supabase
     .from('venue_type')
-    .select('venue_name, total_capacity, office: office_id(id, office_name), is_public')
+    .select('venue_name, total_capacity, office: office_id(id, office_name), is_public, count: venue(count)')
     .eq('is_public', true)
+    .eq('venue.status', 'available')
 
     const { data: equipmentData, error: equipmentError } = await supabase
     .from('equipment_type')
-    .select('type_name, office: office_id(id, office_name), is_public')
+    .select('type_name, office: office_id(id, office_name), is_public, count: equipment(count)')
     .eq('is_public', true)
+    .eq('equipment.status', 'stored')
 
     const { data: officeData, error: officeError } = await supabase
     .from('offices')
@@ -43,12 +45,14 @@ export default async function GetInventoryData() {
 
     const normalizedEquipments: EquipmentTypeNormalized[] = equipmentData.map((item) => ({
         ...item,
-        office: Array.isArray(item.office) ? item.office[0] : item.office ?? null
+        office: Array.isArray(item.office) ? item.office[0] : item.office ?? null,
+        count: item.count?.[0]?.count ?? 0
     }))
 
     const normalizedVenues: VenuesTypeNormalized[] = venueData.map((item) => ({
         ...item,
-        office: Array.isArray(item.office) ? item.office[0] : item.office ?? null
+        office: Array.isArray(item.office) ? item.office[0] : item.office ?? null,
+        count: item.count?.[0]?.count ?? 0
     }))
 
     return { equipments: normalizedEquipments, venues: normalizedVenues, offices: normalizeData }
