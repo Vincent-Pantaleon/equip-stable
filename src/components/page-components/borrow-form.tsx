@@ -56,7 +56,7 @@ export default function BorrowForm() {
     return (
         <>
             <form
-                className="flex flex-col gap-y-5"
+                className="flex-1 flex flex-col gap-y-5"
                 onSubmit={handleSubmit}
             >
                 {/* filer's name, designation, department, contact number, grade level */}

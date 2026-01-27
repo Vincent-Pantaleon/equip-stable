@@ -90,9 +90,9 @@ export default function LoginForm() {
                 className="w-full"
             />
 
-            <Link href="/forgot" className="text-blue-700 hover:text-blue-400 text-center">
+            {/* <Link href="/forgot" className="text-blue-700 hover:text-blue-400 text-center">
                 Forgot your password?
-            </Link>
+            </Link> */}
         </form>
     );
 }

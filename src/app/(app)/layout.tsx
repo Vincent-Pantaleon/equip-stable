@@ -8,16 +8,16 @@ export default function AppLayout({ children }: {
 }) {
     return (
         <>
-            <div className="flex flex-col md:flex-row p-2 min-h-screen drop-shadow-lg">
+            <div className="flex flex-col md:flex-row p-2 h-screen drop-shadow-lg">
                 {/* Sidebar */}
                 <div className="md:mr-3 max-md:mb-3 flex-shrink-0 min-w-[20rem]">
                     <MemoSideBar />
                 </div>
 
                 {/* Main Content */}
-                <div className="grow bg-white rounded-2xl p-2 flex overflow-auto">
+                <div className="flex-1 bg-white rounded-2xl p-2 flex flex-col min-h-0">
                     {/* Make this area scrollable without overflowing */}
-                    <div className="grow flex flex-col w-full h-full">
+                    <div className="grow w-full overflow-auto">
                         {children}
                     </div>
                 </div>

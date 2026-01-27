@@ -12,6 +12,7 @@ import Button from "../button"
 import { useState } from "react"
 import Modal from "../modal"
 import { AvailabilityModalForm } from "./availability-modal-form"
+import { Skeleton } from "../ui/skeleton"
 
 export default function Inventory() {
     const [openModal, setOpenModal] = useState<boolean>(false)
@@ -20,19 +21,23 @@ export default function Inventory() {
         queryKey: ['inventory-data'],
         queryFn: GetInventoryData,
     })
-
-    console.log(InventoryData)
-
+    
     if (isError) {
         toast.error(isError)
     }
 
     return (
         <div className="flex flex-col gap-1 h-full">
-            <Button
-                label="Check Availability"
-                onClick={() => setOpenModal(true)}
-            />
+            {isPending ? (
+                <>
+                    <Skeleton className="h-12 w-full"/>
+                </>
+            ) : (
+                <Button
+                    label="Check Availability"
+                    onClick={() => setOpenModal(true)}
+                />
+            )}
 
             <div className="h-1/2">
                 {isPending ? (
