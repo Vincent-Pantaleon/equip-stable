@@ -11,8 +11,6 @@ export default async function RecentsPage() {
     // await new Promise((resolve) => setTimeout(resolve, 5000))
 
     return(
-        <div className="grow h-full">
-            <Recents />
-        </div>
+        <Recents />
     )
 }

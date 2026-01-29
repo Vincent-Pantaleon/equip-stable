@@ -72,7 +72,7 @@ export function BookingDataTable<TData, TValue>({
     })
 
     return (
-        <div className="overflow-hidden rounded-md flex flex-col border h-full p-2">
+        <div className="rounded-md flex flex-col border h-full p-2">
             <div className="flex mb-2 items-center justify-between">
                 <h1 className="text-lg">Bookings</h1>
 

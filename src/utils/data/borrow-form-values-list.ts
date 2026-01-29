@@ -32,8 +32,6 @@ export const useFormDataValues = (
         toast.error('Error fetching form data')
     }
 
-    console.log(data)
-
     // Provide reusable table configurations
     const tables = [
         {

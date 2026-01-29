@@ -45,8 +45,8 @@ export default function Recents() {
   }
 
   return (
-    <div className="h-full flex flex-col gap-y-1">
-      <div className="overflow-auto h-60 md:h-1/2">
+    <div className="h-full flex flex-col space-y-1">
+      <div className="flex-1 min-h-0">
         {messagePending ? (
           <RecentsLoading />
         ) : (
@@ -57,7 +57,7 @@ export default function Recents() {
           />
         )}
       </div>
-      <div className="overflow-auto h-60 md:h-1/2">
+      <div className="flex-1 min-h-0">
         {requestPending ? (
           <RecentsLoading/>
         ) : (

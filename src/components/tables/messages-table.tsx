@@ -68,7 +68,7 @@ export function MessageDataTable<TData, TValue>({
     const router = useRouter()
 
     return (
-        <div className="flex flex-col overflow-hidden rounded-md border h-full p-2">
+        <div className="flex flex-col overflow-auto rounded-md border h-full p-2">
             <div className="flex mb-2 items-center justify-between">
                 <h1 className="text-lg">Messages</h1>
                 
