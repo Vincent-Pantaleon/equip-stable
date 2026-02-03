@@ -28,13 +28,13 @@ export default function Button({
             type={type}
             onClick={onClick}
             disabled={disabled}
-            className={`button-animation text-slate-800 py-2 rounded-xl transition-colors duration-200 flex items-center gap-2 justify-center hover:bg-form-input-color hover:cursor-pointer shadow-sm
+            className={`button-animation text-slate-800 py-2 rounded-xl transition-colors duration-200 flex items-center justify-center hover:bg-form-input-color hover:cursor-pointer shadow-sm
                 ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}
                 ${buttonColor ? buttonColor : 'bg-hover-color '}
                 `}
         >
             {Icon && <Icon className={`w-4 h-4 ${iconColor}`} />}
-            {isLoading ? 'Loading...' : label}
+            <span className="hidden md:inline">{isLoading ? 'Loading...' : label}</span>
         </button>
     );
 }

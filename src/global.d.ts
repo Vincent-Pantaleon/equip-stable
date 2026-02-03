@@ -300,4 +300,11 @@ declare global {
         equipment: db['public']['Tables']['equipment']['Row'],
         request_type: 'venue' | 'equipment'
     }
+
+    type AvailabilityResult = {
+        is_available: boolean;
+        available_amount: number;
+        total_capacity: number;
+        booked_today: number;
+    }
 }

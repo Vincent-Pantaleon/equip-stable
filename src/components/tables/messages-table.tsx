@@ -91,14 +91,14 @@ export function MessageDataTable<TData, TValue>({
                 </div>
             </div>
             
-            <div className="grow">
+            <div className="flex-1">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
                                 return (
-                                <TableHead key={header.id} style={{ width: `${header.getSize()}px` }}>
+                                <TableHead key={header.id} style={{ width: `${header.getSize()}px`, padding: '10px' }}>
                                     {header.isPlaceholder
                                     ? null
                                     : flexRender(

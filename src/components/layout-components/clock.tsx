@@ -32,7 +32,7 @@ export default function Clock() {
     const statusTextColor = status === 'Open' ? 'text-status-green' : 'text-status-red';
 
     return (
-        <div className="flex flex-col md:flex-row items-center justify-center bg-white rounded-2xl p-5 md:gap-5">
+        <div className="hidden md:flex flex-col md:flex-row items-center justify-center bg-white rounded-2xl p-5 md:gap-5">
             {/* Time */}
             <div className="text-2xl sm:text-3xl">
                 {currentTime.format('h:mm A')}

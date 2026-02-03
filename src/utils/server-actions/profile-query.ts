@@ -20,7 +20,7 @@ const GetUserProfile = async () => {
     return { status: true, data: data }
 }
 
-const  GetUsersList = async () => {
+const GetUsersList = async () => {
     const supabase = await createClient()
 
     const { data, error } = await supabase
@@ -31,36 +31,40 @@ const  GetUsersList = async () => {
         last_name,
         email,
         school_id,
-        role,
-        office: office_id(
+        office: office_assignment (
+            role,
+            offices: offices!office_assignment_office_id_fkey (
             office_name
+            )
         )
     `)
 
+
     if (error) {
-        console.log(error)
-        return { status: false, message: "Error fetching profiles list"}
+        console.error("Supabase Error:", error);
+        return { status: false, message: "Error fetching profiles list" }
     }
 
     const normalizedData = (data ?? []).map((user) => {
-        const office = Array.isArray(user.office)
-            ? user.office[0]
-            : user.office
+        // office_assignments will be an array because one user could have multiple roles
+        // We grab the first one (index 0) if it exists.
+        const assignment = user.office?.[0] || null;
 
         return {
             id: user.id,
             first_name: user.first_name,
             last_name: user.last_name,
             email: user.email,
-            role: user.role,
             school_id: user.school_id,
+            // If they have an assignment, use that role; otherwise, they are a 'user'
+            role: assignment?.role ?? 'user',
             office: {
-                office_name: office?.office_name ?? null,
+                office_name: assignment?.offices?.office_name ?? 'No Office Assignment',
             }
         }
     })
 
-    return { status: true, message: "Profiles fetched successfully", data: normalizedData}
+    return { status: true, message: "Profiles fetched successfully", data: normalizedData }
 }
 
 const GetAdministratorsList = async () => {

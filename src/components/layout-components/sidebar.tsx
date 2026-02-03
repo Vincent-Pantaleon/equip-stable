@@ -5,11 +5,13 @@ import React from "react";
 
 const SideBar = () => {
     return (
-        <div className="h-full w-full flex flex-col gap-y-3">
+        <div className="h-full w-full flex flex-col gap-y-3 md:max-w-[20rem] md:mr-2">
             {/* Time */}
             <Clock />
+           
             {/* NavLinks */}
             <NavLinks />
+
             {/* Profile */}
             <Profile />
         </div>

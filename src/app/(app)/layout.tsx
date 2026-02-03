@@ -7,19 +7,16 @@ export default function AppLayout({ children }: {
     children: React.ReactNode 
 }) {
     return (
-        <div className="h-screen">
-            <div className="flex flex-col md:flex-row h-screen p-2 grow drop-shadow-lg">
+        // <div className="flex flex-col md:flex-row p-2 flex-1 drop-shadow-lg bg-green-400">
+        <div className="h-fit md:h-screen p-1 space-y-3 flex flex-col md:flex-row drop-shadow-lg">
                 {/* Sidebar */}
-                <div className="md:mr-3 max-md:mb-3 flex-shrink-0 min-w-[20rem]">
-                    <MemoSideBar />
-                </div>
+                <MemoSideBar />
                 
                 {/* Make this area scrollable without overflowing */}
-                <div className="grow overflow-auto bg-white rounded-lg p-2">
+                <div className="max-md:h-[60rem] w-full md:flex-1 bg-white rounded-lg p-2 overflow-auto">
                     {children}
                 </div>
-                
-            </div>
+            
         </div>
     );
 }

@@ -106,7 +106,7 @@ export function BookingDataTable<TData, TValue>({
                             <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
                                 return (
-                                <TableHead key={header.id} style={{ width: `${header.getSize()}px` }}>
+                                <TableHead key={header.id} style={{ width: `${header.getSize()}px`, padding: '10px' }}>
                                     {header.isPlaceholder
                                     ? null
                                     : flexRender(

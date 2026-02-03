@@ -55,6 +55,7 @@ export const Input = React.memo(function Input({
         placeholder={placeholder}
         pattern={pattern}
         disabled={isDisabled}
+        autoComplete="off"
         defaultValue={defaultValue ?? ""}
       />
     </div>

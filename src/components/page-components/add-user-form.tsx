@@ -23,10 +23,13 @@ interface FormProps {
     onClose: () => void
 }
 
+type Role = 'user' | 'moderator' | 'administrator';
+
 const AddUserForm = ({ onClose }: FormProps) => {
 
     const [openModal, setOpenModal] = useState<boolean>(false)
     const [formData, setFormData] = useState<FormData | null>(null)
+    const [role, setRole] = useState<Role | null>(null)
 
     const { data, error } = useQuery({
         queryKey: ['offices'],
@@ -115,14 +118,17 @@ const AddUserForm = ({ onClose }: FormProps) => {
                     label="Role"
                     name="role"
                     options={Roles || []}
+                    onChange={(e) => setRole(e.target.value as Role)}
                 />
 
-                <SelectInput
-                    label="Assigned Office"
-                    name="office_assigned"
-                    options={data?.data || []}
-                />
-
+                {(role === 'administrator' || role === 'moderator') && (
+                    <SelectInput
+                        label="Assigned Office"
+                        name="office_assigned"
+                        options={data?.data || []}
+                    />
+                )}
+                
                 <Button
                     Icon={Send}
                     label="Submit"
