@@ -116,7 +116,7 @@ const AvailabilityModalForm = () => {
                             </div>
                             <h2 className="text-lg font-semibold">Item is Available!</h2>
                             <div className="mt-2 space-y-1">
-                                <p>Booked Today: {availabilityResult.booked_today}</p>
+                                <p>Booked On This Date: {availabilityResult.total_bookings_count}</p>
                                 <p>Available Amount: {availabilityResult.available_amount}</p>
                             </div>
                         </div>

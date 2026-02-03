@@ -44,46 +44,43 @@ const GetItemAvailability = async (type: 'equipment' | 'venue', form: FormData) 
     }
 
     // 1. Get Total Capacity 
-    // We use .select('*', { count: 'exact' }) to get how many of this item exist in total
     const { count: totalCount, error: totalError } = await supabase
         .from(type === 'equipment' ? 'equipment' : 'venue')
         .select('*', { count: 'exact', head: true })
-        .eq(type === 'equipment' ? 'equipment_type_id' : 'venue_type', formData.item_id)
+        .eq(type === 'equipment' ? 'equipment_type_id' : 'id', formData.item_id)
 
-    // 2. Get Booked Count
-    // We check the bookings table for this item on this specific date
+    // 2. Get All Bookings for that day
     const bookingColumn = type === 'equipment' ? 'equipment_id' : 'venue_id';
 
-    const { count: bookedCount, error: availabilityError } = await supabase
+    const { data: bookings, error: availabilityError } = await supabase
         .from('bookings')
-        .select('*', { count: 'exact', head: true })
+        .select('user_id') 
         .eq(bookingColumn, formData.item_id)
         .eq('date_of_use', formData.date)
-        .eq('status', 'approved') // Optional: only count confirmed bookings
+        .eq('status', 'approved')
 
     if (totalError || availabilityError) {
-        console.log("Total Error:", totalError)
-        console.log("Availability Error:", availabilityError)
-
         return { status: false, message: "Error fetching item availability" }
     }
 
-    // 3. Calculate Availability
-    const total = totalCount || 0
-    const booked = bookedCount || 0
-    const availableAmount = total - booked
-    const isAvailable = availableAmount > 0
+    // 3. Perform Calculations
+    const totalCapacity = totalCount || 0
+    const rawBookingCount = bookings?.length || 0
+    const uniqueUserCount = bookings ? new Set(bookings.map(b => b.user_id)).size : 0
 
-    console.log(`Item ID: ${formData.item_id} | Date: ${formData.date} | Total: ${total} | Booked: ${booked} | Available: ${availableAmount}`)
+    // Availability is based on unique people
+    const availableAmount = totalCapacity - uniqueUserCount
+    const isAvailable = availableAmount > 0
 
     return { 
         status: true, 
         message: "Successfully fetched item availability", 
         data: {
             is_available: isAvailable,
-            available_amount: Math.max(0, availableAmount), // Ensure we don't return negative
-            total_capacity: total,
-            booked_today: booked
+            available_amount: Math.max(0, availableAmount),
+            total_capacity: totalCapacity,
+            unique_users: uniqueUserCount, // Used for availability logic
+            total_bookings_count: rawBookingCount // The raw number you wanted to keep
         } 
     }
 }

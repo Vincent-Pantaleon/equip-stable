@@ -305,6 +305,7 @@ declare global {
         is_available: boolean;
         available_amount: number;
         total_capacity: number;
-        booked_today: number;
+        total_bookings_count: number;
+        unique_users: number;
     }
 }
