@@ -43,10 +43,12 @@ const AddNewOfficeForm = () => {
 
         if (!result.status) {
             toast.error(result.message)
+        } else {
+            toast.success(result.message)
+            queryClient.invalidateQueries({ queryKey: ['office-list'] })
         }
 
-        toast.success(result.message)
-        queryClient.invalidateQueries({ queryKey: ['office-list'] })
+
         setOpenModal(false)
     }
     
@@ -69,6 +71,7 @@ const AddNewOfficeForm = () => {
                     label="Person In Charge (Must be an Administrator)"
                     name="in_charge"
                     options={data?.data || []}
+                    defaultValue={null}
                     divStyle="col-span-2"
                 />
 
@@ -82,7 +85,7 @@ const AddNewOfficeForm = () => {
             </form>
 
             <Modal
-                header="Confirm Adding NNew Office"
+                header="Confirm Adding New Office"
                 isOpen={openModal}
                 onClose={() => setOpenModal(false)}
             >

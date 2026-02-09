@@ -73,16 +73,16 @@ export default async function GetApprovedRequests() {
             created_at,
             first_name,
             last_name,
-            designation: designation_id(id, designation_name),
-            department: department_id(id, department_name),
+            designation: designation_id(designation_name),
+            department: department_id(department_name),
             contact_number,
-            grade_level: grade_level_id(id, grade_level, department: department_id(department_name)),
-            purpose: purpose_id(id, purpose_name),
-            type_of_request: type_of_request_id(id, type_name),
-            location_of_use: location_of_use_id(id, location_name),
-            place_of_use: place_of_use_id(id, room, number, department: department_id(department_name)),
-            equipment: equipment_id(id, type_name),
-            subject: subject_id(id, subject_name, department: department_id(department_name)),
+            grade_level: grade_level_id(grade_level, department: department_id(department_name)),
+            purpose: purpose_id(purpose_name),
+            type_of_request: type_of_request_id(type_name),
+            location_of_use: location_of_use_id(location_name),
+            place_of_use: place_of_use_id(room, number, department: department_id(department_name)),
+            equipment: equipment_id(type_name),
+            subject: subject_id(subject_name, department: department_id(department_name)),
             date_of_use,
             time_of_start,
             time_of_end,
@@ -93,6 +93,7 @@ export default async function GetApprovedRequests() {
         `)
         .eq("status", "approved")
         .eq("user_id", user.data.user?.id)
+        .order("date_of_use", { ascending: false })
 
     if (error || !data || data.length === 0) return null;
 

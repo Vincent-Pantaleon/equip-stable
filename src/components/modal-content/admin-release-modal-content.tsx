@@ -74,7 +74,7 @@ const ReleaseModalContent = ({ item, onClose }: ReleaseModalContentProps) => {
                     </div>
                 </div>
 
-                <div className="gap-3 text-sm text-gray-800 bg-white rounded-2xl p-4 shadow-md">
+                <div className="gap-3 text-sm text-gray-800 bg-white rounded-2xl p-4 shadow-md h-fit">
                     <h1 className="mb-3 font-semibold">Booking Information</h1>
                     {/* Content */}
                     <BookingModalContent request={item.bookings} action={onClose}/>

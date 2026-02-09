@@ -32,13 +32,12 @@ const GetUsersList = async () => {
         email,
         school_id,
         office: office_assignment (
-            role,
-            offices: offices!office_assignment_office_id_fkey (
-            office_name
+            offices: offices (
+                office_name
             )
-        )
+        ),
+        role_data: role_assignment (role)
     `)
-
 
     if (error) {
         console.error("Supabase Error:", error);
@@ -46,9 +45,10 @@ const GetUsersList = async () => {
     }
 
     const normalizedData = (data ?? []).map((user) => {
-        // office_assignments will be an array because one user could have multiple roles
-        // We grab the first one (index 0) if it exists.
-        const assignment = user.office?.[0] || null;
+        const role = user.role_data?.[0]?.role ?? 'user';
+
+        const officeName =
+            user.office?.offices?.office_name ?? 'No Office Assignment';
 
         return {
             id: user.id,
@@ -56,13 +56,12 @@ const GetUsersList = async () => {
             last_name: user.last_name,
             email: user.email,
             school_id: user.school_id,
-            // If they have an assignment, use that role; otherwise, they are a 'user'
-            role: assignment?.role ?? 'user',
+            role,
             office: {
-                office_name: assignment?.offices?.office_name ?? 'No Office Assignment',
-            }
-        }
-    })
+            office_name: officeName,
+            },
+        };
+    });
 
     return { status: true, message: "Profiles fetched successfully", data: normalizedData }
 }
@@ -72,21 +71,31 @@ const GetAdministratorsList = async () => {
 
     const { data, error } = await supabase
     .from('profiles')
-    .select('*')
-    .in('role', ['administrator', 'superadmin'])
-
+    .select(`
+        id,
+        first_name,
+        last_name,
+        role_assignment!inner (
+            role
+        )
+    `)
+    // Filter the inner join to only include specific roles
+    .in('role_assignment.role', ['administrator', 'superadmin'])
 
     if (error) {
+        console.error("Supabase Error:", error);
         return { status: false, message: "Error fetching administrator list"}
     }
 
-    const admins: OptionType[] = data.map((admin) => ({
-        label: `${admin.first_name} ${admin.last_name}`, // shown to user
-        value: admin.id, // used in the select
-    }));
+    const admins: OptionType[] = [
+        { label: "None", value: null },
+        ...(data ?? []).map((profile: any) => ({
+            label: `${profile.first_name} ${profile.last_name}`.trim() || "Unknown User",
+            value: profile.id,
+        })),
+    ];
 
-
-    return { status: true, data: admins}
+    return { status: true, data: admins }
 }
 
 export { GetUserProfile, GetUsersList, GetAdministratorsList }

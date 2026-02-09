@@ -51,11 +51,11 @@ export function BookingModalContent({ request, isAdmin = false, action }: ModalP
     }
 
     return (
-        <div className="max-h-[70vh] overflow-y-auto pr-2">
+        <div className="h-fit overflow-y-auto pr-2">
             <div className="flex flex-col gap-6 text-sm text-gray-800">
                 {/* Top Section */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-auto">
-                    <div>
+                    <div>           
                         <h3 className="text-gray-500">Booking ID</h3>
                         <p className="font-bold">{request.id}</p>
                     </div>

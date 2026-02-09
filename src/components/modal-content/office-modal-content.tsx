@@ -49,10 +49,11 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
 
         if (!result.status) {
             toast.error(result.message)
+        } else {
+            toast.success(result.message)
+            queryClient.invalidateQueries({queryKey: ['office-list']})
         }
         
-        toast.success(result.message)
-        queryClient.invalidateQueries({queryKey: ['office-list']})
         onClose()
         setOpenModal(false)
     }
@@ -84,14 +85,14 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
                     label="Office"
                     name="office_name"
                     type="text"
-                    defaultValue={formatLabel(item.office_name)}
+                    defaultValue={formatLabel(item.name)}
                 />
 
                 <SelectInput
                     label="Employee In Charge"
                     name="in_charge"
                     options={data?.data || []}
-                    defaultValue={item.profile.id}
+                    defaultValue={item.assigned_to_id}
                 />
 
                 <CancelConfirmButtons

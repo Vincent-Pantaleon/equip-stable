@@ -22,7 +22,7 @@ interface SelectInputProps {
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   options: OptionType[];
   group?: string;
-  defaultValue?: string | number;
+  defaultValue?: string | number | null;
 }
 
 interface SectionProps {

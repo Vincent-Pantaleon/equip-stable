@@ -14,7 +14,7 @@ export default function AccordionCalendar({ data }: { data: Requests[] }) {
   return (
     <Accordion type="single" collapsible className="space-y-4">
       {Object.entries(groupedData)
-        .sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime())
+        .sort(([a], [b]) => new Date(b).getTime() - new Date(a).getTime())
         .map(([date, items], index) => (
           <AccordionItem
             key={index}

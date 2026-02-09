@@ -25,7 +25,7 @@ export default async function GetInventoryData() {
     .from('equipment_type')
     .select('type_name, office: office_id(id, office_name), is_public, count: equipment(count)')
     .eq('is_public', true)
-    .eq('equipment.status', 'stored')
+    .in('equipment.status',[ 'stored', 'returned' ])
 
     const { data: officeData, error: officeError } = await supabase
     .from('offices')

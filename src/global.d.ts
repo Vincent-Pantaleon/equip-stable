@@ -195,6 +195,9 @@ declare global {
         office: {
             office_name: string;
         };
+        role: {
+            role: db["public"]["Enums"]["roles"];
+        }
     }
 
 
@@ -221,13 +224,10 @@ declare global {
 
     type Office = {
         id: string;
-        office_name: string;
+        name: string;
         created_at: string;
-        profile: {
-            id: string;
-            first_name: string;
-            last_name: string;
-        };
+        assigned_to: string;
+        assigned_to_id: string;
     }
 
     interface SectionProps {

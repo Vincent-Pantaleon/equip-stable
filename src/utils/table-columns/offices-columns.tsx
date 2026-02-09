@@ -31,7 +31,7 @@ export const OfficeTableColumns = ({ onUpdate, onDelete }: TypeActionProps): Col
     },
     {
         header: "Office Name",
-        accessorFn: (row) => row.office_name,
+        accessorFn: (row) => row.name,
         cell: ({ getValue }) => {
             const value = getValue()
 
@@ -42,12 +42,7 @@ export const OfficeTableColumns = ({ onUpdate, onDelete }: TypeActionProps): Col
     {
         header: "Person In Charge",
         accessorFn: row => {
-            const fname = row.profile.first_name || ""
-            const lname = row.profile.last_name || ""
-
-            const full = Capitalize(fname) + " " + Capitalize(lname)
-
-            return full ?? "Unknown User"
+            return row.assigned_to
         },
         size: 200
     },

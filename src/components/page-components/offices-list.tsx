@@ -20,8 +20,6 @@ const OfficeList = () => {
 
     const queryClient = useQueryClient()
 
-    console.log("Selected Item: ", selectedItem)
-
     const { data, error, isPending } = useQuery({
         queryKey: ['office-list'],
         queryFn: GetOfficeList
@@ -44,10 +42,11 @@ const OfficeList = () => {
 
         if (!result.status) {
             toast.error(result.message)
+        } else {
+            toast.success(result.message)
+            queryClient.invalidateQueries({ queryKey: ['office-list'] })
         }
 
-        toast.success(result.message)
-        queryClient.invalidateQueries({ queryKey: ['office-list'] })
         setOpenModal(false)
     }
 
