@@ -9,8 +9,8 @@ type JwtType = {
   first_name: string;
   last_name: string;
   email: string;
-  office_id: string;
-  office_name: string;
+  office_id?: string;
+  office_name?: string;
 }
 
 export async function GetUserInfo() {
@@ -23,15 +23,17 @@ export async function GetUserInfo() {
   if (!session) return null
 
   const jwt: JwtType = jwtDecode(session.access_token)
-
+  const isSuperAdmin = jwt.user_role === 'superadmin'
+  
   // These fields must be added via your custom_access_token_hook in Supabase
   const userInfo = {
     role: jwt.user_role,
     first_name: jwt.first_name,
     last_name: jwt.last_name,
     email: jwt.email,
-    office_id: jwt.office_id,
-    office_name: jwt.office_name
+    // If superadmin, explicitly set to null, otherwise take jwt value or fallback
+    office_id: isSuperAdmin ? null : (jwt.office_id ?? null),
+    office_name: isSuperAdmin ? 'Global Access' : (jwt.office_name ?? 'Unassigned')
   }
 
   return userInfo
