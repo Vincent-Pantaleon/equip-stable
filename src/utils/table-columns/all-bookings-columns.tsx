@@ -20,7 +20,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         header: "Filer's Name",
         accessorFn: row => `${Capitalize(row.first_name)} ${Capitalize(row.last_name)}`,
         cell: ({ getValue }) => getValue(),
-        minSize: 200
+        size: 200
     },
     {
         header: "Activity",

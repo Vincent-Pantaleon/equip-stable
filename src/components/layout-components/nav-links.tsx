@@ -5,12 +5,9 @@ import { usePathname } from "next/navigation"
 import { 
     SquareActivity, 
     Layers, Archive, 
-    CalendarDays, Mails, 
-    CircleUserRound, 
+    CalendarDays,
     Menu,
-    Users, 
     LayoutDashboard, 
-    List 
 } from "lucide-react"
 import { useInfo } from "@/utils/hooks/user-context"
 

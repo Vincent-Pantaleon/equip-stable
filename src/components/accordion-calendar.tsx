@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/accordion"
 import formatDate, { getDateLabel, getTimeLabel, formatTime } from "@/utils/handlers/format-date"
 import { BookingModalContent } from "./modal-content/booking-modal-content"
-import { Capitalize, formatLabel } from "@/utils/handlers/capitalize"
+import { formatLabel } from "@/utils/handlers/capitalize"
 
 export default function AccordionCalendar({ data }: { data: Requests[] }) {
   const groupedData = Object.groupBy(data, item => item.date_of_use)

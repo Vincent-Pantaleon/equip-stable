@@ -30,6 +30,7 @@ type StatusCount = {
     pending: number;
     approved: number;
     declined: number;
+    active: number;
     completed: number;
 };
 
@@ -42,6 +43,7 @@ const BookingsList = () => {
         pending: 0,
         approved: 0,
         declined: 0,
+        active: 0,
         completed: 0,
     });
 
@@ -78,6 +80,7 @@ const BookingsList = () => {
             pending: 0,
             approved: 0,
             declined: 0,
+            active: 0,
             completed: 0,
         };
 

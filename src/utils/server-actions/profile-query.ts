@@ -20,6 +20,23 @@ const GetUserProfile = async () => {
     return { status: true, data: data }
 }
 
+type RawUser = {
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    school_id: string;
+    role_data: {
+        role: string;
+    }[] | null;
+    office: {
+        offices: {
+        office_name: string;
+        } | null;
+    } | null;
+};
+
+
 const GetUsersList = async () => {
     const supabase = await createClient()
 
@@ -38,17 +55,19 @@ const GetUsersList = async () => {
         ),
         role_data: role_assignment (role)
     `)
+    .overrideTypes<RawUser[]>()
 
     if (error) {
         console.error("Supabase Error:", error);
         return { status: false, message: "Error fetching profiles list" }
     }
 
+    console.log("Raw Profiles Data:", data);
+
     const normalizedData = (data ?? []).map((user) => {
         const role = user.role_data?.[0]?.role ?? 'user';
 
-        const officeName =
-            user.office?.offices?.office_name ?? 'No Office Assignment';
+        const officeName = user.office?.offices?.office_name ?? 'No Office Assignment';
 
         return {
             id: user.id,
@@ -62,6 +81,8 @@ const GetUsersList = async () => {
             },
         };
     });
+
+    console.log("Normalized Profiles Data:", normalizedData);
 
     return { status: true, message: "Profiles fetched successfully", data: normalizedData }
 }

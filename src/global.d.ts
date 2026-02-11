@@ -202,6 +202,8 @@ declare global {
 
 
     type EquipmentTypeType = {
+        id: string;
+        created_at: string;
         type_name: string;
         office: {
             id: string;
@@ -212,6 +214,8 @@ declare global {
     }
 
     type VenuesType = {
+        id: string;
+        created_at: string;
         venue_name: string;
         total_capacity: number;
         office: {

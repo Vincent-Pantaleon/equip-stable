@@ -53,52 +53,52 @@ export function MessageModalContent({ message }: { message: Message }) {
 // Request Modal Content
 
 // Equipment Modal Content
-export function EquipmentModalContent({ equipment }: { equipment: EquipmentTypeType }) {
-  return (
-    <div className="max-h-[60vh] overflow-y-auto pr-2">
-      <div className="flex flex-col gap-6 text-sm text-gray-800">
-        <div>
-          <h3 className="text-gray-500">Equipment Name</h3>
-          <p className="font-bold">{Capitalize(equipment.type)}</p>
-        </div>
-        <div>
-          <h3 className="text-gray-500">Equipment ID</h3>
-          <p className="font-bold">{equipment.id}</p>
-        </div>
-        <div>
-          <h3 className="text-gray-500">Total Count</h3>
-          <p className="font-bold">{equipment.total_count ?? 0}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
+// export function EquipmentModalContent({ equipment }: { equipment: EquipmentTypeType }) {
+//   return (
+//     <div className="max-h-[60vh] overflow-y-auto pr-2">
+//       <div className="flex flex-col gap-6 text-sm text-gray-800">
+//         <div>
+//           <h3 className="text-gray-500">Equipment Name</h3>
+//           <p className="font-bold">{Capitalize(equipment.type_name)}</p>
+//         </div>
+//         <div>
+//           <h3 className="text-gray-500">Equipment ID</h3>
+//           <p className="font-bold">{equipment.id}</p>
+//         </div>
+//         <div>
+//           <h3 className="text-gray-500">Total Count</h3>
+//           <p className="font-bold">{equipment.count ?? 0}</p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 
-// Venue Modal Content
-export function VenueModalContent({ venue }: { venue: Venues }) {
-  return (
-    <div className="max-h-[60vh] overflow-y-auto pr-2">
-      <div className="flex flex-col gap-6 text-sm text-gray-800">
-        <div>
-          <h3 className="text-gray-500">Venue Name</h3>
-          <p className="font-bold">{Capitalize(venue.name)}</p>
-        </div>
-        <div>
-          <h3 className="text-gray-500">Venue ID</h3>
-          <p className="font-bold">{venue.id}</p>
-        </div>
-        <div>
-          <h3 className="text-gray-500">Total Capacity</h3>
-          <p className="font-bold">{venue.total_capacity ?? 0}</p>
-        </div>
-        <div>
-          <h3 className="text-gray-500">Total Count</h3>
-          <p className="font-bold">{venue.total_count ?? 0}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
+// // Venue Modal Content
+// export function VenueModalContent({ venue }: { venue: Venues }) {
+//   return (
+//     <div className="max-h-[60vh] overflow-y-auto pr-2">
+//       <div className="flex flex-col gap-6 text-sm text-gray-800">
+//         <div>
+//           <h3 className="text-gray-500">Venue Name</h3>
+//           <p className="font-bold">{Capitalize(venue.name)}</p>
+//         </div>
+//         <div>
+//           <h3 className="text-gray-500">Venue ID</h3>
+//           <p className="font-bold">{venue.id}</p>
+//         </div>
+//         <div>
+//           <h3 className="text-gray-500">Total Capacity</h3>
+//           <p className="font-bold">{venue.total_capacity ?? 0}</p>
+//         </div>
+//         <div>
+//           <h3 className="text-gray-500">Total Count</h3>
+//           <p className="font-bold">{venue.total_count ?? 0}</p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 
 // Profile Modal Content
 export function ProfileModalContent({ profile }: { profile: Profile }) {
@@ -112,10 +112,6 @@ export function ProfileModalContent({ profile }: { profile: Profile }) {
         <div>
           <h3 className="text-gray-500">Name</h3>
           <p className="font-bold">{profile.first_name} {profile.last_name}</p>
-        </div>
-        <div>
-          <h3 className="text-gray-500">Gender</h3>
-          <p className="font-bold">{profile.gender}</p>
         </div>
         <div>
           <h3 className="text-gray-500">Email</h3>

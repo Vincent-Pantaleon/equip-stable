@@ -47,13 +47,13 @@ export default async function GetInventoryData() {
         ...item,
         office: Array.isArray(item.office) ? item.office[0] : item.office ?? null,
         count: item.count?.[0]?.count ?? 0
-    }))
+    } as EquipmentTypeNormalized)); // <--- Add this cast
 
     const normalizedVenues: VenuesTypeNormalized[] = venueData.map((item) => ({
         ...item,
         office: Array.isArray(item.office) ? item.office[0] : item.office ?? null,
         count: item.count?.[0]?.count ?? 0
-    }))
+    } as VenuesTypeNormalized)); // <--- Add this cast
 
     return { equipments: normalizedEquipments, venues: normalizedVenues, offices: normalizeData }
 } 

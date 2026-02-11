@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
-    LayoutDashboard,
     Layers,
     FolderOpen,
     MapPinned,
