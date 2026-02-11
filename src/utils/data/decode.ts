@@ -17,14 +17,18 @@ export async function GetUserInfo() {
   const supabase = await createClient()
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user }, error
+  } = await supabase.auth.getUser()
+
+  if (!user || error) return null
+
+  const { data: { session } } = await supabase.auth.getSession()
 
   if (!session) return null
 
   const jwt: JwtType = jwtDecode(session.access_token)
   const isSuperAdmin = jwt.user_role === 'superadmin'
-  
+
   // These fields must be added via your custom_access_token_hook in Supabase
   const userInfo = {
     role: jwt.user_role,
