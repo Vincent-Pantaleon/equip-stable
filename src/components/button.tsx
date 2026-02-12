@@ -34,7 +34,7 @@ export default function Button({
                 `}
         >
             {Icon && <Icon className={`w-4 h-4 ${iconColor}`} />}
-            <span className="hidden md:inline">{isLoading ? 'Loading...' : label}</span>
+            <span>{isLoading ? 'Loading...' : label}</span>
         </button>
     );
 }
