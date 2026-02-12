@@ -1,8 +1,8 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query"
-import { GetOfficeNames } from "@/utils/server-actions/office-page-actions"
 import { AddNewUser } from "@/utils/server-actions/add-user"
+import { FetchOfficeOptions } from "@/utils/server-actions/fetch-office"
 
 import { Input, SelectInput } from "../input"
 import { CancelConfirmButtons } from "../cancel-confirm"
@@ -33,7 +33,7 @@ const AddUserForm = ({ onClose }: FormProps) => {
 
     const { data, error } = useQuery({
         queryKey: ['offices'],
-        queryFn: GetOfficeNames
+        queryFn: FetchOfficeOptions
     })
 
     if (error) {

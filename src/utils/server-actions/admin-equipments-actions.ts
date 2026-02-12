@@ -11,6 +11,7 @@ const InsertNewEquipmentType = async (formData: FormData) => {
 
     const FormData = {
         type: formatSpaceToUnderscore(formData.get('type') as string),
+        office_id: user?.role === 'superadmin' ? formData.get('office_name') as string : user?.office_id
     }
 
     const { error } = await supabase
@@ -18,7 +19,7 @@ const InsertNewEquipmentType = async (formData: FormData) => {
     .insert([
         { 
             type_name: FormData.type, 
-            office_id: user?.office_id  
+            office_id: FormData.office_id,
         }
     ])
 
@@ -41,6 +42,7 @@ const InsertNewEquipment = async (formData: FormData) => {
         property_code: formData.get('item_code') as string,
         serial_number: formData.get('serial_number') as string,
         date_acquired: formData.get('date_acquired') as string,
+        office_id: user?.role === 'superadmin' ? formData.get('office_name') as string : user?.office_id
     }
 
     const { error: insertError } = await supabase
@@ -53,7 +55,7 @@ const InsertNewEquipment = async (formData: FormData) => {
             serial_number: FormData.serial_number,
             date_acquired: FormData.date_acquired,
             item_name: FormData.item_name,
-            office_id: user?.office_id
+            office_id: FormData.office_id
         }
     ])
 

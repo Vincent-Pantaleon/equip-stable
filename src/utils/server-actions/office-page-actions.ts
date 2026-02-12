@@ -52,30 +52,6 @@ const GetOfficeList = async () => {
     return { status: true, message: "Fetched office list successfully", data: normalizedOffices }
 }
 
-const GetOfficeNames = async () => {
-    const supabase = await createClient()
-
-    const { data, error } = await supabase.
-    from('offices')
-    .select('office_name, id')
-
-    if (error) {
-        return { status: false, message: "Failed fetching office list" }
-    }
-
-    const normalized =
-        data?.map((item) => ({
-        label: formatLabel(item.office_name),
-        value: item.id,
-    })) ?? []
-
-    return {
-        status: true,
-        message: "Fetched office list successfully",
-        data: normalized,
-    }
-}
-
 const AddNewOffice = async (formData: FormData) => {
     const supabase = await createClient()
 
@@ -104,4 +80,4 @@ const AddNewOffice = async (formData: FormData) => {
 }
 
 
-export { GetOfficeList, GetOfficeNames, AddNewOffice }
+export { GetOfficeList, AddNewOffice }

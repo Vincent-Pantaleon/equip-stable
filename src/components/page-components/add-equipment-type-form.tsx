@@ -7,7 +7,7 @@ import { Input, SelectInput } from "../input"
 import Modal from "../modal"
 import { useState } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { GetOfficeNames } from "@/utils/server-actions/office-page-actions"
+import { FetchOfficeOptions } from "@/utils/server-actions/fetch-office"
 import { useInfo } from "@/utils/hooks/user-context"
 
 const AddEquipmentTypeForm = () => {
@@ -16,7 +16,7 @@ const AddEquipmentTypeForm = () => {
 
   const {data: officeList, error: officeError } = useQuery({
     queryKey: ['office-list'],
-    queryFn: GetOfficeNames
+    queryFn: FetchOfficeOptions
   })
 
   if (officeError) {
@@ -48,6 +48,7 @@ const AddEquipmentTypeForm = () => {
     }
   }
 
+  // IF THE PERSON IS A SUPERADMIN ASK FOR OFFICE SELECTION, IF NOT HIDE THE OFFICE SELECTION AND AUTOMATICALLY ASSIGN THE OFFICE BASED ON THE USER'S OFFICE ID
   return (
     <>
       <form 

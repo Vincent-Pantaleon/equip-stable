@@ -62,6 +62,7 @@ const GetAdminTypeVenues = async () => {
     }
 
     if (fetchError) {
+        console.log(fetchError)
         return { status: false, message: "Error fetching venue types" }
     }
 

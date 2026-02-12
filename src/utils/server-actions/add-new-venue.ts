@@ -11,7 +11,8 @@ const AddNewVenue = async (formData: FormData) => {
 
     const data = {
         venue_type: formData.get('type'),
-        venue_name: formData.get('reference')
+        venue_name: formData.get('reference'),
+        office_id: user?.role === 'superadmin' ? formData.get('office_id') : user?.office_id
     }
 
     const { error } = await supabase
@@ -19,7 +20,7 @@ const AddNewVenue = async (formData: FormData) => {
     .insert({
         venue_type: data.venue_type,
         venue_name: formatSpaceToUnderscore(data.venue_name as string),
-        office_id: user?.office_id
+        office_id: data.office_id
     })
 
     if (error) {

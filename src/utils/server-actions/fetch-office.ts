@@ -14,13 +14,14 @@ const FetchOfficeOptions = async () => {
         return { status: false, message: "Error fetching office options" }
     }
 
-        const normalizeData = [
-            { label: "All Offices", value: "" }, // 👈 blank = no filter
-                ...data.map((item) => ({
-                    label: formatLabel(item.office_name),
-                    value: item.id,
-            })),
-        ]
+    const normalizeData = [
+        { label: "All Offices", value: "" }, // 👈 blank = no filter
+            ...data.map((item) => ({
+                label: formatLabel(item.office_name),
+                value: item.id,
+        })),
+    ]
+
 
     return { status: true, message: "Office options fetched successfully", data: normalizeData}
 }

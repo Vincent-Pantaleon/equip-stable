@@ -1,6 +1,6 @@
 'use client'
 
-import { Input } from "../input"
+import { Input, SelectInput } from "../input"
 import { CancelConfirmButtons } from "../cancel-confirm"
 import { AddNewVenueType } from "@/utils/server-actions/add-venue-type"
 import { FormEvent, useState } from "react"
@@ -9,6 +9,9 @@ import Button from "../button"
 import { Send } from "lucide-react"
 import Modal from "../modal"
 import { useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
+import { FetchOfficeOptions } from "@/utils/server-actions/fetch-office"
+import { useInfo } from "@/utils/hooks/user-context"
 
 interface FormProps {
     onClose: () => void
@@ -19,6 +22,16 @@ const AddVenueTypeForm = ({ onClose }: FormProps) => {
     const [formData, setFormData] = useState<FormData | null>(null)
 
     const queryClient = useQueryClient()
+    const user = useInfo()
+
+    const { data, error } = useQuery({
+        queryKey: ['office-list'],
+        queryFn: FetchOfficeOptions
+    })
+
+    if ( error) {
+        toast.error("Error fetching office options")
+    }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -61,6 +74,13 @@ const AddVenueTypeForm = ({ onClose }: FormProps) => {
                     name="total_capacity"
                     type="number"
                 />
+                {user?.role === 'superadmin' && (
+                    <SelectInput
+                        label="Office"
+                        name="office_id"
+                        options={data?.data || []}
+                    />
+                )}
 
                 <Button
                     Icon={Send}

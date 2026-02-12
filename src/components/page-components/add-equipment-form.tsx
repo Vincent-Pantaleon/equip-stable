@@ -9,7 +9,9 @@ import { toast } from "sonner"
 
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { GetEquipmentTypes } from "@/utils/server-actions/fetch-equipment-types"
+import { FetchOfficeOptions } from "@/utils/server-actions/fetch-office"
 import { useState } from "react"
+import { useInfo } from "@/utils/hooks/user-context"
 
 const AddEquipmentForm = () => {
 
@@ -17,6 +19,7 @@ const AddEquipmentForm = () => {
     const [formData, setFormData] = useState<FormData | null>(null)
 
     const queryClient = useQueryClient()
+    const user = useInfo()
 
     const { data, error } = useQuery({
         queryKey: ['equipment-types'],
@@ -24,8 +27,13 @@ const AddEquipmentForm = () => {
         staleTime: Infinity,
     })
 
-    if (error) {
-        toast.error(error.message)
+    const { data: officeList, error: officeError } = useQuery({
+        queryKey: ['office-list'],
+        queryFn: FetchOfficeOptions,
+    })
+
+    if (error || officeError) {
+        toast.error(error?.message || officeError?.message)
     }
     
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -51,6 +59,7 @@ const AddEquipmentForm = () => {
         }
     }
 
+    // IF THE PERSON IS A SUPERADMIN ASK FOR OFFICE SELECTION, IF NOT HIDE THE OFFICE SELECTION AND AUTOMATICALLY ASSIGN THE OFFICE BASED ON THE USER'S OFFICE ID
     return (
         <>
             <form
@@ -92,7 +101,14 @@ const AddEquipmentForm = () => {
                         name="date_acquired"
                         type="date"
                     />
-
+                    {user?.role === 'superadmin' && (
+                        <SelectInput
+                            label="Office"
+                            name="office_name"
+                            options={officeList?.data ?? []}
+                        />
+                    )}
+                    
                     <Button
                         label="Submit"
                         className=""
