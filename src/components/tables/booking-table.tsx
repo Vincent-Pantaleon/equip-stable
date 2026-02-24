@@ -23,6 +23,7 @@ import { Button } from "../ui/button"
 
 import { useState } from "react"
 import { TableFilter } from "../table-filter"
+import { PaginationButtons } from "./pagination-buttons"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -85,6 +86,20 @@ export function BookingDataTable<TData, TValue>({
                         options={options}
                     />
 
+                    <label htmlFor="date_filter">Date:</label>
+                    <div className="border-1 rounded-lg p-2 w-fit">
+                        <input
+                            type="date"
+                            name="date_filter"
+                            value={(table.getColumn("date_of_use")?.getFilterValue() as string) ?? ""}
+                            onChange={(e) => {
+                                // Setting it to undefined removes the filter when the input is cleared
+                                table.getColumn("date_of_use")?.setFilterValue(e.target.value || undefined);
+                            }}
+                        />
+                    </div>
+                    
+
                     {role === 'superadmin' && (
                         <>
                             <label htmlFor="office_filter">Office:</label>
@@ -144,7 +159,7 @@ export function BookingDataTable<TData, TValue>({
                 </Table>
             </div>
             
-            <div className="flex items-center justify-end space-x-2 ">
+            {/* <div className="flex items-center justify-end space-x-2 ">
                 <Button
                     variant="outline"
                     size="sm"
@@ -161,7 +176,9 @@ export function BookingDataTable<TData, TValue>({
                 >
                     Next
                 </Button>
-            </div>
+            </div> */}
+
+            <PaginationButtons table={table}/>
         </div>
     )
 }

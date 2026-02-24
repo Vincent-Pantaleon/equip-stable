@@ -114,99 +114,66 @@ const GetRecentRequestData = async () => {
 
 const GetAdminRequestData = async () => {
     const supabase = await createClient()
-
     const user = await GetUserInfo()
     
-    if(!user) {
-        return null
-    }
-    // TODO: FIX THIS SHIT, why is the administrator and moderator condition not working
+    if(!user) return null
 
-    let requestData: any[] | null = null;
-    let requestError: any | null = null;
- 
-    // Adjust this shit
+    // 1. Build the base query
+    let query = supabase
+        .from('bookings')
+        .select(`
+            id,
+            user_id,
+            created_at,
+            first_name,
+            last_name,
+            designation: designation_id(id, designation_name),
+            department: department_id(id, department_name),
+            contact_number,
+            grade_level: grade_level_id(id, grade_level, department: department_id(department_name)),
+            purpose: purpose_id(id, purpose_name),
+            type_of_request: type_of_request_id(id, type_name),
+            location_of_use: location_of_use_id(id, location_name),
+            place_of_use: place_of_use_id(id, room, number, department: department_id(department_name)),
+            equipment: equipment_id(id, type_name),
+            subject: subject_id(id, subject_name, department: department_id(department_name)),
+            date_of_use,
+            time_of_start,
+            time_of_end,
+            status,
+            is_active,
+            venue: venue_id(id, venue_name),
+            office: office_id(id, office_name)    
+        `)
+
+    // 2. Apply Role-based filtering
+    // If they ARE admin/mod, filter by their specific office
     if (user.role === "administrator" || user.role === "moderator") {
-        const { data, error } = await supabase
-        .from('bookings')
-        .select(`
-            id,
-            user_id,
-            created_at,
-            first_name,
-            last_name,
-            designation: designation_id(id, designation_name),
-            department: department_id(id, department_name),
-            contact_number,
-            grade_level: grade_level_id(id, grade_level, department: department_id(department_name)),
-            purpose: purpose_id(id, purpose_name),
-            type_of_request: type_of_request_id(id, type_name),
-            location_of_use: location_of_use_id(id, location_name),
-            place_of_use: place_of_use_id(id, room, number, department: department_id(department_name)),
-            equipment: equipment_id(id, type_name),
-            subject: subject_id(id, subject_name, department: department_id(department_name)),
-            date_of_use,
-            time_of_start,
-            time_of_end,
-            status,
-            is_active,
-            venue: venue_id(id, venue_name),
-            office: office_id(id, office_name)    
-        `)
-        .order('created_at', { ascending: false })
-        .eq('office', user.office_id)
-
-        requestData = data;
-        requestError = error;
-
-    } else {
-        const { data, error } = await supabase
-        .from('bookings')
-        .select(`
-            id,
-            user_id,
-            created_at,
-            first_name,
-            last_name,
-            designation: designation_id(id, designation_name),
-            department: department_id(id, department_name),
-            contact_number,
-            grade_level: grade_level_id(id, grade_level, department: department_id(department_name)),
-            purpose: purpose_id(id, purpose_name),
-            type_of_request: type_of_request_id(id, type_name),
-            location_of_use: location_of_use_id(id, location_name),
-            place_of_use: place_of_use_id(id, room, number, department: department_id(department_name)),
-            equipment: equipment_id(id, type_name),
-            subject: subject_id(id, subject_name, department: department_id(department_name)),
-            date_of_use,
-            time_of_start,
-            time_of_end,
-            status,
-            is_active,
-            venue: venue_id(id, venue_name),
-            office: office_id(id, office_name)    
-        `)
-        .order('created_at', { ascending: false })
-    
-
-        requestData = data;
-        requestError = error;
+        query = query.eq('office_id', user.office_id).order('date_of_use', { ascending: true }).order('time_of_start', { ascending: true }) // Ensure this matches your DB column name
     }
 
+    // 3. APPLY THE SORTING (Crucial Part)
+    // We sort by Date first (ascending), then Time (ascending)
+    // This puts the soonest appointment at the very top.
+    const { data: requestData, error: requestError } = await query
+        .order('date_of_use', { ascending: true })
+        .order('time_of_start', { ascending: true })
+
+    // 4. Fetch Office List
     const { data: officeData, error: officeError } = await supabase
-    .from('offices')
-    .select('office_name, id')
+        .from('offices')
+        .select('office_name, id')
 
     if (officeError || requestError) {
-        console.log("Request Error: ", requestError)
+        console.error("Request Error: ", requestError || officeError)
         return null;
     }
 
     const normalizeData = [
-        { label: "All Offices", value: "" }, // 👈 blank = no filter
-            ...officeData.map((item) => ({
-                label: formatLabel(item.office_name) as string,
-                value: item.id as string,
+        { label: "All Offices", value: "" },
+        ...officeData.map((item) => ({
+            label: formatLabel(item.office_name) as string,
+            value: item.id as string,
         })),
     ]
 
