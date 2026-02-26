@@ -80,13 +80,14 @@ export function EquipmentsDataTable<TData, TValue>({
             <div className="flex mb-2 items-center justify-between">
                 <h1 className="text-lg">{isEquipmentType ? "Equipment Types" : "Equipments"}</h1>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
                     {(user?.role === 'superadmin' || isInventory) && (
                         <TableFilter
                             name="equipment-office-filter"
                             onChange={(e) => table.getColumn('officeFilter')?.setFilterValue(e.target.value || undefined)}
                             value={(table.getColumn("officeFilter")?.getFilterValue() as string) ?? ""}
                             options={offices}
+                            label="Office:"
                         />
                     )}
 
