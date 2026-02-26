@@ -17,6 +17,17 @@ import { DeleteFormValue } from '@/utils/server-actions/delete-form-value'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+const tableNames = [
+    { name: "department" },
+    { name: "designation" },
+    { name: "purpose" },
+    { name: "type-of-request" },
+    { name: "location-of-use" },
+    { name: "place-of-use" },
+    { name: "subject" },
+    { name: "grade-level" },
+]
+
 const FormValuesTableList = () => {
     const [openModal, setOpenModal] = useState(false)
     const [openDelUpModal, setOpenDelUpModal] = useState(false)
@@ -61,13 +72,21 @@ const FormValuesTableList = () => {
                 </p>
             </div>
 
-            <div>
+            <div className='flex justify-between'>
                 <Button
                     Icon={PlusCircle}
                     label="Add New Entry"
                     onClick={() => setOpenModal(true)}
                     className="px-2"
                 />
+
+                {/* <div className='flex gap-4 border '>
+                    {tableNames.map((table, index) => (
+                        <div key={index} className='p-2 rounded-lg'>
+                            {table.name}
+                        </div>
+                    ))}
+                </div> */}
             </div>
 
             <div className="overflow-auto space-y-2 flex flex-col h-full">

@@ -30,7 +30,7 @@ export default function RootLayout({
         <link rel="icon" href={'/equip_logo_2.png'} type="image/png" />
       </head>
       <body
-        className={`${atkinson.variable} antialiased bg-slate-100`}
+        className={`${atkinson.variable} antialiased bg-slate-100 `}
       >
         <UserProvider>
           <QueryProvider>

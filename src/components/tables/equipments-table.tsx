@@ -52,16 +52,15 @@ export function EquipmentsDataTable<TData, TValue>({
     offices,
     isInventory
 }: DataTableProps<TData, TValue>) {
+    const user = useInfo()
+    
     const [openModal, setOpenModal] = useState<boolean>(false)
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: pageSize
     })
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-   
-    const user = useInfo()
 
-    // FIX FILTERING ISSUES
     const table = useReactTable({
         data,
         columns,
@@ -77,7 +76,7 @@ export function EquipmentsDataTable<TData, TValue>({
     })
 
     return (
-        <div className="overflow-hidden flex flex-col rounded-md border p-2 h-full">
+        <div className="w-full h-full flex flex-col rounded-md border p-2">
             <div className="flex mb-2 items-center justify-between">
                 <h1 className="text-lg">{isEquipmentType ? "Equipment Types" : "Equipments"}</h1>
 

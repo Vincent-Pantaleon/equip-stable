@@ -40,7 +40,7 @@ const CardDescription = ({ children }: CardDescriptionProps) => {
 
 const CardWrapper = ({ children }: CardWrapperProps) => {
     return (
-        <div className="mb-4 flex items-center gap-4 justify-center text-nowrap">
+        <div className="flex items-center gap-4 justify-center text-nowrap">
             {children}
         </div>
     )

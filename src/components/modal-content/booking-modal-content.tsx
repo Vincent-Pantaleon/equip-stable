@@ -21,6 +21,8 @@ const StatusOptions = [
     { label: "Completed", value: "completed" }
 ]
 
+type StatusType = "pending" | "approved" | "declined" | "completed";
+
 interface ModalProps {
     request: Requests
     isAdmin?: boolean
@@ -31,12 +33,12 @@ export function BookingModalContent({ request, isAdmin = false, action }: ModalP
     const info = useInfo();
     const isModOrAdmin = (info?.role === "administrator" || info?.role === "superadmin") && isAdmin === true;
 
-    const [status, setStatus] = useState<string>(request.status)
+    const [status, setStatus] = useState<StatusType>(request.status as StatusType)
     const [openConfirmModal, setOpenConfirmModal] = useState<boolean>(false)
 
     const queryClient = useQueryClient()
 
-    const handleSubmit = async (id: string, status: string) => {
+    const handleSubmit = async (id: string, status: string) => {      
         const result = await UpdateStatus(id, status)
 
         if (result.status === false) {
@@ -55,10 +57,6 @@ export function BookingModalContent({ request, isAdmin = false, action }: ModalP
             <div className="flex flex-col gap-6 text-sm text-gray-800">
                 {/* Top Section */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 overflow-auto">
-                    <div>           
-                        <h3 className="text-gray-500">Booking ID</h3>
-                        <p className="font-bold">{request.id}</p>
-                    </div>
                     <div>
                         <h3 className="text-gray-500">Filer&apos;s Name</h3>
                         <p className="font-bold">{Capitalize(request.first_name)} {Capitalize(request.last_name)}</p>
@@ -99,7 +97,7 @@ export function BookingModalContent({ request, isAdmin = false, action }: ModalP
                     </div>
                     <div>
                         <h3 className="text-gray-500">Purpose</h3>
-                        <p className="font-bold">{Capitalize(request.purpose.purpose_name)}</p>
+                        <p className="font-bold">{formatLabel(request.purpose.purpose_name)}</p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">Office</h3>
@@ -134,7 +132,7 @@ export function BookingModalContent({ request, isAdmin = false, action }: ModalP
                                 name="status"
                                 options={StatusOptions}
                                 defaultValue={status}
-                                onChange={(e) => setStatus(e.target.value)}
+                                onChange={(e) => setStatus(e.target.value as StatusType)}
                             />
 
                             <Button

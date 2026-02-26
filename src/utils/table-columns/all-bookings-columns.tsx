@@ -20,7 +20,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         header: "Filer's Name",
         accessorFn: row => `${Capitalize(row.first_name)} ${Capitalize(row.last_name)}`,
         cell: ({ getValue }) => getValue(),
-        size: 200
+        size: 180
     },
     {
         header: "Activity",
@@ -29,8 +29,17 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
             const value = row.original.purpose;
             return formatLabel(value.purpose_name);
         },
-        minSize: 100
-    }, 
+        minSize: 90
+    },
+    {
+        header: "Section",
+        accessorFn: row => row.place_of_use,
+        cell: ({ row }) => {
+            const value = row.original.place_of_use;
+            return `${formatLabel(value.room)} ${formatLabel(value.number)}`;
+        },
+        size: 150
+    },
     {
         id: "equipment/venue",
         header: "Equipment/Venue", // or whichever field you primarily use
@@ -51,7 +60,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
             const value = row.original.subject;
             return formatLabel(value.subject_name);
         },
-        minSize: 100
+        size: 150
     },
     {
         header: "Date of Use",
@@ -66,7 +75,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
             }); // dd/mm/yyyy format
             return formatted;
         },
-        minSize: 100
+        size: 140
     },
     {
         header: "Time",
@@ -82,7 +91,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
 
             return `${formatTime(row.time_of_start)} - ${formatTime(row.time_of_end)}`;
         },
-        minSize: 100 
+        size: 160 
     },
     {
         header: "Status",
@@ -97,7 +106,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
                 </div>
             );
         },
-        minSize: 100,
+        size: 100,
         filterFn: "equalsString"
     },
     {
@@ -109,7 +118,8 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
 
             return formatLabel(value) ?? "Error"
         },
-        filterFn: "equalsString"
+        filterFn: "equalsString",
+        size: 190
     },
     {
         id: "actions",
@@ -135,6 +145,6 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
                 </div>
             );
         },
-        minSize: 100
+        size: 100
     },
 ]

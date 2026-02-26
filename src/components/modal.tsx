@@ -14,8 +14,6 @@ interface ModalProps {
 }
 
 export default function Modal ({ children, header, isOpen, onClose }: ModalProps) {
-    if (!isOpen) return null
-    
     return (
         <Dialog 
             open={isOpen} 

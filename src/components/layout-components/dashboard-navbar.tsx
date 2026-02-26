@@ -6,17 +6,9 @@ import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
-    Layers,
-    FolderOpen,
-    MapPinned,
-    Users,
-    House,
-    Layers2,
-    Building,
-    ChevronsRight,
-    ChevronsLeft,
-    SquareUser,
-    CheckCircle2
+    Layers, FolderOpen, MapPinned, Users, House, 
+    Layers2, Building, ChevronsRight, ChevronsLeft, 
+    SquareUser, CheckCircle2 
 } from "lucide-react"
 import { useInfo } from "@/utils/hooks/user-context"
 import { formatLabel } from "@/utils/handlers/capitalize"
@@ -38,79 +30,96 @@ const DashboardNavbar = () => {
     const userInfo = useInfo()
 
     return (
-        <div className="h-full w-full flex flex-col items-center bg-blue-900 text-white">          
+        <div 
+            // 1. Sidebar width animation
+
+            className="h-full flex flex-col bg-blue-900 text-white p-2 items-center overflow-hidden"
+        >          
             <div className={`flex w-full p-2 ${isMenuVisible ? "justify-end" : "justify-center"}`}>
                 <button
                     onClick={() => setIsMenuVisible(prev => !prev)}
                     className="w-fit hover:cursor-pointer p-1"
                 >
-                    <div>
-                        {isMenuVisible ? <ChevronsLeft/> : <ChevronsRight/>}
+                    {/* 2. Spinning Toggle Animation */}
+                    <div className={`transition-transform ${isMenuVisible ? "rotate-0" : "rotate-180"}`}>
+                        {isMenuVisible ? <ChevronsLeft/> : <ChevronsLeft/>}
                     </div>
                 </button>
             </div>
 
-            <div className="h-40">
-                <div className={isMenuVisible ? "flex flex-col items-center" : "hidden"}>
-                    <div>
-                        <Image src={'/urios_logo.png'} alt="FSUU logo" height={100} width={100} style={{ width: 'auto', height: 'auto' }}/>
-                    </div>
-                    
-                    <p className="text-center text-lg font-medium">Admin Dashboard</p>
+            {/* Logo and Header Fading */}
+            {isMenuVisible && (
+                <div 
+                    className="flex flex-col w-full items-center justify-center mb-4"
+                >
+                    <Image src={'/urios_logo.png'} alt="FSUU logo" height={80} width={80} style={{ width: 'auto', height: 'auto' }}/>
+                    <p className="text-center text-lg font-medium whitespace-nowrap">Admin Dashboard</p>
+                </div>
+            )}
+
+            
+    
+
+            <div className={`flex flex-col space-y-1 justify-center h-full gap-y-1 w-full overflow-y-auto overflow-x-hidden ${isMenuVisible ? "justify-start" : "justify-center"} scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-blue-900/50 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-blue-900 [&::-webkit-scrollbar-thumb]:bg-blue-700 [&::-webkit-scrollbar-thumb]:rounded-full`}>
+                <div className="my-auto flex flex-col gap-y-1 w-full">
+                    {NavbarItems.map((item, index) => {
+                        const isActive = currentRoute.startsWith(item.href)
+
+                        if (userInfo?.role !== 'superadmin' && (item.label === "Offices" || item.label === "Profiles" || item.label === 'Borrow Form')) {
+                            return null;
+                        }
+
+                        return (
+                            <Link
+                                key={index}
+                                href={item.href}
+                                className={`
+                                    p-3 rounded-lg flex items-center gap-4 transition-colors
+                                    ${isActive ? 'text-blue-400 border-r-2 border-blue-400 bg-white/5' : 'hover:bg-white/10'}
+                                `}
+                            >
+                                <item.icon className="shrink-0" />
+                                
+                                {/* 3. Label Fade Animation */}
+                                <div className={`transition-opacity duration-300 ${isMenuVisible ? "opacity-100" : "opacity-0"}`}>
+                                    {isMenuVisible && (
+                                        <span
+                                            className="whitespace-nowrap font-medium"
+                                        >
+                                            {item.label}
+                                        </span>
+                                    )}
+                                </div>
+                            </Link>
+                        )
+                    })}
                 </div>
             </div>
 
-            <AnimatePresence>
-                <motion.div
-                    key="navbar"
-                    initial={{ opacity: 0, x: -200 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -200 }}
-                    transition={{ duration: 0.3 }}
-                    className="flex flex-col p-4 w-full overflow-auto"
-                >
-
-                    <div className="flex flex-col gap-y-1 mt-3">
-                        {NavbarItems.map((item, index) => {
-                            const isActive = currentRoute.startsWith(item.href)
-
-                            if (userInfo?.role !== 'superadmin' && (item.label === "Offices" || item.label === "Profiles" || item.label === 'Borrow Form')) {
-                                return;
-                            }
-
-                            return (
-                                <Link
-                                    key={index}
-                                    href={item.href}
-                                    className={`
-                                        button-animation p-3 rounded-lg flex items-center gap-2 
-                                        ${isActive ? 'text-blue-400 border-r-2 border-blue-400' : ''}
-                                    `}
-                                >
-                                    <item.icon />
-                                    {isMenuVisible ? item.label : ''}
-                                </Link>
-                            )
-                        })}
-                    </div>
-                    
-                </motion.div>
-            </AnimatePresence>
-
-            <div className={isMenuVisible ? "block p-2 grow": "hidden"}>
-                <div className="h-full flex flex-col gap-y-2 items-center justify-center text-center border-1 border-gray-400 rounded-md p-2">
-                    <SquareUser height={35} width={35}/>
+            {/* User Profile Fading Section */}
+            <div className="w-full mt-auto p-2">
+                <div className="flex flex-col items-center justify-center text-center border-t border-white/20 pt-4 ">
+                    <SquareUser height={25} width={25} className="mb-2"/>
                     
                     <div>
-                        {`${userInfo?.first_name} ${userInfo?.last_name}`}
+                        {isMenuVisible && (
+                            <div
+                                // initial={{ opacity: 0, height: 0 }}
+                                // animate={{ opacity: 1, height: "auto" }}
+                                // exit={{ opacity: 0, height: 0 }}
+                                className="overflow-hidden"
+                            >
+                                <div className="font-semibold">
+                                    {`${userInfo?.first_name} ${userInfo?.last_name}`}
+                                </div>
+                                <div className="text-gray-400 text-sm space-y-1 mt-1">
+                                    <p className="truncate px-2">{userInfo?.email}</p>
+                                    <p className="uppercase text-[10px] tracking-wider font-bold text-blue-300">{userInfo?.role}</p>
+                                    <p>{formatLabel(userInfo?.office_name as string) ?? "No Office"}</p>
+                                </div>
+                            </div>
+                        )}
                     </div>
-
-                    <div className="text-gray-400 w-full">
-                        <p>{userInfo?.email}</p>
-                        <p>{userInfo?.role}</p>
-                        <p>{formatLabel(userInfo?.office_name as string) ?? "No Office"}</p>
-                    </div>
-
                 </div>
             </div>
         </div>

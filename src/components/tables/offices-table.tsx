@@ -42,7 +42,7 @@ export function OfficesDataTable<TData, TValue>({
     const [openModal, setOpenModal] = useState<boolean>(false)
 
     return (
-        <div className="overflow-hidden rounded-md border p-2 h-full">
+        <div className="overflow-auto rounded-md border p-2 h-full">
             <div className="flex mb-2 items-center justify-between">
                 <h1 className="text-lg">Office</h1>
 

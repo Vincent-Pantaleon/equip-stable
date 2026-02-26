@@ -73,17 +73,17 @@ export function BookingDataTable<TData, TValue>({
     })
 
     return (
-        <div className="rounded-md flex flex-col border h-full p-2">
+        <div className="rounded-md h-full flex flex-col border p-2 min-h-0">
             <div className="flex mb-2 items-center justify-between">
                 <h1 className="text-lg">Bookings</h1>
 
                 <div className="flex gap-2 items-center">
-                    <label htmlFor="status_filter">Status:</label>
                     <TableFilter
                         name="status_filter"
                         onChange={(e) => table.getColumn("status")?.setFilterValue(e.target.value || undefined)}
                         value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
                         options={options}
+                        label="Status:"
                     />
 
                     <label htmlFor="date_filter">Date:</label>
@@ -102,26 +102,29 @@ export function BookingDataTable<TData, TValue>({
 
                     {role === 'superadmin' && (
                         <>
-                            <label htmlFor="office_filter">Office:</label>
                             <TableFilter
                                 name="office_filter"
                                 onChange={(e) => table.getColumn("offices")?.setFilterValue(e.target.value || undefined)}
                                 value={(table.getColumn("offices")?.getFilterValue() as string) ?? ""}
                                 options={offices || []}
+                                label="Office:"
                             />
                         </>
                     )}
                 </div>
             </div>
             
-            <div className="flex-1 overflow-auto">
-                <Table>
-                    <TableHeader>
+            <div className="flex-1 overflow-auto text-sm min-h-0 relative">
+                <Table className="table-fixed w-full border-seperate">
+                    <TableHeader className="sticky top-0 z-10">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
                                 return (
-                                <TableHead key={header.id} style={{ width: `${header.getSize()}px`, padding: '10px' }}>
+                                <TableHead 
+                                    key={header.id} 
+                                    style={{ width: `${header.getSize()}px`, padding: '5px', whiteSpace: 'nowrap' }}
+                                >
                                     {header.isPlaceholder
                                     ? null
                                     : flexRender(
@@ -142,41 +145,23 @@ export function BookingDataTable<TData, TValue>({
                                     data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
+                                        <TableCell key={cell.id} className="truncate max-w-0">
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             ))
-                    ) : (
-                        <TableRow>
-                            <TableCell colSpan={columns.length} className="h-24 text-center">
-                                No bookings found.
-                            </TableCell>
-                        </TableRow>
-                    )}
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    No bookings found.
+                                </TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
+                    
                 </Table>
             </div>
-            
-            {/* <div className="flex items-center justify-end space-x-2 ">
-                <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}
-                >
-                    Previous
-                </Button>
-                <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
-                >
-                    Next
-                </Button>
-            </div> */}
 
             <PaginationButtons table={table}/>
         </div>

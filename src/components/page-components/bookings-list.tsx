@@ -24,6 +24,7 @@ import {
     CardDescription,
     CardWrapper
 } from "../card"
+import { CancelConfirmButtons } from "../cancel-confirm"
 
 type StatusCount = {
     total: number;
@@ -108,8 +109,8 @@ const BookingsList = () => {
     }
 
     return (
-        <div className="flex flex-col h-full">
-            <div className="col-span-2 my-4 border-b pb-4">
+        <div className="flex flex-col h-full space-y-4 grow">
+            <div className="col-span-2 border-b">
                 <h1 className="text-2xl font-semibold text-gray-800">Bookings list</h1>
                 <p className="mt-1 text-gray-600 text-sm">
                     Manage bookings
@@ -134,7 +135,7 @@ const BookingsList = () => {
                 ))}
             </CardWrapper>
             
-            <div className="grow">
+            <div className="flex-1 min-h-0">
                 {requestPending ? (
                     <div className="p-2">
                         <TableLoadingSkeleton/>
@@ -143,7 +144,7 @@ const BookingsList = () => {
                     <BookingDataTable
                         columns={memoizedColumns}
                         data={requestData?.requestData || []}
-                        pageSize={10}
+                        pageSize={20}
                         offices={requestData?.officeData || []}
                         role={user?.role ?? ""}
                     />
@@ -156,7 +157,10 @@ const BookingsList = () => {
                     header="Update Booking"
                     isOpen={openEditModal}
                 >
-                    <BookingModalContent request={selectedRequest as Requests} isAdmin={true} action={() => setOpenEditModal(false)}/>
+                    {selectedRequest && (
+                        <BookingModalContent request={selectedRequest as Requests} isAdmin={true} action={() => setOpenEditModal(false)}/>
+                    )}
+                    
                 </Modal>
 
 
@@ -166,18 +170,11 @@ const BookingsList = () => {
                     onClose={() => setOpenDeleteModal(false)}
                 >
                     Are you sure you want to delete this booking?
-                    <div className="text-black flex justify-end gap-2">
-                        <Button
-                            label="Cancel"
-                            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
-                            onClick={() => setOpenDeleteModal(false)}
-                        />
-                        <Button
-                            label="Confirm"
-                            className="px-4 py-2"
-                            onClick={() => selectedRequest && handleDelete(selectedRequest.id)}
-                        />
-                    </div>
+
+                    <CancelConfirmButtons 
+                        onCancel={() => setOpenDeleteModal(false)}
+                        onConfirm={() => selectedRequest && handleDelete(selectedRequest.id)}
+                    />
                 </Modal>
         </div>
         

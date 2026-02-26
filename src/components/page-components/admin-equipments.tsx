@@ -187,8 +187,8 @@ const AdminEquipments = () => {
 
   // Component
   return (
-    <div className="flex flex-col h-full">
-      <div className="col-span-2 my-4 border-b pb-4">
+    <div className="flex flex-col h-full space-y-2">
+      <div className="col-span-2 border-b">
         <h1 className="text-2xl font-semibold text-gray-800">Equipment inventory</h1>
         <p className="mt-1 text-gray-600 text-sm">
           Manage the list of available equipment and update their quantities.
@@ -238,7 +238,7 @@ const AdminEquipments = () => {
             <Skeleton className="h-10 w-1/5"/>
           </div>
         ) : (
-          <div className="flex justify-end mb-4">
+          <div className="flex justify-end">
             <div className="flex w-fit rounded-lg border-1 p-1 text-sm text-nowrap">
               <button 
                 className={`flex-1 py-1 px-2 rounded-lg hover:cursor-pointer ${!isEquipmentTypeVisible ? 'bg-blue-100 text-slate-700 border-gray-400' : 'text-slate-400' }`}
@@ -268,7 +268,7 @@ const AdminEquipments = () => {
             data={equipmentData?.data || []}
             isEquipmentType={isEquipmentTypeVisible}
             isAdminLayout={true}
-            pageSize={7}
+            pageSize={5}
             offices={ officeData?.data || []}
             isInventory={true}
           />
@@ -281,7 +281,7 @@ const AdminEquipments = () => {
             data={typeData?.data || []}
             isEquipmentType={isEquipmentTypeVisible}
             isAdminLayout={true}
-            pageSize={7}
+            pageSize={5}
             offices={officeData?.data || []}
             isInventory={true}
           />
