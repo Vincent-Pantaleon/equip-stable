@@ -90,6 +90,7 @@ export function VenuesDataTable<TData, TValue>({
                             onChange={(e) => table.getColumn("officeFilter")?.setFilterValue(e.target.value || undefined)}
                             value={(table.getColumn("officeFilter")?.getFilterValue() as string) ?? ""}
                             options={options}
+                            label="Office:"
                         />
                     )}
 

@@ -80,6 +80,7 @@ export function MessageDataTable<TData, TValue>({
                             table.setSorting([{ id: "created_at", desc: dir === "desc" }]);
                         }}
                         options={options}
+                        label="Sort:"
                     />
                     
                     <Button
