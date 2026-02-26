@@ -32,13 +32,22 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         minSize: 90
     },
     {
-        header: "Section",
+        header: "Location of Use",
+        accessorFn: row => row.location_of_use,
+        cell: ({ row }) => {
+            const value = row.original.location_of_use;
+            return `${formatLabel(value.location_name)}`;
+        },
+        size: 150
+    },
+    {
+        header:"Section",
         accessorFn: row => row.place_of_use,
         cell: ({ row }) => {
             const value = row.original.place_of_use;
             return `${formatLabel(value.room)} ${formatLabel(value.number)}`;
         },
-        size: 150
+        size: 180
     },
     {
         id: "equipment/venue",
