@@ -220,8 +220,8 @@ const VenuesList = () => {
     }
 
     return (
-        <div className="flex flex-col h-full">
-            <div className="col-span-2 my-4 border-b pb-4">
+        <div className="flex flex-col h-full space-y-4">
+            <div className="col-span-2 border-b">
                 <h1 className="text-2xl font-semibold text-gray-800">Venues inventory</h1>
                 <p className="mt-1 text-gray-600 text-sm">
                     Manage the list of available venues and update their quantities.
@@ -269,12 +269,12 @@ const VenuesList = () => {
                     <Skeleton className="h-10 w-1/5"/>
                 </div>
             ) : (
-                <div className="flex justify-end mb-4">
+                <div className="flex justify-end">
                     <div className="flex w-1/5 rounded-lg border-1 p-1 text-sm">
                         <button 
                             className={`flex-1 py-1 rounded-lg hover:cursor-pointer ${tableType === 'venues' ? 'bg-blue-100 text-slate-700 border-gray-400' : 'text-slate-400' }`}
                             onClick={() => setTableType('venues')}
-                            >
+                        >
                             Venues
                         </button>
                         <button 
@@ -287,9 +287,9 @@ const VenuesList = () => {
                 </div>
             )}
 
-            <div className="grow">
+            <div className="flex-1 min-h-0">
                 {isLoading ? (
-                    <div className="mt-6">
+                    <div>
                         <TableLoadingSkeleton/>
                     </div>
                     
@@ -304,7 +304,7 @@ const VenuesList = () => {
                             header="Venues"
                             tableType={tableType}
                             isAdminLayout={true}
-                            pageSize={8}
+                            pageSize={15}
                             options={officeData?.data || []}
                             isInventory={false}
                         /> 
@@ -318,7 +318,7 @@ const VenuesList = () => {
                             header="Venue Types"
                             tableType={tableType}
                             isAdminLayout={true}
-                            pageSize={8}
+                            pageSize={15}
                             options={officeData?.data || []}
                             isInventory={false}
                         /> 

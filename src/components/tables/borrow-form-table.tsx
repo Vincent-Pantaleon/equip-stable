@@ -17,8 +17,6 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { Button } from "../ui/button"
-
 import { useState } from "react"
 import { PaginationButtons } from "./pagination-buttons"
 
@@ -35,7 +33,7 @@ export function BorrowFormValuesDataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
     const [pagination, setPagination] = useState({
         pageIndex: 0,  // starts on page 1 (index 0)
-        pageSize: 4,  // show 10 rows per page
+        pageSize: 20,  // show 10 rows per page
     })
     
     const table = useReactTable({
@@ -55,9 +53,9 @@ export function BorrowFormValuesDataTable<TData, TValue>({
                 <h1 className="text-md font-bold">{header}</h1>
             </div>
 
-            <div className="flex-1 overflow-auto ">
-                <Table>
-                    <TableHeader>
+            <div className="flex-1 overflow-auto min-h-0 relative">
+                <Table className="table-fixed w-full border-seperate">
+                    <TableHeader className="sticky top-0 z-10">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {

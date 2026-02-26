@@ -1,8 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Capitalize, CapitalizeAll, formatLabel,  } from "../handlers/capitalize";
 
-import { Pencil, Trash2 } from "lucide-react";
-
 export const getStatusStyles = (status: string) => {
   switch (status.toLowerCase()) {
     case "pending":

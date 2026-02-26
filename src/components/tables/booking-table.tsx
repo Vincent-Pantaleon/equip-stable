@@ -19,8 +19,6 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-import { Button } from "../ui/button"
-
 import { useState } from "react"
 import { TableFilter } from "../table-filter"
 import { PaginationButtons } from "./pagination-buttons"
@@ -123,7 +121,7 @@ export function BookingDataTable<TData, TValue>({
                                 return (
                                 <TableHead 
                                     key={header.id} 
-                                    style={{ width: `${header.getSize()}px`, padding: '5px', whiteSpace: 'nowrap' }}
+                                    style={{ width: `${header.getSize()}px`, whiteSpace: 'nowrap' }}
                                 >
                                     {header.isPlaceholder
                                     ? null

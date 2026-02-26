@@ -16,9 +16,6 @@ import {
 
 import { toast } from 'sonner'
 
-// Define a shared handler type
-type ActionHandler<T> = (item: T) => void
-
 export const useFormDataValues = (
     handleAction: (actionType: string, item: any, table: string) => void
 ) => {

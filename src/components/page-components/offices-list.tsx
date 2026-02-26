@@ -77,8 +77,8 @@ const OfficeList = () => {
     }
 
     return (
-        <div className="h-full flex flex-col">
-            <div className="col-span-2 my-4 border-b pb-4">
+        <div className="h-full flex flex-col space-y-4">
+            <div className="col-span-2 border-b">
                 <h1 className="text-2xl font-semibold text-gray-800">Office list</h1>
                 <p className="mt-1 text-gray-600 text-sm">
                     Easily add, update, and delete offices
@@ -88,7 +88,7 @@ const OfficeList = () => {
             {isPending ? (
                 <TableLoadingSkeleton/>
             ): (
-                <div className="grow">
+                <div className="flex-1 min-h-0">
                     <OfficesDataTable
                         columns={OfficeTableColumns({
                             onDelete: (item) => handleAction('delete-office', item),

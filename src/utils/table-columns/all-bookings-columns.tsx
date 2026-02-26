@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Capitalize, formatLabel } from "../handlers/capitalize";
+import { Capitalize, CapitalizeAll, formatLabel } from "../handlers/capitalize";
 import { getStatusStyles } from "./booking-columns";
 
 import { 
@@ -45,7 +45,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         accessorFn: row => row.place_of_use,
         cell: ({ row }) => {
             const value = row.original.place_of_use;
-            return `${formatLabel(value.room)} ${formatLabel(value.number)}`;
+            return `${CapitalizeAll(value.room)} ${formatLabel(value.number)}`;
         },
         size: 180
     },

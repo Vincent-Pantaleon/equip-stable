@@ -31,6 +31,7 @@ import { AddVenueForm } from "../page-components/add-venue-form"
 import { AddVenueTypeForm } from "../page-components/add-venue-type-form"
 import { TableFilter } from "../table-filter"
 import { useInfo } from "@/utils/hooks/user-context"
+import { PaginationButtons } from "./pagination-buttons"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -79,7 +80,7 @@ export function VenuesDataTable<TData, TValue>({
     })
 
     return (
-        <div className="overflow-hidden flex flex-col rounded-md border p-2 h-full">
+        <div className="min-h-0 flex flex-col rounded-md border p-2 h-full">
             <div className="flex mb-2 items-center justify-between gap-2">
                 <h1 className="text-lg">{header}</h1>
 
@@ -109,9 +110,9 @@ export function VenuesDataTable<TData, TValue>({
                 </div>
             </div>
 
-            <div className="flex-1 overflow-auto">
-                <Table>
-                    <TableHeader>
+            <div className="flex-1 overflow-auto min-h-0 relative">
+                <Table className="table-fixed w-full border-seperate">
+                    <TableHeader className="sticky top-0 z-10">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id} >
                             {headerGroup.headers.map((header) => {
@@ -168,25 +169,7 @@ export function VenuesDataTable<TData, TValue>({
                 )}
             </Modal>
 
-            <div className="flex items-center justify-end space-x-2 ">
-                <UIButton
-                    variant="outline"
-                    size="sm"
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}
-                >
-                    Previous
-                </UIButton>
-                <UIButton
-                    variant="outline"
-                    size="sm"
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
-                >
-                    Next
-                </UIButton>
-            </div>
-
+            <PaginationButtons table={table}/>
         </div>
     )
 }

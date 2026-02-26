@@ -37,7 +37,7 @@ export const DesignationColumns = ({ onDelete, onUpdate }: DesignationProps): Co
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
-            return Capitalize(value)
+            return formatLabel(value)
         }
     },
     {
@@ -165,7 +165,7 @@ export const PurposeColumns = ({ onDelete, onUpdate }: PurposeProps): ColumnDef<
         cell: ({ getValue }) => {
             const value = getValue<string>()
 
-            return Capitalize(value)
+            return formatLabel(value)
         }
     },
         {

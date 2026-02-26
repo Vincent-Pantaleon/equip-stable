@@ -62,8 +62,6 @@ const GetUsersList = async () => {
         return { status: false, message: "Error fetching profiles list" }
     }
 
-    console.log("Raw Profiles Data:", data);
-
     const normalizedData = (data ?? []).map((user) => {
         const role = user.role_data?.[0]?.role ?? 'user';
 
@@ -81,8 +79,6 @@ const GetUsersList = async () => {
             },
         };
     });
-
-    console.log("Normalized Profiles Data:", normalizedData);
 
     return { status: true, message: "Profiles fetched successfully", data: normalizedData }
 }

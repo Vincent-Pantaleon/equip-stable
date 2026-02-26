@@ -104,9 +104,9 @@ export function EquipmentsDataTable<TData, TValue>({
                 </div>
             </div>
 
-            <div className="flex-1 overflow-auto">
-                <Table>
-                    <TableHeader>
+            <div className="flex-1 overflow-auto min-h-0 relative">
+                <Table className="table-fixed w-full border-seperate">
+                    <TableHeader className="sticky top-0 z-10">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {

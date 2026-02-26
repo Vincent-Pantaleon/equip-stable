@@ -23,6 +23,15 @@ const ValueOptions = [
 
 interface FormProps {
     onClose: () => void
+    table: "department" |
+    "designation" |
+    "purpose" |
+    "type_of_request" |
+    "location_of_use" |
+    "grade_level" |
+    "place_of_use" |
+    "subject" |
+    null
 }
 
 const roomOptions = [
@@ -30,18 +39,8 @@ const roomOptions = [
     { label: "HS", value: "hs" }
 ]
 
-const AddNewValueForm = ({ onClose }: FormProps) => {
+const AddNewValueForm = ({ onClose, table }: FormProps) => {
 
-    const [table, setTable] = useState<
-    'department' | 
-    'designation' | 
-    'purpose' | 
-    'type_of_request' | 
-    'location_of_use' | 
-    'grade_level' | 
-    'place_of_use' | 
-    'subject' | 
-    null>(null)
     const [openModal, setOpenModal] = useState<boolean>(false)
     const [formData, setFormData] = useState<FormData | null>(null)
 
@@ -85,12 +84,12 @@ const AddNewValueForm = ({ onClose }: FormProps) => {
             className="space-y-4"
             onSubmit={handleSubmit}
         >
-            <SelectInput
+            {/* <SelectInput
                 label="Select Table"
                 name="table"
                 options={ValueOptions || []}
                 onChange={(e) => setTable(e.target.value as typeof table)}
-            />
+            /> */}
 
             {(table === 'department' || table === 'designation' || table === 'purpose' || table === 'type_of_request' || table === 'location_of_use') && (
                 <Input

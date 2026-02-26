@@ -16,24 +16,28 @@ import { EditBorrowFormItem } from './edit-borrow-form-item-form'
 import { DeleteFormValue } from '@/utils/server-actions/delete-form-value'
 
 import { useQueryClient } from '@tanstack/react-query'
+import { SelectInput } from '../input'
+import { Skeleton } from '../ui/skeleton'
 
 const tableNames = [
-    { name: "department" },
-    { name: "designation" },
-    { name: "purpose" },
-    { name: "type-of-request" },
-    { name: "location-of-use" },
-    { name: "place-of-use" },
-    { name: "subject" },
-    { name: "grade-level" },
+    { label: "Department", value: "department" },
+    { label: "Designation", value: "designation" },
+    { label: "Purpose", value: "purpose" },
+    { label: "Type of Request", value: "type_of_request" },
+    { label: "Location of Use", value: "location_of_use" },
+    { label: "Grade Level", value: "grade_level" },
+    { label: "Place of Use", value: "place_of_use" },
+    { label: "Subject", value: "subject" },
 ]
+
+type tableType = "department" | "designation" | "purpose" | "type_of_request" | "location_of_use" | "grade_level" | "place_of_use" | "subject"
 
 const FormValuesTableList = () => {
     const [openModal, setOpenModal] = useState(false)
     const [openDelUpModal, setOpenDelUpModal] = useState(false)
     const [action, setAction] = useState<string | null>(null)
     const [selectedItem, setSelectedItem] = useState<any>(null)
-    const [tableName, setTableName] = useState<string>('')
+    const [tableName, setTableName] = useState<tableType>('department')
 
     const queryClient = useQueryClient()
 
@@ -41,7 +45,6 @@ const FormValuesTableList = () => {
         setAction(actionType)
         setSelectedItem(item)
         setOpenDelUpModal(true)
-        setTableName(table)
     }
 
     const { isPending, error, tables } = useFormDataValues(handleAction)
@@ -60,34 +63,39 @@ const FormValuesTableList = () => {
             queryClient.invalidateQueries({ queryKey: ['borrow-form-values']})
             toast.success(result.message)
         }
-
     }
 
     return (
-        <div className="space-y-4 flex flex-col h-full">
-            <div className="mt-4 mb-4 border-b pb-4">
+        <div className="space-y-2 flex flex-col h-full">
+            <div className="border-b">
                 <h1 className="text-2xl font-semibold text-gray-800">Borrow Form Values</h1>
                 <p className="mt-1 text-gray-600 text-sm">
                     Add or remove data to be shown in the dropdowns for the borrow form
                 </p>
             </div>
+            {isPending ? (
+                <div className='flex justify-between items-center'>
+                    <Skeleton className="w-32 h-10" />
+                    <Skeleton className="w-56 h-14" />
+                </div>
+            ) : (
+                <div className='flex justify-between items-center'>
+                    <Button
+                        Icon={PlusCircle}
+                        label="Add New Entry"
+                        onClick={() => setOpenModal(true)}
+                        className="px-2"
+                    />
 
-            <div className='flex justify-between'>
-                <Button
-                    Icon={PlusCircle}
-                    label="Add New Entry"
-                    onClick={() => setOpenModal(true)}
-                    className="px-2"
-                />
-
-                {/* <div className='flex gap-4 border '>
-                    {tableNames.map((table, index) => (
-                        <div key={index} className='p-2 rounded-lg'>
-                            {table.name}
-                        </div>
-                    ))}
-                </div> */}
-            </div>
+                    <SelectInput
+                        label='Select Table'
+                        name='table'
+                        options={tableNames}
+                        value={tableName}
+                        onChange={(e) => setTableName(e.target.value as tableType)}
+                    />
+                </div>
+            )}
 
             <div className="overflow-auto space-y-2 flex flex-col h-full">
                 {isPending ? (
@@ -96,21 +104,37 @@ const FormValuesTableList = () => {
                         <p className="text-xl">Fetching Important Details</p>
                     </div>
                 ) : (
-                tables.map((table, index) => (
-                    <div className="min-h-[400px]" key={index}>
-                        <BorrowFormValuesDataTable
-                            columns={table.columns}
-                            data={table.data}
-                            header={table.label}
-                        />
-                    </div>
-                ))
+                    // Render tables based on the selected table name
+                    (() => {
+                        // 1. Find the matching label from your tableNames array based on the selected value
+                        const selectedTableOption = tableNames.find(t => t.value === tableName)
+                        
+                        // 2. Find the corresponding table data from the hook
+                        const activeTable = tables.find(t => t.label === selectedTableOption?.label)
+
+                        // 3. Render the table, or a placeholder if nothing is selected yet
+                        if (!activeTable) {
+                            return (
+                                <div className="grow flex items-center justify-center text-gray-500">
+                                    Please select a table from the dropdown above to view its data.
+                                </div>
+                            )
+                        }
+
+                        return (
+                            <BorrowFormValuesDataTable
+                                header={activeTable.label}
+                                columns={activeTable.columns}
+                                data={activeTable.data} 
+                            />
+                        )
+                    })()
                 )}
             </div>
 
             <Modal header="Add New Entry" isOpen={openModal} onClose={() => setOpenModal(false)}>
                 <div className="space-y-4">
-                    <AddNewValueForm onClose={() => setOpenModal(false)} />
+                    <AddNewValueForm onClose={() => setOpenModal(false)} table={tableName} />
                 </div>
             </Modal>
 
