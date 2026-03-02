@@ -29,6 +29,7 @@ import { useInfo } from "@/utils/hooks/user-context"
 import { useState } from "react"
 import Modal from "../modal"
 import { TableFilter } from "../table-filter"
+import { PaginationButtons } from "./pagination-buttons"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -161,24 +162,7 @@ export function EquipmentsDataTable<TData, TValue>({
                 </Modal>
             )}
 
-            <div className="flex items-center justify-end space-x-2 mt-2">
-                <UIButton
-                    variant="outline"
-                    size="sm"
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}
-                >
-                    Previous
-                </UIButton>
-                <UIButton
-                    variant="outline"
-                    size="sm"
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
-                >
-                    Next
-                </UIButton>
-            </div>
+            <PaginationButtons table={table}/>
         </div>
     )
 }

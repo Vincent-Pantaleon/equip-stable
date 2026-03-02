@@ -28,6 +28,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { TableFilter } from "../table-filter"
+import { PaginationButtons } from "./pagination-buttons"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -48,7 +49,7 @@ export function MessageDataTable<TData, TValue>({
     const [sorting, setSorting] = useState<SortingState>([])
     const [pagination, setPagination] = useState({
         pageIndex: 0,
-        pageSize: 8
+        pageSize: 20
     })
     
     const table = useReactTable({
@@ -68,10 +69,11 @@ export function MessageDataTable<TData, TValue>({
     const router = useRouter()
 
     return (
-        <div className="flex flex-col overflow-auto rounded-md border h-full p-2">
-            <div className="flex mb-2 items-center justify-between">
+        <div className="w-full rounded-md h-full flex flex-col border p-2 min-h-0">
+            {/* Header - should have fixed width on mobile and would be scrollable */}
+            {/* <div className="flex mb-2 items-center justify-between">
                 <h1 className="text-lg">Messages</h1>
-                
+            
                 <div className="flex gap-3 items-center">
                     <TableFilter
                         name="filter"
@@ -85,16 +87,39 @@ export function MessageDataTable<TData, TValue>({
                     
                     <Button
                         label="Send Message"
-                        className="px-2"
+                        className="px-2 text-nowrap"
+                        Icon={Send}
+                        onClick={() => router.push('/recents/send-message')}
+                    />
+                </div>
+            </div> */}
+
+            <div className="flex gap-2 mb-2 md:flex-row md:items-center justify-between h-fit overflow-auto">
+                <h1 className="text-lg">Messages</h1>
+
+                <div className="flex gap-2 items-center ml-10">
+                    <TableFilter
+                        name="filter"
+                        onChange={(e) => {
+                            const dir = e.target.value === "newest" ? "desc" : "asc";
+                            table.setSorting([{ id: "created_at", desc: dir === "desc" }]);
+                        }}
+                        options={options}
+                        label="Sort:"
+                    />
+
+                    <Button
+                        label="Send Message"
+                        className="px-2 whitespace-nowrap"
                         Icon={Send}
                         onClick={() => router.push('/recents/send-message')}
                     />
                 </div>
             </div>
             
-            <div className="flex-1">
-                <Table>
-                    <TableHeader>
+            <div className="flex-1 overflow-auto text-sm min-h-0 relative">
+                <Table className="table-fixed w-full border-seperate">
+                    <TableHeader className="sticky top-0 z-10">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
@@ -139,24 +164,7 @@ export function MessageDataTable<TData, TValue>({
                 </Table>
             </div>
 
-            <div className="flex items-center justify-end space-x-2 mt-2">
-                <UIButton
-                    variant="outline"
-                    size="sm"
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}
-                >
-                    Previous
-                </UIButton>
-                <UIButton
-                    variant="outline"
-                    size="sm"
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}
-                >
-                    Next
-                </UIButton>
-            </div>
+            <PaginationButtons table={table}/>
         </div>
     )
 }

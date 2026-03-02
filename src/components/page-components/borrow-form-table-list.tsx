@@ -91,6 +91,7 @@ const FormValuesTableList = () => {
                         label='Select Table'
                         name='table'
                         options={tableNames}
+                        defaultValue={tableName}
                         value={tableName}
                         onChange={(e) => setTableName(e.target.value as tableType)}
                     />

@@ -20,7 +20,7 @@ const PaginationButtons = <TData,>({ table }: PaginationButtonsProps<TData>) => 
     }
 
     return (
-        <div className="flex items-center justify-end space-x-4 py-2 ">
+        <div className="flex items-center justify-end space-x-4 py-2">
             {/* Page Indicator */}
             <div className="text-sm font-medium">
                 Page {pageIndex + 1} of {pageCount}

@@ -6,7 +6,7 @@ export const equipmentColumns: ColumnDef<EquipmentTypeNormalized>[] = [
     {
         header: "Equipment",
         accessorKey: "name",
-        cell: ({ row }) => <p className="font-semibold">{Capitalize(row.original.type_name)}</p>
+        cell: ({ row }) => <p className="font-semibold">{formatLabel(row.original.type_name)}</p>
     },
     {
         header: "Count",

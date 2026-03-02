@@ -5,7 +5,7 @@ import React from "react";
 
 const SideBar = () => {
     return (
-        <div className="h-full w-full flex flex-col gap-y-3 md:max-w-[20rem] md:mr-2">
+        <div className="flex flex-col md:flex-col md:h-full md:max-w-[20rem] gap-1">
             {/* Time */}
             <Clock />
            
@@ -15,7 +15,6 @@ const SideBar = () => {
             {/* Profile */}
             <Profile />
         </div>
-        
     )
 }
 

@@ -75,7 +75,7 @@ export function BookingDataTable<TData, TValue>({
             <div className="flex mb-2 items-center justify-between">
                 <h1 className="text-lg">Bookings</h1>
 
-                <div className="flex gap-2 items-center">
+                <div className="flex gap-2 items-center overflow-auto ml-10">
                     <TableFilter
                         name="status_filter"
                         onChange={(e) => table.getColumn("status")?.setFilterValue(e.target.value || undefined)}
