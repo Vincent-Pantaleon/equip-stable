@@ -33,7 +33,7 @@ export function BorrowFormValuesDataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
     const [pagination, setPagination] = useState({
         pageIndex: 0,  // starts on page 1 (index 0)
-        pageSize: 15,  // show 10 rows per page
+        pageSize: 20,  // show 10 rows per page
     })
     
     const table = useReactTable({
@@ -48,7 +48,7 @@ export function BorrowFormValuesDataTable<TData, TValue>({
     })
 
     return (
-        <div className="overflow-hidden h-full flex flex-col">
+        <div className="overflow-hidden rounded-md border p-2 h-full flex flex-col">
             <div className="flex mb-2 items-center justify-between">
                 <h1 className="text-md font-bold">{header}</h1>
             </div>

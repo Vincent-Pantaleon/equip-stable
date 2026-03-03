@@ -70,7 +70,7 @@ export function MessageDataTable<TData, TValue>({
 
     return (
         <div className="w-full rounded-md h-full flex flex-col min-h-0">
-            <div className="flex gap-2 mb-2 md:flex-row md:items-center justify-between h-fit overflow-auto">
+            <div className="flex gap-2 mb-2 md:flex-row md:items-center justify-between h-fit overflow-auto text-sm">
                 <h1 className="text-lg">Messages</h1>
 
                 <div className="flex gap-2 items-center ml-10">

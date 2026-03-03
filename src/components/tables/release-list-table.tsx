@@ -58,7 +58,7 @@ export function ReleaseDataTable<TData, TValue>({
     })
 
     return (
-        <div className="h-full flex flex-col min-h-0">
+        <div className="h-full flex flex-col  min-h-0">
             <div className="text-lg mb-2 flex justify-between">
                 Releases
 

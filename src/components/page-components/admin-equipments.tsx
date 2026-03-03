@@ -207,7 +207,7 @@ const AdminEquipments = () => {
                           <p>{count as number}</p>
                       </CardContent>
                       <CardDescription>
-                          <h3 className={`text-sm  text-center px-1 rounded-xl capitalize ${getStatusStyles(status)}`}>{status === 'total' ?  `Total no. of equipment type` : status}</h3>
+                          <h3 className={`px-1 rounded-xl capitalize ${getStatusStyles(status)}`}>{status === 'total' ?  `Total no. of equipment type` : status}</h3>
                       </CardDescription>
                   </CardContainer>
               )
@@ -224,7 +224,7 @@ const AdminEquipments = () => {
                           <p>{count as number}</p>
                       </CardContent>
                       <CardDescription>
-                          <h3 className={`text-sm text-center px-1 rounded-xl capitalize ${getStatusStyles(status)}`}>{status === 'total' ?  `Total no. of equipment` : status}</h3>
+                          <h3 className={`px-1 rounded-xl capitalize ${getStatusStyles(status)}`}>{status === 'total' ?  `Total no. of equipment` : status}</h3>
                       </CardDescription>
                   </CardContainer>
               )

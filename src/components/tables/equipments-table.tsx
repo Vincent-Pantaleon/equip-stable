@@ -77,8 +77,8 @@ export function EquipmentsDataTable<TData, TValue>({
     })
 
     return (
-        <div className="w-full h-full flex flex-col rounded-md border p-2">
-            <div className="flex mb-2 items-center justify-between">
+        <div className="w-full h-full flex flex-col">
+            <div className="flex mb-2 items-center justify-between text-sm">
                 <h1 className="text-lg">{isEquipmentType ? "Equipment Types" : "Equipments"}</h1>
 
                 <div className="flex gap-2 items-center">
