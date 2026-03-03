@@ -58,6 +58,7 @@ export default function Inventory() {
                         </>
                     )}
                 </div>
+                <hr className="border-t border-slate-200" />
                 <div className="h-1/2">
                     {isPending ? (
                         <InventoryLoading/>
