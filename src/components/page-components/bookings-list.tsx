@@ -1,22 +1,18 @@
 'use client'
 
 import { useQuery } from "@tanstack/react-query"
-import { GetAdminRequestData, GetRecentRequestData } from "@/utils/server-actions/request-query"
+import { GetAdminRequestData } from "@/utils/server-actions/request-query"
 import { useMemo, useState, useEffect } from "react"
 import { useQueryClient } from "@tanstack/react-query"
-
 import { BookingDataTable } from "../tables/booking-table"
 import { allRequestColumns } from "@/utils/table-columns/all-bookings-columns"
 import { DeleteBooking } from "@/utils/server-actions/delete-booking"
 import { useInfo } from "@/utils/hooks/user-context"
-
 import Modal from "../modal"
 import { toast } from "sonner"
 import { BookingModalContent } from "../modal-content/booking-modal-content"
-import Button from "../button"
 import { TableLoadingSkeleton } from "../loading-skeletons/table-loading"
 import { Skeleton } from "../ui/skeleton"
-
 import { getStatusStyles } from "@/utils/table-columns/booking-columns"
 import { 
     CardContent,
@@ -125,10 +121,10 @@ const BookingsList = () => {
                     ) : (
                         <CardContainer key={index}>
                             <CardContent>
-                                <p className="text-2xl font-bold text-center">{count as number}</p>
+                                <p>{count as number}</p>
                             </CardContent>
                             <CardDescription>
-                                <h3 className={`text-sm  text-center px-1 rounded-xl capitalize ${getStatusStyles(status)}`}>{status === 'total' ? 'Total no. of bookings' : status}</h3>
+                                <h3 className={`text-sm text-center px-1 rounded-xl capitalize ${getStatusStyles(status)}`}>{status === 'total' ? 'Total no. of bookings' : status}</h3>
                             </CardDescription>
                         </CardContainer>
                     )

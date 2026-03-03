@@ -69,31 +69,7 @@ export function MessageDataTable<TData, TValue>({
     const router = useRouter()
 
     return (
-        <div className="w-full rounded-md h-full flex flex-col border p-2 min-h-0">
-            {/* Header - should have fixed width on mobile and would be scrollable */}
-            {/* <div className="flex mb-2 items-center justify-between">
-                <h1 className="text-lg">Messages</h1>
-            
-                <div className="flex gap-3 items-center">
-                    <TableFilter
-                        name="filter"
-                        onChange={(e) => {
-                            const dir = e.target.value === "newest" ? "desc" : "asc";
-                            table.setSorting([{ id: "created_at", desc: dir === "desc" }]);
-                        }}
-                        options={options}
-                        label="Sort:"
-                    />
-                    
-                    <Button
-                        label="Send Message"
-                        className="px-2 text-nowrap"
-                        Icon={Send}
-                        onClick={() => router.push('/recents/send-message')}
-                    />
-                </div>
-            </div> */}
-
+        <div className="w-full rounded-md h-full flex flex-col min-h-0">
             <div className="flex gap-2 mb-2 md:flex-row md:items-center justify-between h-fit overflow-auto">
                 <h1 className="text-lg">Messages</h1>
 

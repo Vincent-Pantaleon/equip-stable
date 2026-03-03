@@ -45,7 +45,7 @@ export default function Recents() {
   }
 
   return (
-    <div className="h-[1000px] md:h-full w-full flex flex-col space-y-1">
+    <div className="h-[1000px] md:h-full w-full flex flex-col space-y-1 ">
       <div className="min-h-0 h-1/2">
         {messagePending ? (
           <RecentsLoading />
@@ -57,6 +57,7 @@ export default function Recents() {
           />
         )}
       </div>
+      <hr className="border-t border-slate-200" />
       <div className="min-h-0 h-1/2">
         {requestPending ? (
           <RecentsLoading/>

@@ -16,7 +16,7 @@ interface CardWrapperProps {
 
 const CardContainer = ({ children }: CardContainerProps) => {
     return (
-        <div className="border-2 rounded-lg py-3 w-full flex flex-col px-2 odd:bg-blue-50 items-center">
+        <div className="border-2 rounded-lg w-full flex flex-col py-2 odd:bg-blue-50 items-center">
             {children}
         </div>
     )
@@ -24,7 +24,7 @@ const CardContainer = ({ children }: CardContainerProps) => {
 
 const CardContent = ({ children }: CardContentProps) => {
     return (
-        <div className="text-3xl font-semibold text-gray-900">
+        <div className="font-semibold text-gray-900 text-center">
             {children}
         </div>
     )

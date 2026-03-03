@@ -115,6 +115,8 @@ const GetRecentRequestData = async () => {
 const GetAdminRequestData = async () => {
     const supabase = await createClient()
     const user = await GetUserInfo()
+
+    const today = new Date().toISOString().split('T')[0];
     
     if(!user) return null
 
@@ -145,6 +147,7 @@ const GetAdminRequestData = async () => {
             venue: venue_id(id, venue_name),
             office: office_id(id, office_name)    
         `)
+        .gte('date_of_use', today) // Only fetch requests for today and the future
 
     // 2. Apply Role-based filtering
     // If they ARE admin/mod, filter by their specific office

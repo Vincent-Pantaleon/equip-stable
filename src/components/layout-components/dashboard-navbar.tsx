@@ -74,7 +74,7 @@ const DashboardNavbar = () => {
                                 key={index}
                                 href={item.href}
                                 className={`
-                                    p-3 rounded-lg flex items-center gap-4 transition-colors
+                                    p-3 rounded-lg flex items-center gap-4 transition-colors button-animation
                                     ${isActive ? 'text-blue-400 border-r-2 border-blue-400 bg-white/5' : 'hover:bg-white/10'}
                                 `}
                             >

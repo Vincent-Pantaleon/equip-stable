@@ -23,18 +23,29 @@ export default function Button({
     iconColor,
     buttonColor
 }: ButtonProps) {
+    // Determine if we have both elements to justify a gap
+    const hasBoth = Icon && label;
+
     return (
         <button
             type={type}
             onClick={onClick}
             disabled={disabled}
-            className={`button-animation text-slate-800 py-2 rounded-xl transition-colors duration-200 flex gap-1 items-center justify-center hover:bg-form-input-color hover:cursor-pointer shadow-sm
-                ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}
-                ${buttonColor ? buttonColor : 'bg-hover-color '}
-                `}
+            className={`button-animation text-slate-800 py-2 rounded-xl transition-colors duration-200 
+                flex items-center justify-center hover:bg-form-input-color hover:cursor-pointer shadow-sm
+                ${disabled ? 'opacity-50 cursor-not-allowed' : ''} 
+                ${buttonColor ? buttonColor : 'bg-hover-color'} 
+                ${hasBoth ? 'gap-2 px-4' : 'px-3'} 
+                ${className}`}
         >
             {Icon && <Icon className={`w-4 h-4 ${iconColor}`} />}
-            <span className="hidden sm:inline">{isLoading ? 'Loading...' : label}</span>
+            
+            {/* Only render the span if a label exists or it's loading */}
+            {(label || isLoading) && (
+                <span className="hidden sm:inline">
+                    {isLoading ? 'Loading...' : label}
+                </span>
+            )}
         </button>
     );
 }

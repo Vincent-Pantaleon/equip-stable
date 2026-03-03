@@ -3,16 +3,17 @@ interface ComponentProps {
     label: string
     value?:  string
     onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
+    inputWidth?: string
     options: {
         label: string,
         value: string,
     }[]
 }
 
-const TableFilter = ({ name, label, value, onChange, options }: ComponentProps) => {
+const TableFilter = ({ name, label, value, onChange, options, inputWidth }: ComponentProps) => {
     return (
         <>
-            <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+            <label htmlFor={name} className="block font-medium">
                 {label}
             </label>
             <div className="border-1 rounded-lg p-2 w-fit">
@@ -21,7 +22,7 @@ const TableFilter = ({ name, label, value, onChange, options }: ComponentProps) 
                     id={name}
                     value={value}
                     onChange={onChange}
-                    className="w-[11vw]"
+                    style={{ width: inputWidth }}
                 >
                     {options.map((item, index) => (
                         <option value={item.value} key={index}>{item.label}</option>

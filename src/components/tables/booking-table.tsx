@@ -9,7 +9,6 @@ import {
     ColumnFiltersState,
     getPaginationRowModel
 } from "@tanstack/react-table"
-
 import {
     Table,
     TableBody,
@@ -18,10 +17,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-
-import { useState } from "react"
+import { use, useState } from "react"
 import { TableFilter } from "../table-filter"
 import { PaginationButtons } from "./pagination-buttons"
+import { useInfo } from "@/utils/hooks/user-context"
+import { usePathname } from "next/navigation"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -54,15 +54,23 @@ export function BookingDataTable<TData, TValue>({
         pageIndex: 0,  // starts on page 1 (index 0)
         pageSize: pageSize,  // show 10 rows per page
     })
+    const [globalFilter, setGlobalFilter] = useState("")
+    const user = useInfo()
+    const url = usePathname()
     
     const table = useReactTable({
         data,
         columns,
-        state: { columnFilters, pagination },
+        state: { 
+            columnFilters, 
+            pagination,
+            globalFilter
+        },
         onColumnFiltersChange: (updater) => {
             setColumnFilters(updater),
             setPagination((prev) => ({ ...prev, pageIndex: 0 }))
         },
+        onGlobalFilterChange: setGlobalFilter,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         columnResizeMode: "onChange",
@@ -71,11 +79,26 @@ export function BookingDataTable<TData, TValue>({
     })
 
     return (
-        <div className="rounded-md h-full flex flex-col border p-2 min-h-0">
-            <div className="flex mb-2 items-center justify-between">
+        <div className="rounded-md h-full flex flex-col min-h-0">
+            <div className="flex items-center justify-between">
                 <h1 className="text-lg">Bookings</h1>
 
-                <div className="flex gap-2 items-center overflow-auto ml-10">
+                <div className="flex gap-2 items-center overflow-auto ml-10 text-sm">
+                    {((user?.role === 'superadmin' || user?.role === 'administrator') && url.includes('admin')) && (
+                        <>
+                            <label htmlFor="global-search">Name Search:</label>
+                            <div className="border-1 rounded-lg p-2 w-fit"> 
+                                <input
+                                    id="global-search"
+                                    value={globalFilter ?? ''}
+                                    onChange={e => setGlobalFilter(e.target.value)}
+                                    placeholder="Search all columns..."
+                                />
+                            </div>
+                        </>
+                    )}
+                    
+
                     <TableFilter
                         name="status_filter"
                         onChange={(e) => table.getColumn("status")?.setFilterValue(e.target.value || undefined)}
