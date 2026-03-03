@@ -92,7 +92,7 @@ export function ProfilesDataTable<TData, TValue>({
             </div>
 
             <div className="flex-1 overflow-auto text-sm min-h-0 relative">
-                <Table className="table-fixed w-full ">
+                <Table className="table-fixed w-full">
                     <TableHeader className="sticky top-0 z-10">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>

@@ -28,7 +28,7 @@ export default function Inventory() {
     }
 
     return (
-        <div className="flex flex-col gap-1 h-[1000px] md:h-full">
+        <div className="flex flex-col h-[1000px] md:h-full gap-1">
             {isPending ? (
                 <>
                     <Skeleton className="h-12 w-full"/>
@@ -42,7 +42,7 @@ export default function Inventory() {
             )}
 
             <div className="flex-1 min-h-0 flex flex-col gap-1">
-                <div className="h-1/2">
+                <div className="h-1/2 min-h-0">
                     {isPending ? (
                         <InventoryLoading/>
                     ) : (
@@ -59,7 +59,7 @@ export default function Inventory() {
                     )}
                 </div>
                 <hr className="border-t border-slate-200" />
-                <div className="h-1/2">
+                <div className="h-1/2 min-h-0">
                     {isPending ? (
                         <InventoryLoading/>
                     ) : (

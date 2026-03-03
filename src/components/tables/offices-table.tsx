@@ -60,7 +60,7 @@ export function OfficesDataTable<TData, TValue>({
     const [openModal, setOpenModal] = useState<boolean>(false)
 
     return (
-        <div className=" h-full flex flex-col min-h-0">
+        <div className="h-full flex flex-col min-h-0">
             <div className="flex mb-2 items-center justify-between">
                 <h1 className="text-lg">Office</h1>
 

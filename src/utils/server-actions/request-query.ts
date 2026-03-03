@@ -71,6 +71,8 @@ const GetRecentRequestData = async () => {
     const { data: currentUser, error: AuthErr } = await supabase.auth.getUser();
     const user = currentUser.user?.id;
 
+    const today = new Date().toISOString().split('T')[0];
+
     if ( !user || AuthErr ) {
         return null
     }
@@ -103,6 +105,7 @@ const GetRecentRequestData = async () => {
         `)
         .eq('user_id', user)
         .order('created_at', { ascending: false })
+        .gte('date_of_use', today)
 
     if (requestError) {
         console.log(requestError)
