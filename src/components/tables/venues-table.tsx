@@ -80,11 +80,11 @@ export function VenuesDataTable<TData, TValue>({
     })
 
     return (
-        <div className="min-h-0 flex flex-col rounded-md border p-2 h-full">
-            <div className="flex mb-2 items-center justify-between gap-2">
+        <div className="min-h-0 flex flex-col h-full">
+            <div className="flex mb-2 items-center justify-between gap-2 text-sm">
                 <h1 className="text-lg">{header}</h1>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 items-center">
                     {(user?.role === 'superadmin' || isInventory) && (
                         <TableFilter
                             name="venue-office-filter"
