@@ -220,7 +220,7 @@ const VenuesList = () => {
     }
 
     return (
-        <div className="flex flex-col h-full space-y-4">
+        <div className="flex flex-col h-full space-y-2">
             <div className="col-span-2 border-b">
                 <h1 className="text-2xl font-semibold text-gray-800">Venues inventory</h1>
                 <p className="mt-1 text-gray-600 text-sm">
@@ -236,10 +236,10 @@ const VenuesList = () => {
                         ) : (
                             <CardContainer key={index}>
                                 <CardContent>
-                                    <p className="text-2xl font-bold text-center">{count as number}</p>
+                                    <p>{count as number}</p>
                                 </CardContent>
                                 <CardDescription>
-                                    <h3 className={`text-sm  text-center px-1 rounded-xl capitalize ${getStatusStyles(status)}`}>{status === 'total' ?  `Total no. of venue type` : formatLabel(status)}</h3>
+                                    <h3 className={`px-1 rounded-xl capitalize ${getStatusStyles(status)}`}>{status === 'total' ?  `Total no. of venue type` : formatLabel(status)}</h3>
                                 </CardDescription>
                             </CardContainer>
                         )
@@ -253,10 +253,10 @@ const VenuesList = () => {
                         ) : (
                             <CardContainer key={index}>
                                 <CardContent>
-                                    <p className="text-2xl font-bold text-center">{count as number}</p>
+                                    <p>{count as number}</p>
                                 </CardContent>
                                 <CardDescription>
-                                    <h3 className={`text-sm  text-center px-1 rounded-xl capitalize ${getStatusStyles(status)}`}>{status === 'total' ?  `Total no. of venues` : formatLabel(status)}</h3>
+                                    <h3 className={`px-1 rounded-xl capitalize ${getStatusStyles(status)}`}>{status === 'total' ?  `Total no. of venues` : formatLabel(status)}</h3>
                                 </CardDescription>
                             </CardContainer>
                         )

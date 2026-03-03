@@ -32,7 +32,7 @@ const CardContent = ({ children }: CardContentProps) => {
 
 const CardDescription = ({ children }: CardDescriptionProps) => {
     return (
-        <div className="text-gray-600">
+        <div className="text-gray-600 text-sm text-center">
             {children}
         </div>
     )

@@ -80,7 +80,7 @@ const ReleasesList = () => {
     }
     
     return (
-        <div className="h-full p-2 border-1 rounded-md">
+        <div className="h-full">
             
             {isPending ? (
                 <TableLoadingSkeleton/>

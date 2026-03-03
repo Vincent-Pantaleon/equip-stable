@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 const ReleaseFormPage = () => {
     return (
-        <div className="flex flex-col h-full space-y-4">
+        <div className="flex flex-col h-full space-y-2">
             <div className="col-span-2 border-b">
                 <h1 className="text-2xl font-semibold text-gray-800">Releases</h1>
                 <p className="mt-1 text-gray-600 text-sm">

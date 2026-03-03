@@ -77,7 +77,7 @@ const OfficeList = () => {
     }
 
     return (
-        <div className="h-full flex flex-col space-y-4">
+        <div className="h-full flex flex-col space-y-2">
             <div className="col-span-2 border-b">
                 <h1 className="text-2xl font-semibold text-gray-800">Office list</h1>
                 <p className="mt-1 text-gray-600 text-sm">
