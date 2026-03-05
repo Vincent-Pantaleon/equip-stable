@@ -150,7 +150,6 @@ const GetAdminRequestData = async () => {
             venue: venue_id(id, venue_name),
             office: office_id(id, office_name)    
         `)
-        .gte('date_of_use', today) // Only fetch requests for today and the future
 
     // 2. Apply Role-based filtering
     // If they ARE admin/mod, filter by their specific office
@@ -175,6 +174,19 @@ const GetAdminRequestData = async () => {
         return null;
     }
 
+    const sorted = (requestData ?? []).sort((a, b) => {
+        const aIsPast = a.date_of_use < today;
+        const bIsPast = b.date_of_use < today;
+
+        // If one is past and the other isn't, non-past comes first
+        if (aIsPast !== bIsPast) return aIsPast ? 1 : -1;
+
+        // Both in same group → sort by date then time ascending
+        const dateCompare = a.date_of_use.localeCompare(b.date_of_use);
+        if (dateCompare !== 0) return dateCompare;
+        return a.time_of_start.localeCompare(b.time_of_start);
+    });
+
     const normalizeData = [
         { label: "All Offices", value: "" },
         ...officeData.map((item) => ({
@@ -184,7 +196,7 @@ const GetAdminRequestData = async () => {
     ]
 
     return { 
-        requestData: normalizeRequestArray(requestData ?? []), 
+        requestData: normalizeRequestArray(sorted ?? []), 
         officeData: normalizeData 
     };
 }

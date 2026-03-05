@@ -2,25 +2,21 @@
 
 import { useEffect, useState } from "react"
 import { useQuery } from "@tanstack/react-query"
-
 import { VenuesDataTable } from "../tables/venues-table"
 import { venuesColumns, venueTypesColumns } from "@/utils/table-columns/venues-columns"
-
 import { GetAdminVenues, GetAdminTypeVenues } from "@/utils/server-actions/fetch-venues"
-
 import { Skeleton } from "../ui/skeleton"
 import { TableLoadingSkeleton } from "../loading-skeletons/table-loading"
 import { toast } from "sonner"
 import { CancelConfirmButtons } from "../cancel-confirm"
 import Modal from "../modal"
-
 import { VenueTypeUpdateForm, VenueUpdateForm } from "../modal-content/admin-venues-modal-content"
 import { DeleteVenue, DeleteVenueType } from "@/utils/server-actions/delete-venue"
 import { useQueryClient } from "@tanstack/react-query"
-
 import { CardContainer, CardContent, CardDescription, CardWrapper } from "../card"
 import { formatLabel } from "@/utils/handlers/capitalize"
 import { FetchOfficeOptions } from "@/utils/server-actions/fetch-office"
+import { useInfo } from "@/utils/hooks/user-context"
 
 type VenueStatusCount = {
     total: number
@@ -61,6 +57,7 @@ const VenuesList = () => {
     const [action, setAction] = useState<"venue-update" | "venue-delete" | "type-update" | "type-delete" | null>(null)
     const [selectedItem, setSelectedItem] = useState<Venues | VenuesType | null>(null)
     const [openModal, setOpenModal] = useState<boolean>(false)
+    const user = useInfo()
 
       // Counts 
     const [statusCount, setStatusCount] = useState<VenueStatusCount>({
@@ -304,9 +301,10 @@ const VenuesList = () => {
                             header="Venues"
                             tableType={tableType}
                             isAdminLayout={true}
-                            pageSize={15}
+                            pageSize={20}
                             options={officeData?.data || []}
                             isInventory={false}
+                            role={user?.role || 'user'}
                         /> 
                     ) : (
                         <VenuesDataTable
@@ -318,9 +316,10 @@ const VenuesList = () => {
                             header="Venue Types"
                             tableType={tableType}
                             isAdminLayout={true}
-                            pageSize={15}
+                            pageSize={20}
                             options={officeData?.data || []}
                             isInventory={false}
+                            role={user?.role || 'user'}
                         /> 
                     )
                 )}

@@ -12,9 +12,6 @@ const UpdateStatus = async (id: string, status: string) => {
         return {status: false, message: "User role is not authorized"}
     }
 
-    console.log(id)
-    console.log(status)
-
     const { error } = await supabase
     .from('bookings')
     .update({ status: status })

@@ -42,6 +42,7 @@ interface DataTableProps<TData, TValue> {
         value: string;
     }[];
     isInventory: boolean
+    role: string;
 }
 
 export function EquipmentsDataTable<TData, TValue>({
@@ -51,7 +52,8 @@ export function EquipmentsDataTable<TData, TValue>({
     isAdminLayout = false,
     pageSize,
     offices,
-    isInventory
+    isInventory,
+    role
 }: DataTableProps<TData, TValue>) {
     const user = useInfo()
     
@@ -73,7 +75,13 @@ export function EquipmentsDataTable<TData, TValue>({
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange: setPagination,
         onColumnFiltersChange: setColumnFilters,
-        getFilteredRowModel: getFilteredRowModel()
+        getFilteredRowModel: getFilteredRowModel(),
+        initialState: {
+            columnVisibility: {
+                actions: role === "superadmin" || role === "administrator",
+                offices: role === "superadmin", // hide office column for non-superadmins too if needed
+            }
+        },
     })
 
     return (

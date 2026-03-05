@@ -1,12 +1,12 @@
 'use server'
 
 import { createClient } from "@/utils/supabase/server"
-import { formatLabel, LowercaseAll, CapitalizeAll } from "../handlers/capitalize";
+import { formatLabel } from "../handlers/capitalize";
 
 
 export async function GetBorrowFormData() {
     const supabase = await createClient()
-
+    
     const [
       deptRes,
       designationRes,
@@ -22,7 +22,7 @@ export async function GetBorrowFormData() {
     ] = await Promise.all([
       supabase.from("department").select("id, department_name"),
       supabase.from("designation").select("id, designation_name"),
-      supabase.from("grade_level").select("id, department: department_id(id), grade_level"),
+      supabase.from("grade_level").select("id, department: department_id(id, department_name), grade_level"),
       supabase.from("type_of_request").select("id, type_name"),
       supabase.from("place_of_use").select("id, department: department_id(id), room, number"),
       supabase.from("location_of_use").select("id, location_name"),
@@ -73,7 +73,12 @@ export async function GetBorrowFormData() {
     const data = {
       department: normalize(deptRes.data, (i) => i.department_name),
       designation: normalize(designationRes.data, (i) => i.designation_name),
-      gradeLevel: normalize(gradeRes.data, (i) => `Grade ${i.grade_level}`),
+      gradeLevel: normalize(gradeRes.data, (i) => {
+        const isKinder = i.department?.department_name?.toLowerCase() === "pre-school";
+        return isKinder 
+          ? `Kinder ${i.grade_level}` 
+          : `Grade ${i.grade_level}`;
+      }),
       typeOfRequest: normalize(requestTypeRes.data, (i) => i.type_name),
       placeOfUse: normalize(placeRes.data, (i) => `${i.room} ${i.number}`),
       locationOfUse: normalize(locationRes.data, (i) => `${i.location_name}`),

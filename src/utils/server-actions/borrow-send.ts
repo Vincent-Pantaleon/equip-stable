@@ -27,28 +27,52 @@ const SendRequest = async (formData: FormData) => {
         office: formData.get('office') as string
     }
 
+    // --- Duplicate Check ---
+    const itemColumn = data.equipment ? 'equipment_id' : 'venue_id'
+    const itemValue = data.equipment ? data.equipment : data.venue
+
+    const { data: existing, error: duplicateError } = await supabase
+        .from('bookings')
+        .select('id')
+        .eq('user_id', userId)
+        .eq('date_of_use', data.dateOfUse)
+        .eq(itemColumn, itemValue)
+        .lt('time_of_start', data.timeOfEnd)    // existing starts before new ends
+        .gt('time_of_end', data.timeOfStart)    // existing ends after new starts
+        .neq('status', 'cancelled')
+
+    if (duplicateError) {
+        console.log(duplicateError)
+        return { status: false, message: "Error checking for duplicate requests" }
+    }
+
+    if (existing && existing.length > 0) {
+        return { status: false, message: "You already have a booking for this item at the same date and time" }
+    }
+    // --- End Duplicate Check ---
+
     const {error: requestError} = await supabase
-    .from('bookings')
-    .insert([{
-        user_id: userId,
-        first_name: data.fname,
-        last_name: data.lname,
-        designation_id: data.designation,
-        department_id: data.department,
-        contact_number: data.contactNumber,
-        grade_level_id: data.gradeLevel,
-        purpose_id: data.purpose,
-        location_of_use_id: data.locationOfUse,
-        type_of_request_id: data.typeOfRequest,
-        place_of_use_id: data.placeOfUse,
-        equipment_id: data.equipment ? data.equipment : null,
-        subject_id: data.subject,
-        date_of_use: data.dateOfUse,
-        time_of_start: data.timeOfStart,
-        time_of_end: data.timeOfEnd,
-        venue_id: data.venue ? data.venue : null,
-        office_id: data.office
-    }])
+        .from('bookings')
+        .insert([{
+            user_id: userId,
+            first_name: data.fname,
+            last_name: data.lname,
+            designation_id: data.designation,
+            department_id: data.department,
+            contact_number: data.contactNumber,
+            grade_level_id: data.gradeLevel,
+            purpose_id: data.purpose,
+            location_of_use_id: data.locationOfUse,
+            type_of_request_id: data.typeOfRequest,
+            place_of_use_id: data.placeOfUse,
+            equipment_id: data.equipment ? data.equipment : null,
+            subject_id: data.subject,
+            date_of_use: data.dateOfUse,
+            time_of_start: data.timeOfStart,
+            time_of_end: data.timeOfEnd,
+            venue_id: data.venue ? data.venue : null,
+            office_id: data.office
+        }])
 
     if (requestError) {
         console.log(requestError)

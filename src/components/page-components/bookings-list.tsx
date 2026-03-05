@@ -142,7 +142,7 @@ const BookingsList = () => {
                         data={requestData?.requestData || []}
                         pageSize={20}
                         offices={requestData?.officeData || []}
-                        role={user?.role ?? ""}
+                        role={user?.role ?? "user"}
                     />
                 )}
             </div>
