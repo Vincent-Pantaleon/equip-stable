@@ -45,7 +45,7 @@ interface DataTableProps<TData, TValue> {
     }[];
     pageSize:number;
     isInventory: boolean;
-    role: string;
+    role?: string;
 }
 
 export function VenuesDataTable<TData, TValue>({

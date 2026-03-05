@@ -42,7 +42,7 @@ interface DataTableProps<TData, TValue> {
         value: string;
     }[];
     isInventory: boolean
-    role: string;
+    role?: string;
 }
 
 export function EquipmentsDataTable<TData, TValue>({
