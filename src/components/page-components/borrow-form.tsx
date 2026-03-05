@@ -113,7 +113,7 @@ export default function BorrowForm() {
 
             </Modal>
             
-            <NewForm/>
+            {/* <NewForm/> */}
         </>
     )
 }
