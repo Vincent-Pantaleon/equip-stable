@@ -45,6 +45,7 @@ interface DataTableProps<TData, TValue> {
     }[];
     pageSize:number;
     isInventory: boolean;
+    role: string;
 }
 
 export function VenuesDataTable<TData, TValue>({
@@ -55,7 +56,8 @@ export function VenuesDataTable<TData, TValue>({
     isAdminLayout = false,
     options,
     pageSize,
-    isInventory
+    isInventory,
+    role,
 }: DataTableProps<TData, TValue>) {
     const [openModal, setOpenModal] = useState<boolean>(false)
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -77,6 +79,12 @@ export function VenuesDataTable<TData, TValue>({
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange: setPagination,
+        initialState: {
+            columnVisibility: {
+                actions: role === "superadmin" || role === "administrator",
+                offices: role === "superadmin", // hide office column for non-superadmins too if needed
+            }
+        },
     })
 
     return (

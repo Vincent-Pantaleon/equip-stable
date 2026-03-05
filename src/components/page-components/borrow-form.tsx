@@ -3,12 +3,13 @@
 import { Section, Input, SelectInput } from "../input"
 import Button from "../button"
 import { GetBorrowFormData } from "@/utils/server-actions/borrow-page-query"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { SendRequest } from "@/utils/server-actions/borrow-send"
 import { useState } from "react"
 import Modal from "../modal" // adjust path if needed
 import { CancelConfirmButtons } from "../cancel-confirm"
+import { BorrowForm as NewForm } from "../forms/borrow-form"
 
 export default function BorrowForm() {
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -111,7 +112,8 @@ export default function BorrowForm() {
                 />
 
             </Modal>
-
+            
+            <NewForm/>
         </>
     )
 }

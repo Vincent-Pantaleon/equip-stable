@@ -1,5 +1,7 @@
 import React from "react";
 
+// TODO: Add onChange sa tanan
+
 type InputProps = {
   label: string;
   type: string;
@@ -12,6 +14,7 @@ type InputProps = {
   isDisabled?: boolean;
   isPassword?: boolean;
   defaultValue?: string | number;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 interface SelectInputProps {
@@ -23,6 +26,7 @@ interface SelectInputProps {
   options: OptionType[];
   group?: string;
   defaultValue?: string | number | null;
+  required?: boolean;
 }
 
 interface SectionProps {
@@ -83,6 +87,7 @@ export const SelectInput = React.memo(function SelectInput({
   options,
   group,
   defaultValue,
+  required = true
 }: SelectInputProps) {
   return (
     <div className={divStyle}>
@@ -90,10 +95,11 @@ export const SelectInput = React.memo(function SelectInput({
       <select
         name={name}
         id={name}
-        required
+        required={required}
         className="border-2 border-black/50 w-full px-3 h-9 rounded-md"
         onChange={onChange}
         defaultValue={defaultValue ?? ""}
+        
       >
         <option value="" disabled>
           Select an option

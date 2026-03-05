@@ -25,6 +25,7 @@ import {
     CardWrapper
 } from "../card"
 import { FetchOfficeOptions } from "@/utils/server-actions/fetch-office"
+import { useInfo } from "@/utils/hooks/user-context"
 
 type EquipmentStatusCount = {
     total: number;
@@ -46,6 +47,8 @@ const AdminEquipments = () => {
   const [openModal, setOpenModal] = useState(false)
   const [action, setAction] = useState<"equipment-update" | "equipment-delete" | "type-update" | "type-delete" | null>(null)
   const [selectedItem, setSelectedItem] = useState<EquipmentTypeType | Equipments | null>(null)
+
+  const user = useInfo()
   
   // Counts 
   const [statusCount, setStatusCount] = useState<EquipmentStatusCount>({
@@ -268,9 +271,10 @@ const AdminEquipments = () => {
             data={equipmentData?.data || []}
             isEquipmentType={isEquipmentTypeVisible}
             isAdminLayout={true}
-            pageSize={5}
+            pageSize={20}
             offices={ officeData?.data || []}
             isInventory={true}
+            role={user?.role || 'user'}
           />
         ) : (
           <EquipmentsDataTable
@@ -281,9 +285,10 @@ const AdminEquipments = () => {
             data={typeData?.data || []}
             isEquipmentType={isEquipmentTypeVisible}
             isAdminLayout={true}
-            pageSize={5}
+            pageSize={20}
             offices={officeData?.data || []}
             isInventory={true}
+            role={user?.role || 'user'}
           />
         )}
       </div>

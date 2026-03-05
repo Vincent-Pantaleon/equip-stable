@@ -76,6 +76,12 @@ export function BookingDataTable<TData, TValue>({
         columnResizeMode: "onChange",
         getPaginationRowModel: getPaginationRowModel(),
         onPaginationChange: setPagination,
+        initialState: {
+            columnVisibility: {
+                actions: role === "superadmin" || role === "administrator",
+                offices: role === "superadmin", // hide office column for non-superadmins too if needed
+            }
+        },
     })
 
     return (
@@ -84,15 +90,15 @@ export function BookingDataTable<TData, TValue>({
                 <h1 className="text-lg">Bookings</h1>
 
                 <div className="flex gap-2 items-center overflow-auto ml-10 text-sm">
-                    {((user?.role === 'superadmin' || user?.role === 'administrator') && url.includes('admin')) && (
+                    {((user?.role === 'superadmin' || user?.role === 'administrator' || user?.role === 'moderator') && url.includes('admin')) && (
                         <>
                             <label htmlFor="global-search">Name Search:</label>
                             <div className="border-1 rounded-lg p-2 w-fit"> 
                                 <input
                                     id="global-search"
                                     value={globalFilter ?? ''}
-                                    onChange={e => setGlobalFilter(e.target.value)}
-                                    placeholder="Search all columns..."
+                                    onChange={(e) => setGlobalFilter(e.target.value)}
+                                    placeholder="Search columns..."
                                 />
                             </div>
                         </>
