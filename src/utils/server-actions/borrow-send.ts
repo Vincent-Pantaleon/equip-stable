@@ -39,7 +39,7 @@ const SendRequest = async (formData: FormData) => {
         .eq(itemColumn, itemValue)
         .lt('time_of_start', data.timeOfEnd)    // existing starts before new ends
         .gt('time_of_end', data.timeOfStart)    // existing ends after new starts
-        .neq('status', 'cancelled')
+        .neq('status', 'declined')
 
     if (duplicateError) {
         console.log(duplicateError)
