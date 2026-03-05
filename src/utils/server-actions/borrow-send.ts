@@ -34,7 +34,8 @@ const SendRequest = async (formData: FormData) => {
     const { data: existing, error: duplicateError } = await supabase
         .from('bookings')
         .select('id')
-        .eq('user_id', userId)
+        .eq('first_name', data.fname)
+        .eq('last_name', data.lname)
         .eq('date_of_use', data.dateOfUse)
         .eq(itemColumn, itemValue)
         .lt('time_of_start', data.timeOfEnd)    // existing starts before new ends
