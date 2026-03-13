@@ -34,7 +34,7 @@ type StatusCount = {
 const BookingsList = () => {
     const [openEditModal, setOpenEditModal] = useState<boolean>(false)
     const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
-    const [selectedRequest, setSelectedRequest] = useState<Requests | null>(null)
+    const [selectedRequest, setSelectedRequest] = useState<AdminRequests | null>(null)
     const [statusCount, setStatusCount] = useState<StatusCount>({
         total: 0,
         pending: 0,
@@ -57,12 +57,12 @@ const BookingsList = () => {
         toast.error("Error fetching data")
     }
     
-    const DeleteRow = (request: Requests) => {
+    const DeleteRow = (request: AdminRequests) => {
         setSelectedRequest(request)
         setOpenDeleteModal(true)
     }
 
-    const UpdateRow = (request: Requests) => {
+    const UpdateRow = (request: AdminRequests) => {
         setSelectedRequest(request)
         setOpenEditModal(true)
     }
@@ -154,7 +154,7 @@ const BookingsList = () => {
                     isOpen={openEditModal}
                 >
                     {selectedRequest && (
-                        <BookingModalContent request={selectedRequest as Requests} isAdmin={true} action={() => setOpenEditModal(false)}/>
+                        <BookingModalContent request={selectedRequest as AdminRequests} isAdmin={true} action={() => setOpenEditModal(false)}/>
                     )}
                     
                 </Modal>

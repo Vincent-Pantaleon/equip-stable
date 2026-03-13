@@ -20,7 +20,6 @@ const NavbarItems = [
     { label: "Venues", href: '/admin/venues', icon: MapPinned },
     { label: "Profiles", href: '/admin/profile-list', icon: Users },
     { label: "Offices", href: '/admin/offices', icon: Building },
-    { label: "Releases", href: '/admin/releases', icon: CheckCircle2 },
     { label: "Return to Home", href: '/recents', icon: House }
 ]
 
@@ -64,6 +63,10 @@ const DashboardNavbar = () => {
                 <div className="my-auto flex flex-col gap-y-1 w-full">
                     {NavbarItems.map((item, index) => {
                         const isActive = currentRoute.startsWith(item.href)
+
+                        if (item.label === "Releases") {
+                            return null;
+                        }
 
                         if (userInfo?.role !== 'superadmin' && (item.label === "Offices" || item.label === "Profiles" || item.label === 'Borrow Form')) {
                             return null;

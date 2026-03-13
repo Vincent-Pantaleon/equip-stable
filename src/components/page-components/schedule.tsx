@@ -25,7 +25,7 @@ export default function Schedule() {
         )
     }
 
-    if (!data || data.length === 0) {
+    if (!data || data.data?.length === 0) {
         return (
             <div className="h-full flex items-center justify-center text-center">
                 <div className="flex flex-col gap-y-4">
@@ -43,7 +43,7 @@ export default function Schedule() {
 
     return (
         <div className="h-full">
-            <AccordionCalendar data={data} />
+            <AccordionCalendar data={data.data || []} />
         </div>
     )
 }

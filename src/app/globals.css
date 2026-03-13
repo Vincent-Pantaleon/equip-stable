@@ -3,6 +3,20 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Thin scrollbar */
+.scrollbar-thin::-webkit-scrollbar {
+    height: 6px; /* horizontal scrollbar height */
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: #cbd5e1; /* gray-300 */
+    border-radius: 999px;
+}
+
 @theme {
   --color-alice-blue: #f3f5f9;
   --color-status-green: #9dcd5a;  

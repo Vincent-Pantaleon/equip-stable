@@ -1,4 +1,4 @@
-import BorrowForm from "@/components/page-components/borrow-form";
+import { BorrowForm as NewForm } from "@/components/forms/borrow-form";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -11,6 +11,6 @@ export default async function BorrowPage() {
     // await new Promise((resolve) => setTimeout(resolve, 1500))
     
     return (
-        <BorrowForm/>
+        <NewForm/>
     )
 }

@@ -32,6 +32,7 @@ const GetReleases = async () => {
     return { status: true, message: "Releases data fetch successful", data: data }
 }
 
+// ! TODO: REFACTOR THIS, REMOVE THE TYPE CHURVALO ASAP
 const GetBookings = async () => {
     const supabase = await createClient()
 
@@ -40,10 +41,9 @@ const GetBookings = async () => {
     const { data, error } = await supabase
     .from('bookings')
     .select('id, first_name, last_name, date_of_use, time_of_start, time_of_end, equipment:equipment_id(type_name), venue:venue_id(venue_name), type: type_of_request_id(type_name), office: office_id(office_name)')
-    .eq('is_active', false).eq('status', 'approved').eq('date_of_use', today)
+    .eq('is_active', false).eq('status', 'approved') //.eq('date_of_use', today)
 
     if (error) {
-        console.log("HERE!",error)
         return { status: false, message: "Error fetching bookings" }
     }
 

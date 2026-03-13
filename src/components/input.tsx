@@ -15,6 +15,7 @@ type InputProps = {
   isPassword?: boolean;
   defaultValue?: string | number;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
 };
 
 interface SelectInputProps {
@@ -45,8 +46,12 @@ export const Input = React.memo(function Input({
   divStyle,
   pattern,
   isDisabled = false,
-  defaultValue
+  defaultValue,
+  value,
+  onChange
 }: InputProps) {
+  const isControlled = onChange !== undefined;
+
   return (
     <div className={`w-full ${divStyle}`}>
       <label htmlFor={id}>{label}</label>
@@ -60,7 +65,10 @@ export const Input = React.memo(function Input({
         pattern={pattern}
         disabled={isDisabled}
         autoComplete="off"
-        defaultValue={defaultValue ?? ""}
+        {...(isControlled
+          ? { value: value ?? "", onChange }
+          : { defaultValue }
+        )}
       />
     </div>
   );
@@ -71,7 +79,7 @@ export const Section = React.memo(function Section({ children, header }: Section
   return (
     <div>
       <h1 className="text-lg font-semibold">{header}</h1>
-      <div className="border-2 rounded-md lg:px-5 p-2 grid grid-cols-1 gap-[10px] md:grid-cols-2 text-sm">
+      <div className="border-2 rounded-md lg:px-5 p-2 grid grid-cols-1 gap-[10px] md:grid-cols-3 text-sm">
         {children}
       </div>
     </div>
@@ -87,6 +95,7 @@ export const SelectInput = React.memo(function SelectInput({
   options,
   group,
   defaultValue,
+  value,
   required = true
 }: SelectInputProps) {
   return (
@@ -98,8 +107,8 @@ export const SelectInput = React.memo(function SelectInput({
         required={required}
         className="border-2 border-black/50 w-full px-3 h-9 rounded-md"
         onChange={onChange}
-        defaultValue={defaultValue ?? ""}
-        
+        // defaultValue={defaultValue ?? ""}
+        value={value ?? ""}
       >
         <option value="" disabled>
           Select an option

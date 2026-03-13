@@ -21,59 +21,47 @@ declare global {
         requestData: Requests[];
     }
 
-    type Requests = {
+    type RecentRequests = {
+        id: string
+        purpose: string;
+        equipment: {
+            type_name: string
+        }[]                        // looks fine
+        venue: {
+            venue_name: string
+        }[]                      // looks fine
+        subject: string;                  // was null in your sample data
+        date_of_use: string
+        place_of_use: {
+            room: string;
+            number: string;
+        } | null                    // was null in your sample data
+        time_of_start: string
+        time_of_end: string
+        status: string
+    }
+
+    type AdminRequests = {
         id: string;
         created_at: string;
         user_id: string;
         first_name: string;
         last_name: string;
-        designation: {
-            id: string;
-            designation_name: string;
-        };
-        department: {
-            id: string;
-            department_name: string;
-        };
+        designation: string;      // ✅
+        department: string;       // ✅
         contact_number: string;
-        grade_level: {
-            id: string;
-            grade_level: string;
-            department: {
-                department_name: string;
-            };
-        };
-        purpose: {
-            id: string;
-            purpose_name: string;
-        };
-        type_of_request: {
-            id: string;
-            type_name: string;
-        };
-        location_of_use: {
-            id: string;
-            location_name: string;
-        };
+        grade_level: string | null;      // ✅
+        purpose: string;          // ✅
+        location_of_use: string;  // ✅
         place_of_use: {
-            id: string;
             room: string;
             number: string;
-            department: {
-                department_name: string;
-            }
-        };
+        } | null;                        // ✅ Allow null
         equipment: {
             id: string;
             type_name: string;
-        };
-        subject: {
-            id: string;
-            subject_name: string;
-            department: {
-                department_name: string;
-            }
-        };
+        }[];
+        subject: string | null;          // ✅
         date_of_use: string;
         time_of_start: string;
         time_of_end: string;
@@ -82,11 +70,8 @@ declare global {
         venue: {
             id: string;
             venue_name: string;
-        };
-        office: {
-            id: string;
-            office_name: string;
-        };
+        }[];
+        office: string;           // ✅
     }
 
     type Equipments = {
@@ -286,30 +271,31 @@ declare global {
         level: string;
     }
 
-    type Release = {
-        id: string,
-        bookings: db['public']['Tables']['requests']['Row']
-        time_released: string,
-        time_returned: string | null,
-        profiles: { 
-            last_name: string, 
-            first_name: string 
-        } | null,
-        accepted_profiles: { 
-            last_name: string, 
-            first_name: string 
-        } | null,
-        is_returned: boolean,
-        venue: db['public']['Tables']['venue']['Row'],
-        equipment: db['public']['Tables']['equipment']['Row'],
-        request_type: 'venue' | 'equipment'
-    }
-
     type AvailabilityResult = {
         is_available: boolean;
         available_amount: number;
         total_capacity: number;
         total_bookings_count: number;
         unique_users: number;
+    }
+
+    type RequestData = {
+        first_name: string,
+        last_name: string,
+        designation: string,
+        department: string,
+        contact_number: string,
+        grade_level: string | undefined | null,
+        purpose: string,
+        type_of_request: string,
+        location_of_use: string,
+        place_of_use: string | null | undefined,
+        office: string,
+        venue: string[] | null | undefined,
+        equipment: string[] | null | undefined,
+        subject: string | null | undefined,
+        date_of_use: string,
+        time_of_start: string,
+        time_of_end: string,
     }
 }
