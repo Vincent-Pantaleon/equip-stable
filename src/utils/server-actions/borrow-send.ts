@@ -2,85 +2,86 @@
 
 import { createClient } from "../supabase/server"
 
-const SendRequest = async (formData: FormData) => {
-    const supabase = await createClient()
+const SendRequest = async (data: RequestData) => {
+    const supabase = await createClient();
 
-    const userId = (await supabase.auth.getUser()).data.user?.id
+    // 1. Helper: Formats JS array into a Postgres Array Literal "{val1,val2}"
+    // Also sorts them so [A, B] and [B, A] match the same record.
+    const formatForPostgresArray = (arr: string[] | null | undefined) => {
+        if (!arr || arr.length === 0) return null;
+        const sorted = [...arr].sort();
+        return `{${sorted.join(',')}}`;
+    };
 
-    const data = {
-        fname: formData.get('first_name') as string,
-        lname: formData.get('last_name') as string,
-        designation: formData.get('designation') as string,
-        department: formData.get('department') as string,
-        contactNumber: formData.get('contact_number') as string,
-        gradeLevel: formData.get('grade_level') as string,
-        purpose: formData.get('purpose') as string,
-        typeOfRequest: formData.get('type_of_request') as string,
-        locationOfUse: formData.get('location_of_use') as string,
-        placeOfUse: formData.get('place_of_use') as string,
-        equipment: formData.get('equipment') as string,
-        venue: formData.get('venue') as string,
-        subject: formData.get('subject') as string,
-        dateOfUse: formData.get('date_of_use') as string,
-        timeOfStart: formData.get('time_of_start') as string,
-        timeOfEnd: formData.get('time_of_end') as string,
-        office: formData.get('office') as string
-    }
+    // 2. Prepare Data
+    const { data: userData } = await supabase.auth.getUser();
+    const userId = userData.user?.id;
 
-    // --- Duplicate Check ---
-    const itemColumn = data.equipment ? 'equipment_id' : 'venue_id'
-    const itemValue = data.equipment ? data.equipment : data.venue
+    const equipmentList = formatForPostgresArray(data.equipment);
+    const venueList = formatForPostgresArray(data.venue);
 
-    const { data: existing, error: duplicateError } = await supabase
+    // 3. DUPLICATE CHECK
+    // We only flag a duplicate if the EXACT SAME SET is already booked for this time.
+    let checkQuery = supabase
         .from('bookings')
         .select('id')
-        .eq('first_name', data.fname)
-        .eq('last_name', data.lname)
-        .eq('date_of_use', data.dateOfUse)
-        .eq(itemColumn, itemValue)
-        .lt('time_of_start', data.timeOfEnd)    // existing starts before new ends
-        .gt('time_of_end', data.timeOfStart)    // existing ends after new starts
-        .neq('status', 'declined')
+        .eq('date_of_use', data.date_of_use)
+        .lt('time_of_start', data.time_of_end)
+        .gt('time_of_end', data.time_of_start)
+        .neq('status', 'declined');
+
+    // Chaining .eq on arrays checks for total equality
+    if (equipmentList) {
+        checkQuery = checkQuery.eq('equipment_id', equipmentList);
+    }
+    if (venueList) {
+        checkQuery = checkQuery.eq('venue_id', venueList);
+    }
+
+    const { data: existing, error: duplicateError } = await checkQuery;
 
     if (duplicateError) {
-        console.log(duplicateError)
-        return { status: false, message: "Error checking for duplicate requests" }
+        console.error("Overlap Check Error:", duplicateError);
+        return { status: false, message: "Error checking availability" };
     }
 
     if (existing && existing.length > 0) {
-        return { status: false, message: "You already have a booking for this item at the same date and time" }
+        return { 
+            status: false, 
+            message: "This exact combination of items is already reserved for this time slot." 
+        };
     }
-    // --- End Duplicate Check ---
 
-    const {error: requestError} = await supabase
+    // 4. INSERT RECORD
+    const { error: requestError } = await supabase
         .from('bookings')
         .insert([{
             user_id: userId,
-            first_name: data.fname,
-            last_name: data.lname,
+            first_name: data.first_name,
+            last_name: data.last_name,
             designation_id: data.designation,
             department_id: data.department,
-            contact_number: data.contactNumber,
-            grade_level_id: data.gradeLevel,
+            contact_number: data.contact_number,
+            grade_level_id: data.grade_level || null,
             purpose_id: data.purpose,
-            location_of_use_id: data.locationOfUse,
-            type_of_request_id: data.typeOfRequest,
-            place_of_use_id: data.placeOfUse,
-            equipment_id: data.equipment ? data.equipment : null,
-            subject_id: data.subject,
-            date_of_use: data.dateOfUse,
-            time_of_start: data.timeOfStart,
-            time_of_end: data.timeOfEnd,
-            venue_id: data.venue ? data.venue : null,
+            location_of_use_id: data.location_of_use,
+            type_of_request_id: data.type_of_request || null,
+            place_of_use_id: data.place_of_use || null,
+            equipment_id: equipmentList, // Sending formatted string "{uuid,uuid}"
+            venue_id: venueList,         // Sending formatted string "{uuid,uuid}"
+            subject_id: data.subject || null,
+            date_of_use: data.date_of_use,
+            time_of_start: data.time_of_start,
+            time_of_end: data.time_of_end,
             office_id: data.office
-        }])
+        }]);
 
     if (requestError) {
-        console.log(requestError)
-        return { status: false, message: "Error filing your request"}
+        console.error("Insert Error:", requestError);
+        return { status: false, message: "Error filing your request" };
     }
 
-    return { status: true, message: "Request sent successfully"}
-}
+    return { status: true, message: "Request sent successfully" };
+};
 
 export { SendRequest }

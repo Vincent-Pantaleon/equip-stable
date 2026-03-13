@@ -13,6 +13,8 @@ export function LowercaseAll(str: string): string {
 }
 
 export function formatLabel(text: string): string {
+  if (!text) return "";
+  
   return text
     .split("_") // replace underscores
     .map(

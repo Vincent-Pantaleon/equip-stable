@@ -9,65 +9,106 @@ import {
 import Button from "@/components/button";
 
 interface AllRequestColumnsProps {
-    onUpdate: (booking: Requests) => void
-    onDelete: (booking: Requests) => void
+    onUpdate: (booking: AdminRequests) => void
+    onDelete: (booking: AdminRequests) => void
 }
 
-
-export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps): ColumnDef<Requests>[] => [
+// ! TODO: FIX THIS SHIT PARA MAS HINLO ANG IDISPLAY SA TABLE
+export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps): ColumnDef<AdminRequests>[] => [
     {
         id: "filers_name",
         header: "Filer's Name",
         accessorFn: row => `${Capitalize(row.first_name)} ${Capitalize(row.last_name)}`,
         cell: ({ getValue }) => getValue(),
-        size: 180
+        size: 200
     },
     {
         header: "Activity",
         accessorKey: "purpose", 
         cell: ({ row }) => {
             const value = row.original.purpose;
-            return formatLabel(value.purpose_name);
+            return formatLabel(value);
         },
-        minSize: 90
+        minSize: 180
     },
     {
         header: "Location of Use",
         accessorFn: row => row.location_of_use,
         cell: ({ row }) => {
             const value = row.original.location_of_use;
-            return `${formatLabel(value.location_name)}`;
-        },
-        size: 150
-    },
-    {
-        header:"Section",
-        accessorFn: row => row.place_of_use,
-        cell: ({ row }) => {
-            const value = row.original.place_of_use;
-            return `${CapitalizeAll(value.room)} ${formatLabel(value.number)}`;
+            return `${formatLabel(value)}`;
         },
         size: 180
     },
     {
-        id: "equipment/venue",
-        header: "Equipment/Venue", // or whichever field you primarily use
+        header:"Room",
+        accessorFn: row => row.place_of_use,
         cell: ({ row }) => {
-            const request = row.original;
+            const value = row.original.place_of_use;
+
+            if (!value) return "No Room";
+
+            return `${CapitalizeAll(value.room)} ${formatLabel(value.number)}`;
+        },
+        size: 200
+    },
+    {
+        id: "equipment",
+        header: "Equipment", // or whichever field you primarily use
+        cell: ({ row }) => {
+            // ✅ Force it to always be an array, whatever shape it arrives in
+            const equipments = row.original.equipment
+
+            if (equipments.length === 0) {
+                return <span className="text-muted-foreground">None</span>;
+            }
 
             return (
-                <span>
-                    {request.type_of_request.type_name === "equipment" ? formatLabel(request.equipment.type_name as string) : formatLabel(request.venue.venue_name as string)}
-                </span>
+                <div className="flex overflow-x-auto whitespace-nowrap scrollbar-thin py-1 gap-1">
+                    {equipments.map((item, index) => (
+                        <span key={index} className="font-semibold flex-shrink-0">
+                            {formatLabel(item.type_name)}
+                            {index < equipments.length - 1 && <span className="font-semibold">,&nbsp;&nbsp;</span>}
+                        </span>
+                    ))}
+                </div>
             );
-        }
+        },
+        size: 300
+    },
+    {
+        id: "venue",
+        header: "Venue", // or whichever field you primarily use
+        cell: ({ row }) => {
+            // ✅ Force it to always be an array, whatever shape it arrives in
+            const venues = row.original.venue
+
+            if (venues.length === 0) {
+                return <span className="text-muted-foreground">None</span>;
+            }
+
+            return (
+                <div className="flex overflow-x-auto whitespace-nowrap scrollbar-thin py-1">
+                    {venues.map((item, index) => (
+                        <span key={index} className="font-semibold flex-shrink-0">
+                            {formatLabel(item.venue_name)}
+                            {index < venues.length - 1 && <span className="font-semibold">,&nbsp;&nbsp;</span>}
+                        </span>
+                    ))}
+                </div>
+            );
+        },
+        size: 300
     },
     {
         header: "Subject",
         accessorKey: "subject",
         cell: ({ row }) => {
-            const value = row.original.subject;
-            return formatLabel(value.subject_name);
+            const value = row.original.subject; 
+
+            if(!value) return "No Subject"
+
+            return formatLabel(value);
         },
         size: 150
     },
@@ -84,7 +125,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
             }); // dd/mm/yyyy format
             return formatted;
         },
-        size: 140
+        size: 180
     },
     {
         header: "Time",
@@ -100,7 +141,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
 
             return `${formatTime(row.time_of_start)} - ${formatTime(row.time_of_end)}`;
         },
-        size: 160 
+        size: 180 
     },
     {
         header: "Status",
@@ -111,24 +152,24 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
 
             return (
                 <div className={`${statusClass} rounded-md w-fit px-1`}>
-                    {Capitalize(status)}
+                    {formatLabel(status)}
                 </div>
             );
         },
-        size: 100,
+        size: 150,
         filterFn: "equalsString"
     },
     {
         id: "offices",
         header: "Office",
-        accessorFn: ( row ) => row.office.id,
+        accessorFn: ( row ) => row.office,
         cell: ({ row }) => {
-            const value = row.original.office.office_name
+            const value = row.original.office
 
-            return formatLabel(value) ?? "Error"
+            return formatLabel(value)
         },
         filterFn: "equalsString",
-        size: 190
+        size: 200
     },
     {
         id: "actions",

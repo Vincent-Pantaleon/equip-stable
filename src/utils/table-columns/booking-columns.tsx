@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Capitalize, CapitalizeAll, formatLabel,  } from "../handlers/capitalize";
+import { CapitalizeAll, formatLabel,  } from "../handlers/capitalize";
 
 export const getStatusStyles = (status: string) => {
   switch (status.toLowerCase()) {
@@ -18,37 +18,74 @@ export const getStatusStyles = (status: string) => {
   }
 };
 
-export const requestColumns: ColumnDef<Requests>[] = [
+export const requestColumns: ColumnDef<RecentRequests>[] = [
     {
         header: "Activity",
         accessorKey: "purpose", 
-        size: 90,
+        size: 100,
         cell: ({ row }) => {
-            const value = row.original.purpose.purpose_name;
+            const value = row.original.purpose
 
-            return formatLabel(value);
+            return (
+                <span className="font-semibold">
+                    {formatLabel(value)}
+                </span> 
+            )
         },
     }, 
     {
-        id: "equipment/venue",
-        header: "Equipment/Venue", // or whichever field you primarily use
+        id: "equipment",
+        header: "Equipment", // or whichever field you primarily use
         cell: ({ row }) => {
-            const request = row.original;
+            const equipments = row.original.equipment
+
+            if (equipments.length === 0) return "No Equipment"
 
             return (
-                <span>
-                    {request.type_of_request.type_name === "equipment" ? formatLabel(request.equipment.type_name as string) : formatLabel(request.venue.venue_name as string)}
-                </span>
+                <div className="flex overflow-x-auto whitespace-nowrap scrollbar-thin py-1">
+                    {equipments.map((item, index) => (
+                        <span key={index} className="font-semibold flex-shrink-0">
+                            {formatLabel(item.type_name)}
+                            {index < equipments.length - 1 && <span className="font-semibold">,&nbsp;&nbsp;</span>}
+                        </span>
+                    ))}
+                </div>
             );
-        }
+        },
+        size: 200
+    },
+    {
+        id: "venue",
+        header: "Venue",
+        cell: ({ row }) => {
+            const venues = row.original.venue;
+
+            if (!venues || venues.length === 0) return "No Venues"
+
+            return (
+                <div className="flex overflow-x-auto whitespace-nowrap scrollbar-thin py-1">
+                    {venues.map((item, index) => (
+                        <span key={index} className="font-semibold flex-shrink-0">
+                            {formatLabel(item.venue_name)}
+                            {index < venues.length - 1 && <span className="font-semibold">,&nbsp;&nbsp;</span>}
+                        </span>
+                    ))}
+                </div>
+            );
+        },
+        size: 200
     },
     {
         header: "Subject",
         accessorKey: "subject",
         cell: ({ row }) => {
             const value = row.original.subject;
-            return formatLabel(value.subject_name);
+
+            if (value === null) return "No Subject"
+
+            return formatLabel(value);
         },
+        size: 100
     },
     {
         header: "Date of Use",
@@ -63,6 +100,7 @@ export const requestColumns: ColumnDef<Requests>[] = [
             }); // dd/mm/yyyy format
             return formatted;
         },
+        size: 100
     },
     {
         header: "Room",
@@ -70,8 +108,11 @@ export const requestColumns: ColumnDef<Requests>[] = [
         cell: ({ row }) => {
             const value = row.original.place_of_use;
 
+            if (value === null) return 'No Room'
+
             return `${CapitalizeAll(value.room)} ${value.number}`;
         },
+        size: 150
     },
     {
         header: "Time",
@@ -87,7 +128,7 @@ export const requestColumns: ColumnDef<Requests>[] = [
 
             return `${formatTime(row.time_of_start)} - ${formatTime(row.time_of_end)}`;
         },
-        size: 170 
+        size: 120 
     },
     {
         header: "Status",
@@ -98,7 +139,7 @@ export const requestColumns: ColumnDef<Requests>[] = [
 
             return (
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusClass}`}>
-                    {Capitalize(status)} {/* Capitalize */}
+                    {formatLabel(status)} {/* Capitalize */}
                 </span>
             );
         },

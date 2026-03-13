@@ -168,7 +168,7 @@ export function BookingDataTable<TData, TValue>({
                         {table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row, index) => (
                                 <TableRow
-                                    key={(row.original as Requests).id}
+                                    key={(row.original as AdminRequests).id}
                                     data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
