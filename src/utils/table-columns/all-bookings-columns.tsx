@@ -27,7 +27,12 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         accessorKey: "purpose", 
         cell: ({ row }) => {
             const value = row.original.purpose;
-            return formatLabel(value);
+
+            if (!value) {
+                return "No Activity"
+            }
+
+            return formatLabel(value.purpose_name);
         },
         minSize: 180
     },
@@ -36,7 +41,12 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         accessorFn: row => row.location_of_use,
         cell: ({ row }) => {
             const value = row.original.location_of_use;
-            return `${formatLabel(value)}`;
+
+            if (!value) {
+                return "No Location"
+            }
+
+            return `${formatLabel(value.location_name)}`;
         },
         size: 180
     },
@@ -108,7 +118,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
 
             if(!value) return "No Subject"
 
-            return formatLabel(value);
+            return formatLabel(value.subject_name);
         },
         size: 150
     },
@@ -166,7 +176,11 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         cell: ({ row }) => {
             const value = row.original.office
 
-            return formatLabel(value)
+            if (!value) {
+                return "No Offices"
+            }
+
+            return formatLabel(value.office_name)
         },
         filterFn: "equalsString",
         size: 200

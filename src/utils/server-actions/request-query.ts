@@ -166,16 +166,15 @@ const GetAdminRequestData = async () => {
             created_at,
             first_name,
             last_name,
-            designation: designation_id(designation_name),
-            department: department_id(department_name),
+            designation: designation_id(id, designation_name),
+            department: department_id(id, department_name),
             contact_number,
-            grade_level: grade_level_id(grade_level),
-            purpose: purpose_id(purpose_name),
-            type_of_request: type_of_request_id(type_name),
-            location_of_use: location_of_use_id(location_name),
-            place_of_use: place_of_use_id(room, number),
+            grade_level: grade_level_id(id, grade_level),
+            purpose: purpose_id(id, purpose_name),
+            location_of_use: location_of_use_id(id, location_name),
+            place_of_use: place_of_use_id(id, room, number),
             equipment_id,
-            subject: subject_id(subject_name),
+            subject: subject_id(id, subject_name),
             date_of_use,
             time_of_start,
             time_of_end,
@@ -238,16 +237,30 @@ const GetAdminRequestData = async () => {
         time_of_end: row.time_of_end,
         status: row.status,
         is_active: row.is_active,
-        designation: row.designation?.designation_name ?? null,
-        department: row.department?.department_name ?? null,
-        grade_level: row.grade_level?.grade_level ?? null,
-        purpose: row.purpose?.purpose_name ?? null,
-        location_of_use: row.location_of_use?.location_name ?? null,
-        place_of_use: row.place_of_use
-            ? { room: row.place_of_use.room ?? null, number: row.place_of_use.number ?? null }
+        designation: row.designation 
+            ? { designation_name: row.designation.designation_name, id: row.designation.id } 
             : null,
-        subject: row.subject?.subject_name ?? null,
-        office: row.office?.office_name ?? null,
+        department: row.department 
+            ? { department_name: row.department.department_name, id: row.department.id }
+            : null,
+        grade_level: row.grade_level 
+            ? { grade_level: row.grade_level.grade_level, id: row.grade_level.id } 
+            : null,
+        purpose: row.purpose 
+            ? { purpose_name: row.purpose.purpose_name, id: row.purpose.id }
+            : null,
+        location_of_use: row.location_of_use 
+            ? { location_name: row.location_of_use.location_name, id: row.location_of_use.id } 
+            : null,
+        place_of_use: row.place_of_use
+            ? { room: row.place_of_use.room ?? null, number: row.place_of_use.number ?? null, id:row.place_of_use.id }
+            : null,
+        subject: row.subject 
+            ? { subject_name: row.subject.subject_name, id: row.subject.id } 
+            : null,
+        office: row.office 
+            ? { office_name: row.office.office_name, id: row.office.id } 
+            : null,
         equipment: (row.equipment_id || []).map((id: string) => equipmentMap[id]).filter(Boolean),
         venue: (row.venue_id || []).map((id: string) => venueMap[id]).filter(Boolean),
     }));

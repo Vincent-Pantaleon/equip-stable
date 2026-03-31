@@ -80,7 +80,7 @@ export const useFormDataValues = (
             data: data?.gradeRes.data ?? [],
         },
         {
-            label: 'Place of Use',
+            label: 'Class Room',
             columns: PlaceOfUseColumns({
                 onDelete: (item) => handleAction('delete-place', item, 'place_of_use'),
                 onUpdate: (item) => handleAction('update-place', item, 'place_of_use'),

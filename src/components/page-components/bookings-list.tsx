@@ -163,7 +163,9 @@ const BookingsList = () => {
                 <Modal
                     header="Delete Booking"
                     isOpen={openDeleteModal}
-                    onClose={() => setOpenDeleteModal(false)}
+                    onClose={() => {
+                        setOpenDeleteModal(false)
+                    }}
                 >
                     Are you sure you want to delete this booking?
 

@@ -26,6 +26,8 @@ export const requestColumns: ColumnDef<RecentRequests>[] = [
         cell: ({ row }) => {
             const value = row.original.purpose
 
+            if (!value) return "No Activity"
+
             return (
                 <span className="font-semibold">
                     {formatLabel(value)}

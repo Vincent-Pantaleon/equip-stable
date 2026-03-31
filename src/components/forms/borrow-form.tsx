@@ -88,7 +88,6 @@ const BorrowForm = () => {
     const office = useStore(form.baseStore, (state) => state.values.office)
     const purpose = useStore(form.baseStore, (state) => state.values.purpose)
 
-
     const { data, error } = useQuery({
         queryKey: ['form-data'],
         queryFn: GetBorrowFormData
@@ -264,7 +263,7 @@ const BorrowForm = () => {
                     )}
                 />
 
-                {(dept === 'grade school' || dept === 'junior high school' || dept === 'pre-school' || dept === 'senior high school') && (
+                {((dept === 'grade school' || dept === 'junior high school' || dept === 'pre-school' || dept === 'senior high school') && purp === 'class instruction') && (
                     <form.Field
                         name='place_of_use'
                         children={(field) => (

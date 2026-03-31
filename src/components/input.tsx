@@ -1,6 +1,11 @@
 import React from "react";
 
-// TODO: Add onChange sa tanan
+// Added this to fix the missing type error
+export type OptionType = {
+  label: string;
+  value: string | number;
+  group?: string | null;
+};
 
 type InputProps = {
   label: string;
@@ -12,21 +17,20 @@ type InputProps = {
   divStyle?: string;
   pattern?: string;
   isDisabled?: boolean;
-  isPassword?: boolean;
   defaultValue?: string | number;
+  value?: string | number; // Added number support
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value?: string;
 };
 
 interface SelectInputProps {
   name: string;
   label: string;
   divStyle?: string;
-  value?: string;
+  value?: string | number;
   onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   options: OptionType[];
-  group?: string;
-  defaultValue?: string | number | null;
+  group?: string | null;
+  defaultValue?: string | number;
   required?: boolean;
 }
 
@@ -35,7 +39,7 @@ interface SectionProps {
   header?: string;
 }
 
-// 🔡 Input
+// 🔡 Input Component
 export const Input = React.memo(function Input({
   label,
   type,
@@ -43,20 +47,22 @@ export const Input = React.memo(function Input({
   name,
   required = true,
   placeholder,
-  divStyle,
+  divStyle = "",
   pattern,
   isDisabled = false,
   defaultValue,
   value,
-  onChange
+  onChange,
 }: InputProps) {
-  const isControlled = onChange !== undefined;
+  const isControlled = value !== undefined;
 
   return (
-    <div className={`w-full ${divStyle}`}>
-      <label htmlFor={id}>{label}</label>
+    <div className={`w-full flex flex-col gap-1 ${divStyle}`}>
+      <label htmlFor={id} className="font-medium text-gray-700">
+        {label}
+      </label>
       <input
-        className="border-2 border-black/50 w-full px-3 h-9 rounded-md text-md"
+        className="border-2 border-black/50 w-full px-3 h-9 rounded-md text-md focus:outline-none focus:border-blue-500 disabled:bg-gray-100"
         type={type}
         id={id}
         name={name}
@@ -65,50 +71,53 @@ export const Input = React.memo(function Input({
         pattern={pattern}
         disabled={isDisabled}
         autoComplete="off"
-        {...(isControlled
-          ? { value: value ?? "", onChange }
-          : { defaultValue }
-        )}
+        value={isControlled ? value : undefined}
+        defaultValue={!isControlled ? defaultValue : undefined}
+        onChange={onChange}
       />
     </div>
   );
 });
 
-// 📦 Section
+// 📦 Section Component
 export const Section = React.memo(function Section({ children, header }: SectionProps) {
   return (
-    <div>
-      <h1 className="text-lg font-semibold">{header}</h1>
-      <div className="border-2 rounded-md lg:px-5 p-2 grid grid-cols-1 gap-[10px] md:grid-cols-3 text-sm">
+    <div className="mb-6">
+      {header && <h1 className="text-lg font-semibold mb-2">{header}</h1>}
+      <div className="border-2 rounded-md lg:px-5 p-4 grid grid-cols-1 gap-4 md:grid-cols-3 text-sm">
         {children}
       </div>
     </div>
   );
 });
 
-// 🔽 Select Input
+// 🔽 Select Input Component
 export const SelectInput = React.memo(function SelectInput({
   name,
   label,
-  divStyle,
+  divStyle = "",
   onChange,
   options,
   group,
   defaultValue,
   value,
-  required = true
+  required = true,
 }: SelectInputProps) {
+  const isControlled = value !== undefined;
+
   return (
-    <div className={divStyle}>
-      <label htmlFor={name}>{label}</label>
+    <div className={`w-full flex flex-col gap-1 ${divStyle}`}>
+      <label htmlFor={name} className="font-medium text-gray-700">
+        {label}
+      </label>
       <select
         name={name}
         id={name}
         required={required}
-        className="border-2 border-black/50 w-full px-3 h-9 rounded-md"
+        className="border-2 border-black/50 w-full px-3 h-9 rounded-md bg-white focus:outline-none focus:border-blue-500"
         onChange={onChange}
-        // defaultValue={defaultValue ?? ""}
-        value={value ?? ""}
+        value={isControlled ? value : undefined}
+        defaultValue={!isControlled ? defaultValue : undefined}
       >
         <option value="" disabled>
           Select an option
@@ -116,17 +125,11 @@ export const SelectInput = React.memo(function SelectInput({
 
         {options
           ?.filter((item) => {
-            // If no group is selected → show all
             if (!group) return true;
-
-            // If item has no group assigned → hide it
-            if (item.group == null) return false;
-
-            // Normal filtering
             return item.group === group;
           })
           .map((item, index) => (
-            <option key={index} value={item.value}>
+            <option key={`${item.value}-${index}`} value={item.value}>
               {item.label ?? "Unknown Item"}
             </option>
           ))}

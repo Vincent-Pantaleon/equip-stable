@@ -42,5 +42,5 @@ export function formatCreatedAt(time: string): { formatted_date: string; formatt
 }
 
 export function formatSpaceToUnderscore(str: string) {
-  return str.replace(/ /g, "_").toLowerCase()
+  return str.replace(/ /g, "_")
 }

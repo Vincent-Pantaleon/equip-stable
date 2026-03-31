@@ -23,10 +23,10 @@ const tableNames = [
     { label: "Department", value: "department" },
     { label: "Designation", value: "designation" },
     { label: "Purpose", value: "purpose" },
-    { label: "Type of Request", value: "type_of_request" },
+    // { label: "Type of Request", value: "type_of_request" },
     { label: "Location of Use", value: "location_of_use" },
     { label: "Grade Level", value: "grade_level" },
-    { label: "Place of Use", value: "place_of_use" },
+    { label: "Class Room", value: "place_of_use" },
     { label: "Subject", value: "subject" },
 ]
 
@@ -87,14 +87,17 @@ const FormValuesTableList = () => {
                         className="px-2"
                     />
 
-                    <SelectInput
-                        label='Select Table'
-                        name='table'
-                        options={tableNames}
-                        defaultValue={tableName}
-                        value={tableName}
-                        onChange={(e) => setTableName(e.target.value as tableType)}
-                    />
+                    <div>
+                        <SelectInput
+                            label='Select Table'
+                            name='table'
+                            options={tableNames}
+                            defaultValue={tableName}
+                            value={tableName}
+                            onChange={(e) => setTableName(e.target.value as tableType)}
+                        />
+                    </div>
+                    
                 </div>
             )}
 

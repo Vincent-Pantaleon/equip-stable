@@ -47,21 +47,40 @@ declare global {
         user_id: string;
         first_name: string;
         last_name: string;
-        designation: string;      // ✅
-        department: string;       // ✅
+        designation: {
+            designation_name: string;
+            id: string;
+        } | null
+        department: {
+            department_name: string
+            id: string
+        } | null;
         contact_number: string;
-        grade_level: string | null;      // ✅
-        purpose: string;          // ✅
-        location_of_use: string;  // ✅
+        grade_level: {
+            id: string
+            grade_level: string
+        } | null;
+        purpose: {
+            id: string;
+            purpose_name: string
+        } | null;
+        location_of_use: {
+            id: string
+            location_name: string
+        } | null;
         place_of_use: {
+            id: string;
             room: string;
             number: string;
-        } | null;                        // ✅ Allow null
+        } | null; 
         equipment: {
             id: string;
             type_name: string;
         }[];
-        subject: string | null;          // ✅
+        subject: {
+            id: string;
+            subject_name: string
+        } | null;
         date_of_use: string;
         time_of_start: string;
         time_of_end: string;
@@ -71,7 +90,10 @@ declare global {
             id: string;
             venue_name: string;
         }[];
-        office: string;           // ✅
+        office: {
+            office_name: string
+            id: string
+        } | null;
     }
 
     type Equipments = {
