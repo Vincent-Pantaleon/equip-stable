@@ -80,8 +80,6 @@ const AddUserForm = ({ onClose }: FormProps) => {
                     id="password"
                     name="password"
                     type="text"
-
-                    isPassword={true}
                 />
 
                 <Input
@@ -89,8 +87,6 @@ const AddUserForm = ({ onClose }: FormProps) => {
                     id="confirm_password"
                     name="confirm_password"
                     type="password"
-
-                    isPassword={true}
                 />
 
                 <Input

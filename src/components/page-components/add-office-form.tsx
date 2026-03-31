@@ -71,7 +71,7 @@ const AddNewOfficeForm = () => {
                     label="Person In Charge (Must be an Administrator)"
                     name="in_charge"
                     options={data?.data || []}
-                    defaultValue={null}
+                    defaultValue={undefined}
                     divStyle="col-span-2"
                 />
 
