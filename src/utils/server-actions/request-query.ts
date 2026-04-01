@@ -207,7 +207,6 @@ const GetAdminRequestData = async () => {
         return null;
     }
 
-    // ! TODO: FIX THIS PARA MAS CLEANER ANG OBJECT NA IRETURN
     // ✅ Added: Bulk fetch equipment and venues — same pattern as GetRecentRequestData
     const allEquipmentIds = [...new Set((requestData ?? []).flatMap(r => r.equipment_id).filter(Boolean))]
     const allVenueIds     = [...new Set((requestData ?? []).flatMap(r => r.venue_id).filter(Boolean))]

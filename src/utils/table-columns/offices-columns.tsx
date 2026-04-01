@@ -41,9 +41,7 @@ export const OfficeTableColumns = ({ onUpdate, onDelete }: TypeActionProps): Col
     },
     {
         header: "Person In Charge",
-        accessorFn: row => {
-            return row.assigned_to
-        },
+        accessorFn: row => row.assigned_to.map(p => p.name).join(", ") || "Unassigned",
         size: 200
     },
     {

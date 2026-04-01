@@ -32,7 +32,6 @@ const GetReleases = async () => {
     return { status: true, message: "Releases data fetch successful", data: data }
 }
 
-// ! TODO: REFACTOR THIS, REMOVE THE TYPE CHURVALO ASAP
 const GetBookings = async () => {
     const supabase = await createClient()
 

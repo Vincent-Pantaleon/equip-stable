@@ -19,73 +19,73 @@ export type Database = {
           contact_number: string
           created_at: string
           date_of_use: string
-          department_id: string
-          designation_id: string
-          equipment_id: string | null
+          department_id: string | null
+          designation_id: string | null
+          equipment_id: string[] | null
           first_name: string
           grade_level_id: string | null
           id: string
           is_active: boolean
           last_name: string
-          location_of_use_id: string
-          office_id: string
+          location_of_use_id: string | null
+          office_id: string | null
           place_of_use_id: string | null
-          purpose_id: string
+          purpose_id: string | null
           status: Database["public"]["Enums"]["booking_type"]
           subject_id: string | null
           time_of_end: string
           time_of_start: string
-          type_of_request_id: string
+          type_of_request_id: string | null
           user_id: string
-          venue_id: string | null
+          venue_id: string[] | null
         }
         Insert: {
           contact_number: string
           created_at?: string
           date_of_use: string
-          department_id: string
-          designation_id: string
-          equipment_id?: string | null
+          department_id?: string | null
+          designation_id?: string | null
+          equipment_id?: string[] | null
           first_name: string
           grade_level_id?: string | null
           id?: string
           is_active?: boolean
           last_name: string
-          location_of_use_id: string
-          office_id: string
+          location_of_use_id?: string | null
+          office_id?: string | null
           place_of_use_id?: string | null
-          purpose_id: string
+          purpose_id?: string | null
           status?: Database["public"]["Enums"]["booking_type"]
           subject_id?: string | null
           time_of_end: string
           time_of_start: string
-          type_of_request_id: string
+          type_of_request_id?: string | null
           user_id?: string
-          venue_id?: string | null
+          venue_id?: string[] | null
         }
         Update: {
           contact_number?: string
           created_at?: string
           date_of_use?: string
-          department_id?: string
-          designation_id?: string
-          equipment_id?: string | null
+          department_id?: string | null
+          designation_id?: string | null
+          equipment_id?: string[] | null
           first_name?: string
           grade_level_id?: string | null
           id?: string
           is_active?: boolean
           last_name?: string
-          location_of_use_id?: string
-          office_id?: string
+          location_of_use_id?: string | null
+          office_id?: string | null
           place_of_use_id?: string | null
-          purpose_id?: string
+          purpose_id?: string | null
           status?: Database["public"]["Enums"]["booking_type"]
           subject_id?: string | null
           time_of_end?: string
           time_of_start?: string
-          type_of_request_id?: string
+          type_of_request_id?: string | null
           user_id?: string
-          venue_id?: string | null
+          venue_id?: string[] | null
         }
         Relationships: [
           {
@@ -100,13 +100,6 @@ export type Database = {
             columns: ["designation_id"]
             isOneToOne: false
             referencedRelation: "designation"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "bookings_equipment_id_fkey"
-            columns: ["equipment_id"]
-            isOneToOne: false
-            referencedRelation: "equipment_type"
             referencedColumns: ["id"]
           },
           {
@@ -163,13 +156,6 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "bookings_venue_id_fkey"
-            columns: ["venue_id"]
-            isOneToOne: false
-            referencedRelation: "venue_type"
             referencedColumns: ["id"]
           },
         ]
@@ -392,29 +378,22 @@ export type Database = {
         Row: {
           created_at: string
           id: number
-          office_id: string | null
+          office_id: string[] | null
           profile_id: string
         }
         Insert: {
           created_at?: string
           id?: number
-          office_id?: string | null
+          office_id?: string[] | null
           profile_id: string
         }
         Update: {
           created_at?: string
           id?: number
-          office_id?: string | null
+          office_id?: string[] | null
           profile_id?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "office_assignment_office_id_fkey"
-            columns: ["office_id"]
-            isOneToOne: false
-            referencedRelation: "offices"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "office_assignment_profile_id_fkey"
             columns: ["profile_id"]

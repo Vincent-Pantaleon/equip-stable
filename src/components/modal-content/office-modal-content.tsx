@@ -11,16 +11,24 @@ import { useState } from "react";
 import Modal from "../modal";
 import { useQueryClient } from "@tanstack/react-query";
 import { UpdateOffice } from "@/utils/server-actions/update-office";
+import { ArrayItem } from "../array-item";
 
 interface FormProps {
     item: Office | null
     onClose: () => void
 } 
 
+type Assigned_to = {
+    id: string;
+    name: string;
+}[]
+
+
 const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
     if (!item) return;
 
     const [openModal, setOpenModal] = useState<boolean>(false)
+    const [profileList, setProfileList] = useState<Assigned_to | null>(item.assigned_to)
 
     const queryClient = useQueryClient()
 
@@ -34,18 +42,29 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
         toast.error(error.message)
     }
 
+    const handleItemDelete = (id: string) => {
+        setProfileList(prev => prev?.filter(p => p.id !== id) ?? null)
+    }
+
+    const handleAddProfile = (value: { id: string; name: string }) => {
+        setProfileList(prev => {
+            if (prev?.some(p => p.id === value.id)) return prev // avoid duplicates
+            return [...(prev ?? []), value]
+        })
+    }
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setOpenModal(true)
     }
-
+    
     const handleConfirm = async () => {
         const form = document.querySelector("form") as HTMLFormElement;
         if (!form) return;
 
         const formData = new FormData(form);
 
-        const result = await UpdateOffice(formData, item.id)
+        const result = await UpdateOffice(formData, item.id, profileList ?? [])
 
         if (!result.status) {
             toast.error(result.message)
@@ -88,12 +107,24 @@ const UpdateOfficeForm = ({ item, onClose }: FormProps) => {
                     defaultValue={formatLabel(item.name)}
                 />
 
-                <SelectInput
-                    label="Employee In Charge"
-                    name="in_charge"
-                    options={data?.data || []}
-                    defaultValue={item.assigned_to_id}
-                />
+                <div className="space-y-1"> 
+                    <SelectInput
+                        label="Employees In Charge"
+                        name="in_charge"
+                        options={data?.data || []}
+                        onChange={(e) => {
+                            const option = (data?.data as OptionType[])?.find(o => o.value === e.target.value)
+                            if (option) handleAddProfile({ id: option.value, name: option.label })
+                        }}
+                    />
+
+                    <div className='flex flex-wrap gap-1'>
+                        {profileList?.map((item) => (
+                            <ArrayItem key={item.id} name={item.name} onDelete={() => handleItemDelete(item.id)}/>
+                        ))}
+                    </div>
+                                        
+                </div>
 
                 <CancelConfirmButtons
                     onCancel={onClose}

@@ -22,7 +22,8 @@ const OfficeList = () => {
 
     const { data, error, isPending } = useQuery({
         queryKey: ['office-list'],
-        queryFn: GetOfficeList
+        queryFn: GetOfficeList,
+        staleTime: 10 * 60 * 1000
     })
 
     if (error) {

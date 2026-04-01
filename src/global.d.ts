@@ -237,8 +237,10 @@ declare global {
         id: string;
         name: string;
         created_at: string;
-        assigned_to: string;
-        assigned_to_id: string;
+        assigned_to: {
+            id: string;
+            name: string;
+        }[]
     }
 
     interface SectionProps {
@@ -247,7 +249,6 @@ declare global {
       className?: string;
     }
     
-    // TODO: Create a better Type for options
     type OptionType = {
         value: string
         label: string

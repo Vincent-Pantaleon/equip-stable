@@ -3,55 +3,55 @@
 import { formatLabel, formatSpaceToUnderscore } from "../handlers/capitalize"
 import { createClient } from "../supabase/server"
 
-
 const GetOfficeList = async () => {
     const supabase = await createClient()
 
     const { data, error } = await supabase
-    .from('offices')
-    .select(`
-        id,
-        office_name, 
-        created_at, 
-        office_assignment (
-            profile:profile_id (
-                id,
-                first_name, 
-                last_name
+        .from('offices')
+        .select(`
+            id,
+            office_name,
+            created_at,
+            office_members (
+                profile:profile_id (
+                    id,
+                    first_name,
+                    last_name
+                )
             )
-        )
-    `)
-    .order('created_at', { ascending: false })
-
+        `)
+        .order('created_at', { ascending: false })
 
     if (error) {
         return { status: false, message: "Failed fetching office list" }
     }
 
     const normalizedOffices = data?.map(office => {
-        // 1. Grab the first assignment record
-        const assignment = office.office_assignment?.[0];
-        
-        // 2. Extract the profile (Supabase usually returns this as a single object 
-        // if it's a direct foreign key link, but sometimes it's an array)
-        const profile = Array.isArray(assignment?.profile) 
-            ? assignment?.profile[0] 
-            : assignment?.profile;
+        const assigned_to = office.office_members
+            ?.flatMap(member => {
+                const profile = Array.isArray(member?.profile)
+                    ? member.profile
+                    : member?.profile ? [member.profile] : []
+                return profile
+            })
+            .filter(Boolean)
+            .map(p => ({
+                id: p.id,
+                name: `${p.first_name} ${p.last_name}`
+            })) ?? []
 
         return {
             id: office.id,
             name: office.office_name,
             created_at: office.created_at,
-            assigned_to: profile 
-                ? `${profile.first_name} ${profile.last_name}` 
-                : 'Unassigned',
-            assigned_to_id: profile ? profile.id : null,
-        };
-    });
+            assigned_to
+        }
+    })
 
     return { status: true, message: "Fetched office list successfully", data: normalizedOffices }
 }
 
+// TODO: Change this Soon
 const AddNewOffice = async (formData: FormData) => {
     const supabase = await createClient()
 

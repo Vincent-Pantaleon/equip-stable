@@ -3,17 +3,20 @@
 import { createClient } from "../supabase/server"
 import { formatSpaceToUnderscore } from "../handlers/capitalize"
 
-// Complete this shit
-const UpdateOffice = async (data: FormData, office_id: string) => {
+type AssignedTo = {
+    id: string;
+    name: string;
+}
+
+const UpdateOffice = async (data: FormData, office_id: string, profileList: AssignedTo[]) => {
     const supabase = await createClient()
 
     const office_name = formatSpaceToUnderscore(data.get('office_name') as string)
-    const in_charge = data.get('in_charge') as string
 
-    // 1. Update the Office Name
+    // Update office name
     const { error: officeError } = await supabase
         .from('offices')
-        .update({ office_name: office_name })
+        .update({ office_name })
         .eq('id', office_id)
 
     if (officeError) {
@@ -21,23 +24,30 @@ const UpdateOffice = async (data: FormData, office_id: string) => {
         return { status: false, message: "Error updating office name" }
     }
 
-    // 2. Upsert the Assignment
-    // This will update the profile_id if office_id exists, 
-    // otherwise it will create a new row.
-    const { error: assignmentError } = await supabase
-        .from('office_assignment')
-        .upsert({ 
-            office_id: office_id, 
-            profile_id: in_charge 
-        }, { onConflict: 'profile_id' }
-    ) // Tells Supabase to check for existing office_id
+    // Delete existing members
+    const { error: deleteError } = await supabase
+        .from('office_members')
+        .delete()
+        .eq('office_id', office_id)
 
-    if (assignmentError) {
-        console.log("Upsert Assignment Error: ", assignmentError)
-        return { status: false, message: "Error saving office assignment" }
+    if (deleteError) {
+        console.log("Delete Members Error: ", deleteError)
+        return { status: false, message: "Error clearing existing office members" }
     }
 
-    return { status: true, message: "Office updated and assignment synced" }
+    // Re-insert updated members
+    if (profileList.length > 0) {
+        const { error: insertError } = await supabase
+            .from('office_members')
+            .insert(profileList.map(p => ({ office_id, profile_id: p.id })))
+
+        if (insertError) {
+            console.log("Insert Members Error: ", insertError)
+            return { status: false, message: "Error saving office members" }
+        }
+    }
+
+    return { status: true, message: "Office updated successfully" }
 }
 
 export { UpdateOffice }

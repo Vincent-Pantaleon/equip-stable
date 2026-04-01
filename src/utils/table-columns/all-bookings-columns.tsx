@@ -13,7 +13,6 @@ interface AllRequestColumnsProps {
     onDelete: (booking: AdminRequests) => void
 }
 
-// ! TODO: FIX THIS SHIT PARA MAS HINLO ANG IDISPLAY SA TABLE
 export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps): ColumnDef<AdminRequests>[] => [
     {
         id: "filers_name",
