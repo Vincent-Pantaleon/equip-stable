@@ -199,12 +199,10 @@ declare global {
         last_name: string;
         email: string;
         role: string;
-        office: {
-            office_name: string;
-        };
-        role: {
-            role: db["public"]["Enums"]["roles"];
-        }
+        offices: {
+            id: string;
+            name: string;
+        }[];
     }
 
 

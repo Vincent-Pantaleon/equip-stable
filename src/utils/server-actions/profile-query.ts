@@ -29,13 +29,13 @@ type RawUser = {
     role_data: {
         role: string;
     }[] | null;
-    office: {
+    offices: {
         offices: {
-        office_name: string;
+            id: string;
+            office_name: string;
         } | null;
-    } | null;
+    }[] | null;
 };
-
 
 const GetUsersList = async () => {
     const supabase = await createClient()
@@ -48,8 +48,9 @@ const GetUsersList = async () => {
         last_name,
         email,
         school_id,
-        office: office_assignment (
-            offices: offices (
+        offices: office_members (
+            offices: office_id (
+                id,
                 office_name
             )
         ),
@@ -65,7 +66,13 @@ const GetUsersList = async () => {
     const normalizedData = (data ?? []).map((user) => {
         const role = user.role_data?.[0]?.role ?? 'user';
 
-        const officeName = user.office?.offices?.office_name ?? 'No Office Assignment';
+        const offices = user.offices
+            ?.map(o => o.offices)
+            .filter(Boolean)
+            .map(o => ({
+                id: o!.id,
+                name: o!.office_name
+            })) ?? []
 
         return {
             id: user.id,
@@ -74,9 +81,7 @@ const GetUsersList = async () => {
             email: user.email,
             school_id: user.school_id,
             role,
-            office: {
-            office_name: officeName,
-            },
+            offices
         };
     });
 

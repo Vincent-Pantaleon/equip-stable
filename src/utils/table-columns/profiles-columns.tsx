@@ -27,15 +27,10 @@ export const profilesColumns = ({ onUpdate, onDelete }: ProfilesActionsProps): C
     {
         header: "Office Assigned",
         id: "office_name",
-        accessorFn: (row) => {
-            const office = row.office.office_name
-
-            return office
-        },
-        cell: ({getValue}) => {
+        accessorFn: (row) => row.offices.map(o => formatLabel(o.name)).join(", ") || "No Office Assignment",
+        cell: ({ getValue }) => {
             const value = getValue()
-
-            return <p>{formatLabel(value as string)}</p>
+            return <p>{value as string}</p>
         }
     },
     {
