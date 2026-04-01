@@ -34,7 +34,12 @@ const UpdateProfileForm = ({ item, onClose }: FormProps) => {
                     </div>
                     <div>
                         <h3 className="text-gray-500">Assigned Office</h3>
-                        <p className="font-semibold">{formatLabel(item.office.office_name)}</p>
+                        <p className="font-semibold">
+                            {item.offices.length > 0
+                                ? item.offices.map(o => formatLabel(o.name)).join(", ")
+                                : "No Office Assignment"
+                            }
+                        </p>
                     </div>
                     <div>
                         <h3 className="text-gray-500">School ID</h3>
