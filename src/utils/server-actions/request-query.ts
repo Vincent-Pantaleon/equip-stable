@@ -184,15 +184,11 @@ const GetAdminRequestData = async () => {
             office: office_id(id, office_name)    
         `)
 
-    // 2. Apply Role-based filtering
-    // If they ARE admin/mod, filter by their specific office
     if (user.role === "administrator" || user.role === "moderator") {
         query = query.eq('office_id', user.office_id).order('date_of_use', { ascending: true }).order('time_of_start', { ascending: true }) // Ensure this matches your DB column name
     }
 
-    // 3. APPLY THE SORTING (Crucial Part)
-    // We sort by Date first (ascending), then Time (ascending)
-    // This puts the soonest appointment at the very top.
+
     const { data: requestData, error: requestError } = await query
         .order('date_of_use', { ascending: true })
         .order('time_of_start', { ascending: true })
@@ -203,7 +199,8 @@ const GetAdminRequestData = async () => {
         .select('office_name, id')
 
     if (officeError || requestError) {
-        console.error("Request Error: ", requestError || officeError)
+        console.error("Request Error: ", requestError)
+        console.error("Office Error: ", officeError)
         return null;
     }
 

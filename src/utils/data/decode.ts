@@ -9,35 +9,33 @@ type JwtType = {
   first_name: string;
   last_name: string;
   email: string;
-  office_id?: string;
-  office_name?: string;
+  // Update the type to match the SQL JSON array structure
+  offices?: { id: string; office_name: string }[];
 }
 
 export async function GetUserInfo() {
   const supabase = await createClient()
 
-  const {
-    data: { user }, error
-  } = await supabase.auth.getUser()
-
+  const { data: { user }, error } = await supabase.auth.getUser()
   if (!user || error) return null
 
   const { data: { session } } = await supabase.auth.getSession()
-
   if (!session) return null
 
   const jwt: JwtType = jwtDecode(session.access_token)
   const isSuperAdmin = jwt.user_role === 'superadmin'
 
-  // These fields must be added via your custom_access_token_hook in Supabase
+  // Safely grab the first office in the array (if it exists)
+  const primaryOffice = jwt.offices?.[0]
+
   const userInfo = {
     role: jwt.user_role,
     first_name: jwt.first_name,
     last_name: jwt.last_name,
     email: jwt.email,
-    // If superadmin, explicitly set to null, otherwise take jwt value or fallback
-    office_id: isSuperAdmin ? null : (jwt.office_id ?? null),
-    office_name: isSuperAdmin ? 'Global Access' : (jwt.office_name ?? 'Unassigned')
+    // Extract the ID and name from the array object
+    office_id: isSuperAdmin ? null : (primaryOffice?.id ?? null),
+    office_name: isSuperAdmin ? 'Global Access' : (primaryOffice?.office_name ?? 'Unassigned')
   }
 
   return userInfo

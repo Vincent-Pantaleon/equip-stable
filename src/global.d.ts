@@ -320,3 +320,6 @@ declare global {
         time_of_end: string,
     }
 }
+
+
+declare module '*.css';
