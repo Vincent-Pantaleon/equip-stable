@@ -3,6 +3,7 @@ import { Input } from "./input";
 import Button from "./button";
 import formatDate, { formatTime } from "@/utils/handlers/format-date";
 import { useInfo } from "@/utils/hooks/user-context";
+import { TimeInput } from "./time-input";
 
 // Message Modal Content
 export function MessageModalContent({ message }: { message: Message }) {
@@ -136,7 +137,7 @@ export function DateCheckForm() {
     <div className="flex flex-col gap-y-3 border p-2 rounded-xl mt-4">
       <div className="text-lg font-bold">Check for Availability</div>
       <Input id="date" label="Enter date" name="date" type="date" />
-      <Input id="time" label="Enter Time" name="time" type="time" />
+      <TimeInput id="time" label="Enter Time" name="time"/>
       <Button label="Submit" />
     </div>
   );
