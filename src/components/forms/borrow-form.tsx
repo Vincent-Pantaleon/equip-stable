@@ -12,6 +12,7 @@ import Button from '../button';
 import { RotateCw, Send } from 'lucide-react';
 import Modal from '../modal';
 import { ArrayItem } from '../array-item';
+import { TimeInput } from '../time-input';
 
 import { SendRequest } from '@/utils/server-actions/borrow-send';
 
@@ -390,11 +391,10 @@ const BorrowForm = () => {
                 <form.Field
                     name='time_of_start'
                     children={(field) => (
-                        <Input
+                        <TimeInput
                             id='time_of_start'
                             label='Time of Start'
                             name='time_of_start'
-                            type='time'
                             onChange={(e) => field.handleChange(e.target.value)}
                             value={field.state.value}
                         />
@@ -403,11 +403,10 @@ const BorrowForm = () => {
                 <form.Field
                     name='time_of_end'
                     children={(field) => (
-                        <Input
+                        <TimeInput
                             id='time_of_end'
                             label='Time of End'
                             name='time_of_end'
-                            type='time'
                             onChange={(e) => field.handleChange(e.target.value)}
                             value={field.state.value}
                         />
@@ -429,7 +428,7 @@ const BorrowForm = () => {
                 />
             </Modal>
             
-            <div className='w-full lg:flex lg:justify-end gap-2'>
+            <div className='w-full flex max-md:flex-col md:justify-end gap-2'>
                 <Button
                     Icon={RotateCw}
                     label='Reset'

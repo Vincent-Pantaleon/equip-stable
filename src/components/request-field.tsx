@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Input, SelectInput } from "./input";
 import { formatLabel } from "@/utils/handlers/capitalize";
+import { TimeInput } from "./time-input";
 
 type VenueItemType = {
     id: string;
@@ -181,18 +182,17 @@ export const FIELD_MAP: Partial<Record<keyof AdminRequests, (request: AdminReque
     ),
     time_of_start: (request) => (
         <div className="grid grid-cols-2 gap-4">
-            <Input
+            <TimeInput
                 id="time_of_start"
                 label="Time of Start"
                 name="time_of_start"
-                type="time"
                 defaultValue={request.time_of_start}
             />
-            <Input
+
+            <TimeInput
                 id="time_of_end"
                 label="Time of End"
                 name="time_of_end"
-                type="time"
                 defaultValue={request.time_of_end}
             />
         </div>
