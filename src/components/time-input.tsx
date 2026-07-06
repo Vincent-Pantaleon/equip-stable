@@ -12,19 +12,19 @@ interface TimeInputProps {
   divStyle?: string;
 }
 
-function to24Hour(hour12: number, meridiem: "AM" | "PM") {
+function to24Hour(hour12: number, minute: number, meridiem: "AM" | "PM") {
   let hour = hour12 % 12;
   if (meridiem === "PM") hour += 12;
-  return `${String(hour).padStart(2, "0")}:00`;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
 function from24Hour(value?: string) {
-  if (!value) return { hour12: 12, meridiem: "AM" as const };
-  const [h] = value.split(":").map(Number);
+  if (!value) return { hour12: 12, minute: 0, meridiem: "AM" as const };
+  const [h, m] = value.split(":").map(Number);
   const meridiem: "AM" | "PM" = h >= 12 ? "PM" : "AM";
   let hour12 = h % 12;
   if (hour12 === 0) hour12 = 12;
-  return { hour12, meridiem };
+  return { hour12, minute: m || 0, meridiem };
 }
 
 export const TimeInput = React.memo(function TimeInput({
@@ -49,13 +49,12 @@ export const TimeInput = React.memo(function TimeInput({
   }, [value, isControlled]);
 
   const emit = useCallback(
-    (next: { hour12: number; meridiem: "AM" | "PM" }) => {
+    (next: { hour12: number; minute: number; meridiem: "AM" | "PM" }) => {
       setInternal(next);
 
       if (onChange && hiddenInputRef.current) {
-        const newValue = to24Hour(next.hour12, next.meridiem);
+        const newValue = to24Hour(next.hour12, next.minute, next.meridiem);
 
-        // Update the hidden input's actual value so the event target reflects it
         const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value"
@@ -65,10 +64,7 @@ export const TimeInput = React.memo(function TimeInput({
         const event = new Event("input", { bubbles: true });
         hiddenInputRef.current.dispatchEvent(event);
 
-        // React's onChange expects a React.ChangeEvent, so we wrap the native event
-        onChange(
-          event as unknown as React.ChangeEvent<HTMLInputElement>
-        );
+        onChange(event as unknown as React.ChangeEvent<HTMLInputElement>);
       }
     },
     [onChange]
@@ -102,6 +98,24 @@ export const TimeInput = React.memo(function TimeInput({
         </select>
 
         <select
+          aria-label={`${label} minute`}
+          name={`${name}-minute`}
+          className={selectClass}
+          disabled={isDisabled}
+          required={required}
+          value={internal.minute}
+          onChange={(e) =>
+            emit({ ...internal, minute: Number(e.target.value) })
+          }
+        >
+          {Array.from({ length: 60 }, (_, i) => i).map((m) => (
+            <option key={m} value={m}>
+              {String(m).padStart(2, "0")}
+            </option>
+          ))}
+        </select>
+
+        <select
           aria-label={`${label} AM or PM`}
           name={`${name}-meridiem`}
           className={selectClass}
@@ -124,7 +138,11 @@ export const TimeInput = React.memo(function TimeInput({
           ref={hiddenInputRef}
           type="hidden"
           name={name}
-          defaultValue={to24Hour(internal.hour12, internal.meridiem)}
+          defaultValue={to24Hour(
+            internal.hour12,
+            internal.minute,
+            internal.meridiem
+          )}
         />
       </div>
     </div>
