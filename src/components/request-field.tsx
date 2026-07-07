@@ -239,6 +239,16 @@ export const FIELD_MAP: Partial<Record<keyof AdminRequests, (request: AdminReque
             />
         </div>
     ),
+    subject: (request, editFormData) => (
+        <div>
+            <SelectInput
+                label="Select Subject"
+                name="subject"
+                options={editFormData?.subject || []}
+                defaultValue={request.subject?.id}
+            />
+        </div>
+    ),
     date_of_use: (request) => (
         <div>
             <Input
