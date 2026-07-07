@@ -35,32 +35,32 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         },
         minSize: 180
     },
-    {
-        header: "Location of Use",
-        accessorFn: row => row.location_of_use,
-        cell: ({ row }) => {
-            const value = row.original.location_of_use;
+    // {
+    //     header: "Location of Use",
+    //     accessorFn: row => row.location_of_use,
+    //     cell: ({ row }) => {
+    //         const value = row.original.location_of_use;
 
-            if (!value) {
-                return "No Location"
-            }
+    //         if (!value) {
+    //             return "No Location"
+    //         }
 
-            return `${formatLabel(value.location_name)}`;
-        },
-        size: 180
-    },
-    {
-        header:"Room",
-        accessorFn: row => row.place_of_use,
-        cell: ({ row }) => {
-            const value = row.original.place_of_use;
+    //         return `${formatLabel(value.location_name)}`;
+    //     },
+    //     size: 180
+    // },
+    // {
+    //     header:"Room",
+    //     accessorFn: row => row.place_of_use,
+    //     cell: ({ row }) => {
+    //         const value = row.original.place_of_use;
 
-            if (!value) return "No Room";
+    //         if (!value) return "No Room";
 
-            return `${CapitalizeAll(value.room)} ${formatLabel(value.number)}`;
-        },
-        size: 200
-    },
+    //         return `${CapitalizeAll(value.room)} ${formatLabel(value.number)}`;
+    //     },
+    //     size: 200
+    // },
     {
         id: "equipment",
         header: "Equipment", // or whichever field you primarily use
@@ -83,7 +83,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
                 </div>
             );
         },
-        size: 300
+        size: 180
     },
     {
         id: "venue",
@@ -107,7 +107,7 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
                 </div>
             );
         },
-        size: 300
+        size: 180
     },
     {
         header: "Subject",
@@ -152,38 +152,38 @@ export const allRequestColumns = ({ onUpdate, onDelete }: AllRequestColumnsProps
         },
         size: 180 
     },
-    {
-        header: "Status",
-        accessorKey: "status",
-        cell: ({ row }) => {
-            const status = row.getValue("status") as string;          
-            const statusClass = getStatusStyles(status);
+    // {
+    //     header: "Status",
+    //     accessorKey: "status",
+    //     cell: ({ row }) => {
+    //         const status = row.getValue("status") as string;          
+    //         const statusClass = getStatusStyles(status);
 
-            return (
-                <div className={`${statusClass} rounded-md w-fit px-1`}>
-                    {formatLabel(status)}
-                </div>
-            );
-        },
-        size: 150,
-        filterFn: "equalsString"
-    },
-    {
-        id: "offices",
-        header: "Office",
-        accessorFn: ( row ) => row.office,
-        cell: ({ row }) => {
-            const value = row.original.office
+    //         return (
+    //             <div className={`${statusClass} rounded-md w-fit px-1`}>
+    //                 {formatLabel(status)}
+    //             </div>
+    //         );
+    //     },
+    //     size: 150,
+    //     filterFn: "equalsString"
+    // },
+    // {
+    //     id: "offices",
+    //     header: "Office",
+    //     accessorFn: ( row ) => row.office,
+    //     cell: ({ row }) => {
+    //         const value = row.original.office
 
-            if (!value) {
-                return "No Offices"
-            }
+    //         if (!value) {
+    //             return "No Offices"
+    //         }
 
-            return formatLabel(value.office_name)
-        },
-        filterFn: "equalsString",
-        size: 200
-    },
+    //         return formatLabel(value.office_name)
+    //     },
+    //     filterFn: "equalsString",
+    //     size: 200
+    // },
     {
         id: "actions",
         header: "Actions",

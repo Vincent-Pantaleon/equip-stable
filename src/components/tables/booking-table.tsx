@@ -105,13 +105,13 @@ export function BookingDataTable<TData, TValue>({
                     )}
                     
 
-                    <TableFilter
+                    {/* <TableFilter
                         name="status_filter"
                         onChange={(e) => table.getColumn("status")?.setFilterValue(e.target.value || undefined)}
                         value={(table.getColumn("status")?.getFilterValue() as string) ?? ""}
                         options={options}
                         label="Status:"
-                    />
+                    /> */}
 
                     <label htmlFor="date_filter">Date:</label>
                     <div className="border-1 rounded-lg p-2 w-fit">

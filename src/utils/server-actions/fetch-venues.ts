@@ -15,7 +15,7 @@ const GetAdminVenues = async () => {
             const { data, error } = await supabase
         .from('venue')
         .select('*, type: venue_type(venue_name), office: office_id(id, office_name)')
-        .eq('office', user.office_id)
+        .eq('office_id', user.office_id)
 
         fetchError = error
         fetchData = data
@@ -29,7 +29,7 @@ const GetAdminVenues = async () => {
     }
 
     if (fetchError) {
-        console.log(fetchError)
+        console.log("HERE! ", fetchError)
         return { status: false, message: "Error fetching venues" }
     }
 
