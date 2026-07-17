@@ -59,9 +59,6 @@ const normalizeRequest = (request: any) => {
     return normalized;
 };
 
-const normalizeRequestArray = (arr: any[]) =>
-    arr.map((item) => normalizeRequest(item));
-
 interface Equipment {
     id: string;
     type_name: string;
@@ -72,7 +69,7 @@ interface Venue {
     venue_name: string;
 }
 
-const GetRecentRequestData = async () => {
+const GetRecentRequestData = async (selectedDate?: string) => {
     const supabase = await createClient()
 
     const { data: currentUser, error: AuthErr } = await supabase.auth.getUser();
@@ -82,7 +79,10 @@ const GetRecentRequestData = async () => {
         return {status: false, message: "User Not Found!"}
     };
 
-    const { data: requestData, error: requestError } = await supabase
+    const today = new Date().toISOString().split('T')[0];
+
+    // 1. Build the base query
+    let query = supabase
         .from('bookings')
         .select(`
             id,
@@ -97,17 +97,31 @@ const GetRecentRequestData = async () => {
             status
         `)
         .eq('user_id', user)
+
+    // 2. Date Filtering Logic
+    if (selectedDate) {
+        // Fetch exact selected date (Past, Present, or Future)
+        query = query.eq('date_of_use', selectedDate);
+    } else {
+        // Default Load: Today AND all future dates
+        query = query.gte('date_of_use', today);
+    }
+
+    // 3. Execute with sorting and limit
+    const { data: requestData, error: requestError } = await query
         .order("date_of_use", { ascending: true })
+        .order("time_of_start", { ascending: true })
+        .limit(1000)
 
     if (requestError) {
         return { status: false, message: "Error Fetching Your Recent Requests" }
     }
 
     // Collect all unique IDs across all bookings
-    const allEquipmentIds = [...new Set(requestData.flatMap(r => r.equipment_id).filter(Boolean))]
-    const allVenueIds     = [...new Set(requestData.flatMap(r => r.venue_id).filter(Boolean))]
+    const allEquipmentIds = [...new Set((requestData ?? []).flatMap(r => r.equipment_id).filter(Boolean))]
+    const allVenueIds     = [...new Set((requestData ?? []).flatMap(r => r.venue_id).filter(Boolean))]
 
-    // Fetch equipment and venues in bulk (adjust table/column names as needed)
+    // Fetch equipment and venues in bulk
     const [{ data: equipmentData }, { data: venueData }] = await Promise.all([
         allEquipmentIds.length > 0
             ? supabase.from('equipment_type').select('id, type_name').in('id', allEquipmentIds)
@@ -122,7 +136,7 @@ const GetRecentRequestData = async () => {
     const venueMap     = Object.fromEntries((venueData ?? []).map((v: Venue) => [v.id, v]))
 
     // Enrich each booking with the resolved records
-    const enrichedData: RecentRequests[] = requestData.map((row: any) => {
+    const enrichedData: RecentRequests[] = (requestData ?? []).map((row: any) => {
         return {
             id: row.id,
             date_of_use: row.date_of_use,
@@ -149,7 +163,7 @@ const GetRecentRequestData = async () => {
     return { status: true, message: "Fetched Recent Requests Successfully" , data: enrichedData }
 }
 
-const GetAdminRequestData = async () => {
+const GetAdminRequestData = async (selectedDate?: string) => {
     const supabase = await createClient()
     const user = await GetUserInfo()
 
@@ -184,16 +198,27 @@ const GetAdminRequestData = async () => {
             office: office_id(id, office_name)    
         `)
 
+    // 2. Filter by Role / Office
     if (user.role === "administrator" || user.role === "moderator") {
-        query = query.eq('office_id', user.office_id).order('date_of_use', { ascending: true }).order('time_of_start', { ascending: true }) // Ensure this matches your DB column name
+        query = query.eq('office_id', user.office_id)
     }
 
+    // 3. Date Filtering Logic
+    if (selectedDate) {
+        // Fetch exact selected date (Past, Present, or Future)
+        query = query.eq('date_of_use', selectedDate);
+    } else {
+        // Default Load: Today AND all future dates
+        query = query.gte('date_of_use', today);
+    }
 
+    // 4. Execute the Query
     const { data: requestData, error: requestError } = await query
-        .order('date_of_use', { ascending: true })
+        .order('date_of_use', { ascending: true }) // Put date sort back to handle the future view
         .order('time_of_start', { ascending: true })
+        .limit(5000)
 
-    // 4. Fetch Office List
+    // 5. Fetch Office List
     const { data: officeData, error: officeError } = await supabase
         .from('offices')
         .select('office_name, id')
@@ -204,7 +229,7 @@ const GetAdminRequestData = async () => {
         return null;
     }
 
-    // ✅ Added: Bulk fetch equipment and venues — same pattern as GetRecentRequestData
+    // 6. Bulk fetch equipment and venues
     const allEquipmentIds = [...new Set((requestData ?? []).flatMap(r => r.equipment_id).filter(Boolean))]
     const allVenueIds     = [...new Set((requestData ?? []).flatMap(r => r.venue_id).filter(Boolean))]
 
@@ -220,7 +245,7 @@ const GetAdminRequestData = async () => {
     const equipmentMap = Object.fromEntries((equipmentData ?? []).map((e: Equipment) => [e.id, e]))
     const venueMap     = Object.fromEntries((venueData ?? []).map((v: Venue) => [v.id, v]))
 
-    // ✅ Added: Enrich each booking row with resolved equipment and venue objects
+    // 7. Enrich each booking row with resolved equipment and venue objects
     const enriched: AdminRequests[] = (requestData ?? []).map((row: any) => ({
         id: row.id,
         created_at: row.created_at,
@@ -261,14 +286,13 @@ const GetAdminRequestData = async () => {
         venue: (row.venue_id || []).map((id: string) => venueMap[id]).filter(Boolean),
     }));
 
+    // 8. Sort Data
     const sorted = (enriched ?? []).sort((a, b) => {
         const aIsPast = a.date_of_use < today;
         const bIsPast = b.date_of_use < today;
 
-        // If one is past and the other isn't, non-past comes first
         if (aIsPast !== bIsPast) return aIsPast ? 1 : -1;
 
-        // Both in same group → sort by date then time ascending
         const dateCompare = a.date_of_use.localeCompare(b.date_of_use);
         if (dateCompare !== 0) return dateCompare;
         return a.time_of_start.localeCompare(b.time_of_start);
@@ -287,6 +311,5 @@ const GetAdminRequestData = async () => {
         officeData: normalizeData 
     };
 }
-
 
 export { GetRecentRequestData, GetAdminRequestData }

@@ -1,9 +1,8 @@
 'use client'
 
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient, keepPreviousData } from "@tanstack/react-query"
 import { GetAdminRequestData } from "@/utils/server-actions/request-query"
 import { useMemo, useState, useEffect } from "react"
-import { useQueryClient } from "@tanstack/react-query"
 import { BookingDataTable } from "../tables/booking-table"
 import { allRequestColumns } from "@/utils/table-columns/all-bookings-columns"
 import { DeleteBooking } from "@/utils/server-actions/delete-booking"
@@ -35,6 +34,10 @@ const BookingsList = () => {
     const [openEditModal, setOpenEditModal] = useState<boolean>(false)
     const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
     const [selectedRequest, setSelectedRequest] = useState<AdminRequests | null>(null)
+    
+    // Default to undefined so the server knows to fetch Today + Future
+    const [selectedDate, setSelectedDate] = useState<string | undefined>(undefined)
+
     const [statusCount, setStatusCount] = useState<StatusCount>({
         total: 0,
         pending: 0,
@@ -48,9 +51,11 @@ const BookingsList = () => {
     const user = useInfo()
 
     const { data: requestData, error: requestError, isPending: requestPending } = useQuery({
-        queryKey: ['all-requests-data'],
-        queryFn: GetAdminRequestData,
+        queryKey: ['all-requests-data', selectedDate],
+        queryFn: () => GetAdminRequestData(selectedDate),
         staleTime: 1000 * 60 * 5,
+        placeholderData: keepPreviousData, // Prevents loading skeletons when changing dates (Tanstack v5)
+        // keepPreviousData: true, // <-- Use this instead ONLY if you are on Tanstack Query v4
     })
 
     if (requestError) {
@@ -113,7 +118,6 @@ const BookingsList = () => {
                 </p>
             </div>
 
-            {/* Statistics type shi */}
             <CardWrapper>
                 {Object.entries(statusCount).map(([status, count], index) => (
                     requestPending ? (
@@ -143,39 +147,40 @@ const BookingsList = () => {
                         pageSize={20}
                         offices={requestData?.officeData || []}
                         role={user?.role ?? "user"}
+                        selectedDate={selectedDate}
+                        onDateChange={setSelectedDate}
                     />
                 )}
             </div>
             
 
-                <Modal
-                    onClose={() => {setOpenEditModal(false), setSelectedRequest(null)}}
-                    header="Update Booking"
-                    isOpen={openEditModal}
-                >
-                    {selectedRequest && (
-                        <BookingModalContent request={selectedRequest as AdminRequests} isAdmin={true} action={() => setOpenEditModal(false)}/>
-                    )}
-                    
-                </Modal>
+            <Modal
+                onClose={() => {setOpenEditModal(false), setSelectedRequest(null)}}
+                header="Update Booking"
+                isOpen={openEditModal}
+            >
+                {selectedRequest && (
+                    <BookingModalContent request={selectedRequest as AdminRequests} isAdmin={true} action={() => setOpenEditModal(false)}/>
+                )}
+                
+            </Modal>
 
 
-                <Modal
-                    header="Delete Booking"
-                    isOpen={openDeleteModal}
-                    onClose={() => {
-                        setOpenDeleteModal(false)
-                    }}
-                >
-                    Are you sure you want to delete this booking?
+            <Modal
+                header="Delete Booking"
+                isOpen={openDeleteModal}
+                onClose={() => {
+                    setOpenDeleteModal(false)
+                }}
+            >
+                Are you sure you want to delete this booking?
 
-                    <CancelConfirmButtons 
-                        onCancel={() => setOpenDeleteModal(false)}
-                        onConfirm={() => selectedRequest && handleDelete(selectedRequest.id)}
-                    />
-                </Modal>
+                <CancelConfirmButtons 
+                    onCancel={() => setOpenDeleteModal(false)}
+                    onConfirm={() => selectedRequest && handleDelete(selectedRequest.id)}
+                />
+            </Modal>
         </div>
-        
     )
 }
 
