@@ -18,6 +18,7 @@ import { MessageModalContent } from "../modal-content"
 export default function Recents() {
   const [openModal, setOpenModal] = useState<boolean>(false)
   const [selectedItem, setSelectedItem] = useState<Message | null>(null)
+  const [selectedDate, setSelectedDate] = useState<string | undefined>(undefined);
   
   const { data: messageData, error: messageError, isPending: messagePending } = useQuery({
     queryKey: ['messages-data'],
@@ -26,7 +27,7 @@ export default function Recents() {
 
   const { data: requestData, error: requestError, isPending: requestPending } = useQuery({
     queryKey: ['requests-data'],
-    queryFn: GetRecentRequestData,
+    queryFn:() => GetRecentRequestData(selectedDate),
   })
 
   if (messageError || requestError) {
@@ -66,6 +67,8 @@ export default function Recents() {
             columns={requestColumns}
             data={requestData?.data || []}
             pageSize={20}
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
           />
         )}
       </div>

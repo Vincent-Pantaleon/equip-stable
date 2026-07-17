@@ -32,6 +32,8 @@ interface DataTableProps<TData, TValue> {
         value: string
     }[]
     role?: string
+    selectedDate: string | undefined
+    onDateChange: (date: string | undefined) => void
 }
 
 const options = [
@@ -47,7 +49,9 @@ export function BookingDataTable<TData, TValue>({
     data,
     pageSize,
     offices,
-    role
+    role,
+    selectedDate,
+    onDateChange
 }: DataTableProps<TData, TValue>) {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [pagination, setPagination] = useState({
@@ -103,7 +107,6 @@ export function BookingDataTable<TData, TValue>({
                             </div>
                         </>
                     )}
-                    
 
                     {/* <TableFilter
                         name="status_filter"
@@ -118,16 +121,14 @@ export function BookingDataTable<TData, TValue>({
                         <input
                             type="date"
                             name="date_filter"
-                            value={(table.getColumn("date_of_use")?.getFilterValue() as string) ?? ""}
+                            value={selectedDate || ""}
                             onChange={(e) => {
-                                // Setting it to undefined removes the filter when the input is cleared
-                                table.getColumn("date_of_use")?.setFilterValue(e.target.value || undefined);
+                                onDateChange(e.target.value || undefined);
                             }}
                         />
                     </div>
                     
-
-                    {role === 'superadmin' && (
+                    {/* {role === 'superadmin' && (
                         <>
                             <TableFilter
                                 name="office_filter"
@@ -137,7 +138,7 @@ export function BookingDataTable<TData, TValue>({
                                 label="Office:"
                             />
                         </>
-                    )}
+                    )} */}
                 </div>
             </div>
             
